@@ -30,6 +30,10 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
       type: String,
       required: [true, 'Gender is required'],
     },
+    dateOfBirth: {
+      type: Date,
+      required: [true, 'Date of birth is required'],
+    },
     email: {
       type: String,
       required: [true, 'Email is required'],
@@ -93,7 +97,7 @@ adminSchema.pre('aggregate', function (next) {
 });
 
 //checking if user is already exist!
-adminSchema.statics.isUserExists = async function (id: string) {
+adminSchema.statics.isAdminExists = async function (id: string) {
   const existingUser = await Admin.findById(id);
   return existingUser;
 };

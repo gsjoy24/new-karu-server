@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
-import { User } from '../user/user.model';
 import { AdminSearchableFields } from './admin.constant';
 import { TAdmin } from './admin.interface';
 import { Admin } from './admin.model';
@@ -34,7 +32,7 @@ const getSingleAdminFromDB = async (id: string) => {
 
 const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
   // check if admin exists
-  const admin = await Admin.findById(id);
+  const admin = await Admin.isAdminExists(id);
   if (!admin) {
     throw new AppError(httpStatus.NOT_FOUND, 'Admin not found');
   }
@@ -44,13 +42,14 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
     ...remainingAdminData,
   };
 
+  // if name is present then update name fields. name is an object with firstName, middleName, lastName. So, we need to update it like name.firstName, name.middleName, name.lastName. So, we are iterating over the name object and updating the fields.
   if (name && Object.keys(name).length) {
     for (const [key, value] of Object.entries(name)) {
       modifiedUpdatedData[`name.${key}`] = value;
     }
   }
 
-  const result = await Admin.findByIdAndUpdate({ id }, modifiedUpdatedData, {
+  const result = await Admin.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });
@@ -58,48 +57,19 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
 };
 
 const deleteAdminFromDB = async (id: string) => {
-  const session = await mongoose.startSession();
-
-  const admin = await Admin.findById(id);
+  const admin = await Admin.isAdminExists(id);
   if (!admin) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Admin not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Admin not found!');
   }
 
-  try {
-    session.startTransaction();
+  // we are not deleting the admin from the database. We are just marking it as deleted. So, we are updating the isDeleted field to true. So, that we can filter out the deleted admins from the database.
+  const deletedAdmin = await Admin.findByIdAndUpdate(id, { isDeleted: true });
 
-    const deletedAdmin = await Admin.findByIdAndUpdate(
-      id,
-      { isDeleted: true },
-      { new: true, session },
-    );
-
-    if (!deletedAdmin) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete student');
-    }
-
-    // get user _id from deletedAdmin
-    const userId = deletedAdmin.user;
-
-    const deletedUser = await User.findOneAndUpdate(
-      userId,
-      { isDeleted: true },
-      { new: true, session },
-    );
-
-    if (!deletedUser) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user');
-    }
-
-    await session.commitTransaction();
-    await session.endSession();
-
-    return deletedAdmin;
-  } catch (err: any) {
-    await session.abortTransaction();
-    await session.endSession();
-    throw new Error(err);
+  if (!deletedAdmin) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete the admin!');
   }
+
+  return deletedAdmin;
 };
 
 export const AdminServices = {
