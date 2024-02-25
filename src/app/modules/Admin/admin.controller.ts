@@ -10,7 +10,7 @@ const getSingleAdmin = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admin is retrieved successfully',
+    message: 'The admin is retrieved successfully',
     data: result,
   });
 });
@@ -21,7 +21,7 @@ const getAllAdmins = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admins are retrieved successfully',
+    message: 'The admins are retrieved successfully',
     meta,
     data: result,
   });
@@ -29,13 +29,13 @@ const getAllAdmins = catchAsync(async (req, res) => {
 
 const updateAdmin = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const { admin } = req.body;
-  const result = await AdminServices.updateAdminIntoDB(id, admin);
+  const { adminData } = req.body;
+  const result = await AdminServices.updateAdminIntoDB(id, adminData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admin is updated successfully',
+    message: 'The admin is updated successfully',
     data: result,
   });
 });
@@ -47,7 +47,7 @@ const deleteAdmin = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admin is deleted successfully',
+    message: 'The admin is deleted successfully',
     data: result,
   });
 });
