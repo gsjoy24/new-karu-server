@@ -10,6 +10,7 @@ export interface TUser {
   password: string;
   street_address?: string;
   apartment_name?: string;
+  courier_address?: string;
   city?: string;
   postal_code?: string;
   district?: string;

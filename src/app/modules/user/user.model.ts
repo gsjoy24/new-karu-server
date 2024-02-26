@@ -37,6 +37,34 @@ const userSchema = new Schema<TUser, UserModel>(
       required: [true, 'Password is required!'],
       select: 0,
     },
+    street_address: {
+      type: String,
+      trim: true,
+    },
+    apartment_name: {
+      type: String,
+      trim: true,
+    },
+    courier_address: {
+      type: String,
+      trim: true,
+    },
+    city: {
+      type: String,
+      trim: true,
+    },
+    postal_code: {
+      type: String,
+      trim: true,
+    },
+    district: {
+      type: String,
+      trim: true,
+    },
+    mobile_number: {
+      type: String,
+      trim: true,
+    },
     status: {
       type: String,
       enum: UserStatus,
@@ -64,21 +92,14 @@ userSchema.pre('save', async function (next) {
 });
 
 //! post save middleware/hook
+// removing password from response after save
 userSchema.post('save', function (doc, next) {
   doc.password = '';
   next();
 });
 
-userSchema.statics.isUserExistsByCustomId = async function (id: string) {
-  return await this.findOne({ id }).select('+password');
-};
-
-userSchema.statics.isJwtIssuedBeforePasswordChanged = function (
-  passwordChangedAt: Date,
-  jwtIssuedAt: number,
-) {
-  const passwordChangedAtTime = passwordChangedAt.getTime() / 1000;
-  return passwordChangedAtTime > jwtIssuedAt;
+userSchema.statics.isUserExists = async function (id: string) {
+  return await this.findById(id).select('+password');
 };
 
 userSchema.statics.isPasswordMatched = async function (

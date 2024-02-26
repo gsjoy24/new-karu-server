@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../config';
 import AppError from '../errors/AppError';
+import { Admin } from '../modules/Admin/admin.model';
 import { TUserRole } from '../modules/user/user.interface';
 import { User } from '../modules/user/user.model';
 import catchAsync from '../utils/catchAsync';
@@ -27,10 +28,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
 
-    const { userId, role, iat } = decoded;
+    const { id, role, iat } = decoded;
 
     // check if the user is exist
-    const user = await User.isUserExistsByCustomId(userId);
+    const user = await Admin.isAdminExists(id);
     if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, 'User not found');
     }

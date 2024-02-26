@@ -23,18 +23,6 @@ router.post(
 );
 
 router.post(
-  '/create-faculty',
-  auth(USER_ROLES.admin, USER_ROLES.superAdmin),
-  upload.single('file'),
-  (req: Request, res: Response, next: NextFunction) => {
-    req.body = JSON.parse(req.body.data);
-    next();
-  },
-  validateRequest(createFacultyValidationSchema),
-  UserControllers.createFaculty,
-);
-
-router.post(
   '/create-admin',
   auth(USER_ROLES.admin, USER_ROLES.superAdmin),
   upload.single('file'),
@@ -55,12 +43,7 @@ router.patch(
 
 router.get(
   '/me',
-  auth(
-    USER_ROLES.admin,
-    USER_ROLES.superAdmin,
-    USER_ROLES.faculty,
-    USER_ROLES.student,
-  ),
+  auth(USER_ROLES.admin, USER_ROLES.superAdmin, USER_ROLES.student),
   UserControllers.getMe,
 );
 
