@@ -5,7 +5,7 @@ import AppError from '../errors/AppError';
 import { handleCastError } from '../errors/handleCastError';
 import handleValidationError from '../errors/handleValidationError';
 import { handleZodError } from '../errors/handleZodError';
-import { TErrorSources } from '../interface/error';
+import { TErrorSources } from '../types/error';
 
 const globalErrorHandler: ErrorRequestHandler = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

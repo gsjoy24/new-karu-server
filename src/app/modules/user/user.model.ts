@@ -1,15 +1,31 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../config';
+import { TUserName } from '../../types/userInfo.type';
 import { UserStatus } from './user.constant';
 import { TUser, UserModel } from './user.interface';
 
+const userNameSchema = new Schema<TUserName>({
+  firstName: {
+    type: String,
+    required: [true, 'First Name is required'],
+    trim: true,
+    maxlength: [20, 'Name can not be more than 20 characters'],
+  },
+
+  lastName: {
+    type: String,
+    trim: true,
+    required: [true, 'Last Name is required'],
+    maxlength: [20, 'Name can not be more than 20 characters'],
+  },
+});
+
 const userSchema = new Schema<TUser, UserModel>(
   {
-    id: {
-      type: String,
-      required: [true, 'Id is required!'],
-      unique: true,
+    name: {
+      type: userNameSchema,
+      required: [true, 'Name is required'],
     },
     email: {
       type: String,
@@ -20,15 +36,6 @@ const userSchema = new Schema<TUser, UserModel>(
       type: String,
       required: [true, 'Password is required!'],
       select: 0,
-    },
-    needsPasswordChange: {
-      type: Boolean,
-      default: true,
-    },
-    passwordChangedAt: Date,
-    role: {
-      type: String,
-      enum: ['superAdmin', 'admin', 'faculty', 'student'],
     },
     status: {
       type: String,

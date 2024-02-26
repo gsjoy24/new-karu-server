@@ -15,20 +15,9 @@ router.post(
 
 router.patch(
   '/change-password',
-  auth(
-    USER_ROLES.admin,
-    USER_ROLES.superAdmin,
-    USER_ROLES.faculty,
-    USER_ROLES.student,
-  ),
+  auth(USER_ROLES.admin, USER_ROLES.user),
   validateRequest(AuthValidations.changePasswordValidationSchema),
   AuthControllers.changePassword,
-);
-
-router.post(
-  '/refresh_token',
-  validateRequest(AuthValidations.refreshTokenValidationSchema),
-  AuthControllers.refreshToken,
 );
 
 router.post(
