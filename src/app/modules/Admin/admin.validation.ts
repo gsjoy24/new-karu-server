@@ -2,33 +2,51 @@ import { z } from 'zod';
 
 const createUserNameValidationSchema = z.object({
   firstName: z.string().min(1).max(20),
-  middleName: z.string().max(20).optional(),
   lastName: z.string().max(20),
 });
 
 export const createAdminValidationSchema = z.object({
   body: z.object({
-    password: z.string().max(20).optional(),
-    adminData: z.object({
-      name: createUserNameValidationSchema,
-      gender: z.string({
-        required_error: 'Gender is required',
+    name: createUserNameValidationSchema,
+    password: z
+      .string({
+        required_error: 'Password is required',
         invalid_type_error: 'The value must be a string',
-      }),
-      dateOfBirth: z
-        .string({
-          required_error: 'Date of birth is required',
-          invalid_type_error: 'The value must be a string',
-        })
-        .optional(),
-      email: z.string().email({
+      })
+      .min(6, 'Password can not be less than 6 characters')
+      .max(20, 'Password can not be more than 20 characters'),
+    email: z
+      .string({
+        required_error: 'Email is required',
+        invalid_type_error: 'Email  must be a string',
+      })
+      .email({
         message: 'Invalid email',
       }),
-      contactNo: z.string(),
-      presentAddress: z.string(),
-      permanentAddress: z.string(),
-      profileImg: z.string(),
+    gender: z.enum(['male', 'female', 'other'], {
+      required_error: 'Gender is required',
+      invalid_type_error: 'Gender must be male, female or other',
     }),
+    dateOfBirth: z.date().optional(),
+    contactNo: z.string({
+      required_error: 'Contact number is required',
+      invalid_type_error: 'Contact number must be a string',
+    }),
+    presentAddress: z.string({
+      required_error: 'Present address is required',
+      invalid_type_error: 'Present address must be a string',
+    }),
+    permanentAddress: z.string({
+      required_error: 'Permanent address is required',
+      invalid_type_error: 'Permanent address must be a string',
+    }),
+    profileImg: z
+      .string({
+        required_error: 'Profile image is required',
+      })
+      .url({
+        message: 'Invalid URL',
+      }),
   }),
 });
 

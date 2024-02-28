@@ -4,10 +4,9 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../config';
 import AppError from '../errors/AppError';
 import { Admin } from '../modules/Admin/admin.model';
-import { TUserRole } from '../modules/user/user.interface';
 import catchAsync from '../utils/catchAsync';
 
-const adminAuth = (...requiredRoles: TUserRole[]) => {
+const adminAuth = () => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
 
@@ -27,21 +26,17 @@ const adminAuth = (...requiredRoles: TUserRole[]) => {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
 
-    const { adminId, role } = decoded;
+    const { adminId, email, role } = decoded;
 
-    // check if the user is exist
-    const admin = await Admin.isAdminExists(adminId);
+    // check if the user is admin
+    if (role !== 'admin') {
+      throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
+    }
+
+    // check if the user is exist. If not, throw an error
+    const admin = await Admin.findOne({ _id: adminId, email });
     if (!admin) {
       throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found');
-    }
-
-    // check if the admin is deleted
-    if (admin.isDeleted) {
-      throw new AppError(httpStatus.FORBIDDEN, 'This admin is deleted');
-    }
-
-    if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
 
     req.admin = decoded as JwtPayload;

@@ -4,9 +4,48 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 import AppError from '../../errors/AppError';
 import { sendEmail } from '../../utils/sendEmail';
+import { Admin } from '../Admin/admin.model';
 import { User } from '../user/user.model';
-import { TChangePassword, TLoginUser, TResetPassword } from './auth.interface';
+import {
+  TChangePassword,
+  TLoginAdmin,
+  TLoginUser,
+  TResetPassword,
+} from './auth.interface';
 import { createToken } from './auth.utils';
+
+const loginAdmin = async (payload: TLoginAdmin) => {
+  const { email, password } = payload;
+
+  // check if the user is exist
+  const admin = await Admin.isAdminExists(email);
+  if (!admin) {
+    throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found');
+  }
+  // check if the password is correct
+  const isPasswordMatch = await Admin.isPasswordMatched(
+    password,
+    admin?.password,
+  );
+
+  if (!isPasswordMatch) {
+    throw new AppError(httpStatus.FORBIDDEN, 'Invalid credentials');
+  }
+
+  const jwtPayload = {
+    adminId: admin?._id,
+    email: admin?.email,
+    role: 'admin',
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expiration as string,
+  );
+
+  return accessToken;
+};
 
 const loginUser = async (payload: TLoginUser) => {
   const { userId, password } = payload;
@@ -186,6 +225,7 @@ const resetPassword = async (payload: TResetPassword, token: string) => {
 
 export const AuthServices = {
   loginUser,
+  loginAdmin,
   changePassword,
   forgotPassword,
   resetPassword,

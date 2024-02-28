@@ -1,4 +1,7 @@
+import bcrypt from 'bcrypt';
+
 import { Schema, model } from 'mongoose';
+import config from '../../config';
 import { TUserName } from '../../types/userInfo.type';
 import { AdminModel, TAdmin } from './admin.interface';
 
@@ -23,6 +26,17 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
       type: userNameSchema,
       required: [true, 'Name is required'],
     },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minlength: [6, 'Password can not be less than 6 characters'],
+      select: false,
+    },
     gender: {
       type: String,
       required: [true, 'Gender is required'],
@@ -31,11 +45,7 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
       type: Date,
       required: [true, 'Date of birth is required'],
     },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-    },
+
     contactNo: { type: String, required: [true, 'Contact number is required'] },
     presentAddress: {
       type: String,
@@ -50,10 +60,6 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
       default:
         'https://res.cloudinary.com/dghszztcc/image/upload/v1707815776/duumy-user_wmto60.png',
     },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     timestamps: true,
@@ -62,6 +68,17 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
     },
   },
 );
+
+//! pre save middleware/hook || hashing password
+adminSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const admin = this;
+  admin.password = await bcrypt.hash(
+    admin.password,
+    Number(config.bcrypt_salt_round),
+  );
+  next();
+});
 
 // generating full name
 adminSchema.virtual('fullName').get(function () {
@@ -85,9 +102,16 @@ adminSchema.pre('aggregate', function (next) {
 });
 
 //checking if user is already exist!
-adminSchema.statics.isAdminExists = async function (id: string) {
-  const existingUser = await Admin.findById(id);
+adminSchema.statics.isAdminExists = async function (email: string) {
+  const existingUser = await Admin.findOne({ email }).select('+password');
   return existingUser;
+};
+
+adminSchema.statics.isPasswordMatched = async function (
+  plainPassword: string,
+  hashedPassword: string,
+) {
+  return await bcrypt.compare(plainPassword, hashedPassword);
 };
 
 export const Admin = model<TAdmin, AdminModel>('Admin', adminSchema);

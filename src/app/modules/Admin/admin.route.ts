@@ -1,35 +1,28 @@
 import express from 'express';
-import auth from '../../middlewares/adminAuth';
+import adminAuth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
-import { USER_ROLES } from '../user/user.constant';
 import { AdminControllers } from './admin.controller';
-import { updateAdminValidationSchema } from './admin.validation';
+import {
+  createAdminValidationSchema,
+  updateAdminValidationSchema,
+} from './admin.validation';
 
 const router = express.Router();
 
-router.get(
+router.post(
   '/',
-  auth(USER_ROLES.admin, USER_ROLES.superAdmin),
-  AdminControllers.getAllAdmins,
+  adminAuth(),
+  validateRequest(createAdminValidationSchema),
+  AdminControllers.createAdmin,
 );
-
-router.get(
-  '/:id',
-  auth(USER_ROLES.admin, USER_ROLES.superAdmin),
-  AdminControllers.getSingleAdmin,
-);
-
+router.get('/', adminAuth(), AdminControllers.getAllAdmins);
+router.get('/:id', adminAuth(), AdminControllers.getSingleAdmin);
 router.patch(
   '/:id',
-  auth(USER_ROLES.admin, USER_ROLES.superAdmin),
+  adminAuth(),
   validateRequest(updateAdminValidationSchema),
   AdminControllers.updateAdmin,
 );
-
-router.delete(
-  '/:adminId',
-  auth(USER_ROLES.admin, USER_ROLES.superAdmin),
-  AdminControllers.deleteAdmin,
-);
+router.delete('/:adminId', adminAuth(), AdminControllers.deleteAdmin);
 
 export const AdminRoutes = router;

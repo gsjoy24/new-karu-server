@@ -71,7 +71,6 @@ const createStudentIntoDB = async (
       const uploadedPhoto = await sendImgToCloudinary(imgName, path);
       payload.profileImg = (uploadedPhoto as { secure_url?: string })
         ?.secure_url as string;
-    
     }
 
     // create a user on db
@@ -174,69 +173,6 @@ const createFacultyIntoDB = async (
   }
 };
 
-const createAdminIntoDB = async (
-  file: any,
-  password: string,
-  payload: TAdmin,
-) => {
-  // create a user object
-  const userData: Partial<TUser> = {};
-
-  //if password is not given , use default password
-  userData.password = password || (config.default_password as string);
-
-  //set student role and email
-  userData.role = 'admin';
-  userData.email = payload.email;
-
-  const session = await mongoose.startSession();
-
-  try {
-    session.startTransaction();
-    //set  generated id
-    userData.id = await generateAdminId();
-
-    // check if the file is given or not, if given then upload to cloudinary, and set the url to profileImg
-    if (file) {
-      const imgName = `${
-        userData.id
-      }-${payload?.name?.firstName.toLowerCase()}`;
-      const path = file?.path as string;
-      const uploadedPhoto = await sendImgToCloudinary(imgName, path);
-      payload.profileImg = (uploadedPhoto as { secure_url?: string })
-        ?.secure_url as string;
-    }
-
-    // create a user (transaction-1)
-    const newUser = await User.create([userData], { session });
-
-    //create a admin
-    if (!newUser.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
-    }
-    // set id , _id as user
-    payload.id = newUser[0].id;
-    payload.user = newUser[0]._id; //reference _id
-
-    // create a admin (transaction-2)
-    const newAdmin = await Admin.create([payload], { session });
-
-    if (!newAdmin.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
-    }
-
-    await session.commitTransaction();
-    await session.endSession();
-
-    return newAdmin;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    await session.abortTransaction();
-    await session.endSession();
-    throw new Error(err);
-  }
-};
-
 const changeUserStatus = async (id: string, payload: { status: string }) => {
   const result = await User.findByIdAndUpdate(id, payload, {
     new: true,
@@ -275,7 +211,6 @@ const getMe = async (user: JwtPayload) => {
 export const UserServices = {
   createStudentIntoDB,
   createFacultyIntoDB,
-  createAdminIntoDB,
   changeUserStatus,
   getMe,
 };

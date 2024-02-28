@@ -1,10 +1,13 @@
+/* eslint-disable no-unused-vars */
 import { Model } from 'mongoose';
 import { TUserName } from '../../types/userInfo.type';
 
 export type TGender = 'male' | 'female' | 'other';
 
 export type TAdmin = {
+  _id?: string;
   name: TUserName;
+  password: string;
   gender: TGender;
   dateOfBirth?: Date;
   email: string;
@@ -12,10 +15,12 @@ export type TAdmin = {
   presentAddress: string;
   permanentAddress: string;
   profileImg?: string;
-  isDeleted: boolean;
 };
 
 export interface AdminModel extends Model<TAdmin> {
-  // eslint-disable-next-line no-unused-vars
   isAdminExists(id: string): Promise<TAdmin | null>;
+  isPasswordMatched(
+    plainPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean>;
 }
