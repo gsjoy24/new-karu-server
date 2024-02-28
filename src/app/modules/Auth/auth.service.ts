@@ -224,8 +224,8 @@ const resetPassword = async (payload: TResetPassword, token: string) => {
 };
 
 export const AuthServices = {
-  loginUser,
   loginAdmin,
+  loginUser,
   changePassword,
   forgotPassword,
   resetPassword,

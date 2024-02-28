@@ -5,20 +5,25 @@ import config from '../../config';
 import { TUserName } from '../../types/userInfo.type';
 import { AdminModel, TAdmin } from './admin.interface';
 
-const userNameSchema = new Schema<TUserName>({
-  firstName: {
-    type: String,
-    required: [true, 'First Name is required'],
-    trim: true,
-    maxlength: [20, 'Name can not be more than 20 characters'],
+const userNameSchema = new Schema<TUserName>(
+  {
+    firstName: {
+      type: String,
+      required: [true, 'First Name is required'],
+      trim: true,
+      maxlength: [20, 'Name can not be more than 20 characters'],
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      required: [true, 'Last Name is required'],
+      maxlength: [20, 'Name can not be more than 20 characters'],
+    },
   },
-  lastName: {
-    type: String,
-    trim: true,
-    required: [true, 'Last Name is required'],
-    maxlength: [20, 'Name can not be more than 20 characters'],
+  {
+    _id: false,
   },
-});
+);
 
 const adminSchema = new Schema<TAdmin, AdminModel>(
   {

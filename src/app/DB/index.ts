@@ -1,6 +1,5 @@
 import config from '../config';
 import { Admin } from '../modules/Admin/admin.model';
-import { User } from '../modules/user/user.model';
 
 const superAdmin = {
   name: {
@@ -18,7 +17,7 @@ const superAdmin = {
 };
 
 const seedSuperAdmin = async () => {
-  const isSuperAdminExists = await User.findOne({
+  const isSuperAdminExists = await Admin.findOne({
     email: config.super_admin_email,
   });
   if (!isSuperAdminExists) {

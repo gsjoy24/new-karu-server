@@ -4,6 +4,18 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.service';
 
+const loginAdmin = catchAsync(async (req, res) => {
+  const result = await AuthServices.loginAdmin(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'The admin logged in successfully',
+    data: {
+      accessToken: result,
+    },
+  });
+});
 const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
   const { accessToken } = result;
@@ -13,7 +25,7 @@ const loginUser = catchAsync(async (req, res) => {
     success: true,
     message: 'User logged in successfully',
     data: {
-      accessToken
+      accessToken,
     },
   });
 });
@@ -56,6 +68,7 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 export const AuthControllers = {
+  loginAdmin,
   loginUser,
   changePassword,
   forgotPassword,
