@@ -1,19 +1,12 @@
 import express from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { AuthControllers } from './auth.controller';
-import { AuthValidations } from './auth.validation';
-
+import validateRequest from '../../../middlewares/validateRequest';
+import { AuthValidations } from '../auth.validation';
 const router = express.Router();
 
 router.post(
   '/admin-login',
   validateRequest(AuthValidations.LoginUserValidationSchema),
   AuthControllers.loginAdmin,
-);
-router.post(
-  '/login',
-  validateRequest(AuthValidations.LoginUserValidationSchema),
-  AuthControllers.loginUser,
 );
 
 router.patch(

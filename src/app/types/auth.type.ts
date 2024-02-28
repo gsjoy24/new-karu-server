@@ -1,9 +1,4 @@
-export type TLoginUser = {
-  userId: string;
-  password: string;
-};
-
-export type TLoginAdmin = {
+export type TLogin = {
   email: string;
   password: string;
 };
@@ -14,6 +9,6 @@ export type TChangePassword = {
 };
 
 export type TResetPassword = {
-  userId: string;
+  email: string;
   newPassword: string;
 };

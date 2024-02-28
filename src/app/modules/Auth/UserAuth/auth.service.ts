@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import config from '../../config';
-import AppError from '../../errors/AppError';
-import { sendEmail } from '../../utils/sendEmail';
-import { Admin } from '../Admin/admin.model';
-import { User } from '../user/user.model';
+import config from '../../../config';
+import AppError from '../../../errors/AppError';
+import { sendEmail } from '../../../utils/sendEmail';
+import { Admin } from '../../Admin/admin.model';
+import { User } from '../../user/user.model';
 import {
   TChangePassword,
   TLoginAdmin,
