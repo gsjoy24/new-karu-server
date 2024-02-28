@@ -12,7 +12,7 @@ const loginUser = async (payload: TLoginUser) => {
   const { userId, password } = payload;
 
   // check if the user is exist
-  const user = await User.isUserExistsByCustomId(userId);
+  const user = await User.isUserExists(userId);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
@@ -38,7 +38,8 @@ const loginUser = async (payload: TLoginUser) => {
   }
 
   const jwtPayload = {
-    userId: user?.id,
+    userId: user?._id,
+    email: user?.email,
     role: user?.role,
   };
 
@@ -48,15 +49,8 @@ const loginUser = async (payload: TLoginUser) => {
     config.jwt_access_expiration as string,
   );
 
-  const refreshToken = createToken(
-    jwtPayload,
-    config.jwt_refresh_secret as string,
-    config.jwt_refresh_expiration as string,
-  );
-
   return {
     accessToken,
-    refreshToken,
     needsPasswordChange: user?.needsPasswordChange,
   };
 };
@@ -112,7 +106,6 @@ const changePassword = async (
 
   return result;
 };
-
 
 const forgotPassword = async (id: string) => {
   // check if the user is exist

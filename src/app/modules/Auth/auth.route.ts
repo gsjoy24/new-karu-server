@@ -1,5 +1,5 @@
 import express from 'express';
-import auth from '../../middlewares/auth';
+import auth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { USER_ROLES } from '../user/user.constant';
 import { AuthControllers } from './auth.controller';

@@ -1,5 +1,5 @@
 import express from 'express';
-import auth from '../../middlewares/auth';
+import auth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { USER_ROLES } from '../user/user.constant';
 import { AdminControllers } from './admin.controller';
@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get(
   '/',
-  auth(USER_ROLES.admin, USER_ROLES.superAdmin),  
+  auth(USER_ROLES.admin, USER_ROLES.superAdmin),
   AdminControllers.getAllAdmins,
 );
 

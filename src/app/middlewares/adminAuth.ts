@@ -5,10 +5,9 @@ import config from '../config';
 import AppError from '../errors/AppError';
 import { Admin } from '../modules/Admin/admin.model';
 import { TUserRole } from '../modules/user/user.interface';
-import { User } from '../modules/user/user.model';
 import catchAsync from '../utils/catchAsync';
 
-const auth = (...requiredRoles: TUserRole[]) => {
+const adminAuth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
 
@@ -28,41 +27,26 @@ const auth = (...requiredRoles: TUserRole[]) => {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
 
-    const { id, role, iat } = decoded;
+    const { adminId, role } = decoded;
 
     // check if the user is exist
-    const user = await Admin.isAdminExists(id);
-    if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    const admin = await Admin.isAdminExists(adminId);
+    if (!admin) {
+      throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found');
     }
 
-    // check if the user is deleted
-    if (user.isDeleted) {
-      throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted');
-    }
-
-    // check if the user is blocked
-    if (user?.status === 'blocked') {
-      throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked');
-    }
-
-    if (
-      user?.passwordChangedAt &&
-      User.isJwtIssuedBeforePasswordChanged(
-        user.passwordChangedAt,
-        iat as number,
-      )
-    ) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+    // check if the admin is deleted
+    if (admin.isDeleted) {
+      throw new AppError(httpStatus.FORBIDDEN, 'This admin is deleted');
     }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
 
-    req.userData = decoded as JwtPayload;
+    req.admin = decoded as JwtPayload;
     next();
   });
 };
 
-export default auth;
+export default adminAuth;

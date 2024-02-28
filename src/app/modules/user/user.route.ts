@@ -1,10 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
-import auth from '../../middlewares/auth';
+import auth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { upload } from '../../utils/sendImgToCloudinary';
 import { createAdminValidationSchema } from '../Admin/admin.validation';
-import { createFacultyValidationSchema } from '../Faculty/faculty.validation';
-import { studentValidations } from '../student/student.validation';
 import { USER_ROLES } from './user.constant';
 import { UserControllers } from './user.controller';
 import userValidations from './user.validation';
