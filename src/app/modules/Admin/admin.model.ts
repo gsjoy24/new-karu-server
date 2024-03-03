@@ -90,26 +90,10 @@ adminSchema.virtual('fullName').get(function () {
   return this?.name?.firstName + this?.name?.lastName;
 });
 
-// filter out deleted documents
-adminSchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-adminSchema.pre('findOne', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-adminSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-  next();
-});
-
 //checking if user is already exist!
-adminSchema.statics.isAdminExists = async function (email: string) {
-  const existingUser = await Admin.findOne({ email }).select('+password');
-  return existingUser;
+adminSchema.statics.isAdminExists = async function (id) {
+  const existingAdmin = await Admin.findById(id).select('+password');
+  return existingAdmin;
 };
 
 adminSchema.statics.isPasswordMatched = async function (

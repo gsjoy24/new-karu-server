@@ -13,7 +13,7 @@ const loginAdmin = async (payload: TLogin) => {
   const { email, password } = payload;
 
   // check if the user is exist
-  const admin = await Admin.isAdminExists(email);
+  const admin = await Admin.findOne({ email });
   if (!admin) {
     throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found');
   }
@@ -90,35 +90,28 @@ const loginUser = async (payload: TLogin) => {
 };
 
 const changePasswordOfAdmin = async (
-  userData: JwtPayload,
+  adminData: JwtPayload,
   payload: TChangePassword,
 ) => {
   const { oldPassword, newPassword } = payload;
 
   // check if the user is exist
-  const user = await User.isUserExistsByCustomId(userData.userId);
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-  }
-
-  // check if the user is deleted
-  if (user.isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted');
-  }
-
-  // check if the user is blocked
-  if (user?.status === 'blocked') {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked');
+  const admin = await Admin.findOne({
+    _id: adminData.id,
+    email: adminData.email,
+  });
+  if (!admin) {
+    throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found!');
   }
 
   // check if the password is correct
   const isPasswordMatch = await User.isPasswordMatched(
     oldPassword,
-    user?.password,
+    admin?.password,
   );
 
   if (!isPasswordMatch) {
-    throw new AppError(httpStatus.FORBIDDEN, 'Password does not match');
+    throw new AppError(httpStatus.FORBIDDEN, 'Password does not match!');
   }
 
   const hashedPassword = await bcrypt.hash(
@@ -126,10 +119,10 @@ const changePasswordOfAdmin = async (
     Number(config.bcrypt_salt_round),
   );
 
-  const result = await User.findOneAndUpdate(
+  const result = await Admin.findOneAndUpdate(
     {
-      id: userData.userId,
-      role: userData.role,
+      id: adminData.id,
+      email: adminData.email,
     },
     {
       password: hashedPassword,
@@ -139,37 +132,6 @@ const changePasswordOfAdmin = async (
   );
 
   return result;
-};
-
-const forgotPassword = async (id: string) => {
-  // check if the user is exist
-  const user = await User.isUserExistsByCustomId(id);
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-  }
-
-  // check if the user is deleted
-  if (user.isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted');
-  }
-
-  // check if the user is blocked
-  if (user?.status === 'blocked') {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked');
-  }
-
-  const jwtPayload = {
-    userId: user?.id,
-    role: user?.role,
-  };
-  const resetToken = createToken(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    '15m',
-  );
-  const resetUILink = `${config.app_url}?id=${user.id}&token=${resetToken}`;
-  sendEmail(user?.email, resetUILink);
-  return;
 };
 
 const resetPassword = async (payload: TResetPassword, token: string) => {
@@ -221,7 +183,7 @@ const resetPassword = async (payload: TResetPassword, token: string) => {
 export const AuthServices = {
   loginAdmin,
   loginUser,
-  changePassword,
+  changePasswordOfAdmin,
   forgotPassword,
   resetPassword,
 };

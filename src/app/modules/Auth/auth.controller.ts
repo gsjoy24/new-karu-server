@@ -31,10 +31,9 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
-// todo: change password of user and admin both are same. So, we can merge them into one function
 const changePasswordOfAdmin = catchAsync(async (req, res) => {
-  const result = await AuthServices.changePassword(
-    req.admin as JwtPayload,
+  const result = await AuthServices.changePasswordOfAdmin(
+    req.adminData as JwtPayload,
     req.body,
   );
 

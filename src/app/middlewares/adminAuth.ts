@@ -39,7 +39,7 @@ const adminAuth = () => {
       throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found');
     }
 
-    req.admin = decoded as JwtPayload;
+    req.adminData = decoded as JwtPayload;
     next();
   });
 };

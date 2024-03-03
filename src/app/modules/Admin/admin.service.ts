@@ -7,11 +7,11 @@ import { TAdmin } from './admin.interface';
 import { Admin } from './admin.model';
 
 const createAdminIntoDB = async (payload: TAdmin) => {
-  const adminExists = await Admin.isAdminExists(payload.email);
-  if (adminExists) {
+  const isAdminExists = await Admin.findOne({ email: payload.email });
+  if (isAdminExists) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      'Admin already exists with this email',
+      'An admin already exists with this email',
     );
   }
   const result = await Admin.create(payload);
