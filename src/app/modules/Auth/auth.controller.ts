@@ -45,33 +45,33 @@ const changePasswordOfAdmin = catchAsync(async (req, res) => {
   });
 });
 
-const forgotPassword = catchAsync(async (req, res) => {
-  const userId = req.body.id;
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  const result = await AuthServices.forgotPassword(userId);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Password reset link sent successfully',
-    data: null,
-  });
-});
+// const forgotPassword = catchAsync(async (req, res) => {
+//   const userId = req.body.id;
+//   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+//   const result = await AuthServices.forgotPassword(userId);
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Password reset link sent successfully',
+//     data: null,
+//   });
+// });
 
-const resetPassword = catchAsync(async (req, res) => {
-  const token = req.headers.authorization;
-  const result = await AuthServices.resetPassword(req.body, token as string);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Password reset successfully',
-    data: result,
-  });
-});
+// const resetPassword = catchAsync(async (req, res) => {
+//   const token = req.headers.authorization;
+//   const result = await AuthServices.resetPassword(req.body, token as string);
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Password reset successfully',
+//     data: result,
+//   });
+// });
 
 export const AuthControllers = {
   loginAdmin,
   loginUser,
   changePasswordOfAdmin,
-  forgotPassword,
-  resetPassword,
+  // forgotPassword,
+  // resetPassword,
 };
