@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
-import catchAsync from '../../../utils/catchAsync';
-import sendResponse from '../../../utils/sendResponse';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.service';
 
 const loginAdmin = catchAsync(async (req, res) => {
@@ -16,6 +16,7 @@ const loginAdmin = catchAsync(async (req, res) => {
     },
   });
 });
+
 const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
   const { accessToken } = result;
@@ -30,6 +31,7 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+// todo: change password of user and admin both are same. So, we can merge them into one function
 const changePassword = catchAsync(async (req, res) => {
   const result = await AuthServices.changePassword(
     req.userData as JwtPayload,

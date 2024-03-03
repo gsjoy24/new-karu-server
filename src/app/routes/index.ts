@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AdminRoutes } from '../modules/Admin/admin.route';
-import { AuthRoutes } from '../modules/Auth/UserAuth/auth.route';
+import { AuthRoutes } from '../modules/Auth/userAuth.routes';
 
 import { CourseRoutes } from '../modules/course/course.route';
 // import { UserRoutes } from '../modules/user/user.route';

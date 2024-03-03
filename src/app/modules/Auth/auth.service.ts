@@ -1,20 +1,15 @@
 import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import config from '../../../config';
-import AppError from '../../../errors/AppError';
-import { sendEmail } from '../../../utils/sendEmail';
-import { Admin } from '../../Admin/admin.model';
-import { User } from '../../user/user.model';
-import {
-  TChangePassword,
-  TLoginAdmin,
-  TLoginUser,
-  TResetPassword,
-} from './auth.interface';
+import config from '../../config';
+import AppError from '../../errors/AppError';
+import { sendEmail } from '../../utils/sendEmail';
+import { Admin } from '../Admin/admin.model';
+import { User } from '../user/user.model';
+import { TChangePassword, TLogin, TResetPassword } from './auth.types';
 import { createToken } from './auth.utils';
 
-const loginAdmin = async (payload: TLoginAdmin) => {
+const loginAdmin = async (payload: TLogin) => {
   const { email, password } = payload;
 
   // check if the user is exist
@@ -47,7 +42,7 @@ const loginAdmin = async (payload: TLoginAdmin) => {
   return accessToken;
 };
 
-const loginUser = async (payload: TLoginUser) => {
+const loginUser = async (payload: TLogin) => {
   const { userId, password } = payload;
 
   // check if the user is exist

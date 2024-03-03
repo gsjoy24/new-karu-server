@@ -7,6 +7,13 @@ import { TAdmin } from './admin.interface';
 import { Admin } from './admin.model';
 
 const createAdminIntoDB = async (payload: TAdmin) => {
+  const adminExists = await Admin.isAdminExists(payload.email);
+  if (adminExists) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Admin already exists with this email',
+    );
+  }
   const result = await Admin.create(payload);
   return result;
 };
@@ -37,17 +44,19 @@ const getSingleAdminFromDB = async (id: string) => {
 
 const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
   // check if admin exists
-  const admin = await Admin.isAdminExists(id);
+  const admin = await Admin.findById(id);
   if (!admin) {
     throw new AppError(httpStatus.NOT_FOUND, 'Admin not found');
   }
-  const { name, ...remainingAdminData } = payload;
+  // password is not allowed to update here. So, we are removing that from the payload.
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  const { name, password, ...remainingAdminData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
     ...remainingAdminData,
   };
 
-  // if name is present then update name fields. name is an object with firstName, middleName, lastName. So, we need to update it like name.firstName, name.middleName, name.lastName. So, we are iterating over the name object and updating the fields.
+  // if name is present then update name fields. name is an object with firstName, lastName. So, we need to update it like name.firstName, name.lastName. So, we are iterating over the name object and updating the fields.
   if (name && Object.keys(name).length) {
     for (const [key, value] of Object.entries(name)) {
       modifiedUpdatedData[`name.${key}`] = value;
