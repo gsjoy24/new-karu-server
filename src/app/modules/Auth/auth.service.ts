@@ -28,7 +28,7 @@ const loginAdmin = async (payload: TLogin) => {
   }
 
   const jwtPayload = {
-    adminId: admin?._id,
+    id: admin?._id,
     email: admin?.email,
     role: 'admin',
   };
@@ -89,7 +89,7 @@ const loginUser = async (payload: TLogin) => {
   };
 };
 
-const changePassword = async (
+const changePasswordOfAdmin = async (
   userData: JwtPayload,
   payload: TChangePassword,
 ) => {
