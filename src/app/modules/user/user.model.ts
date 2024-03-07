@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../config';
 import { TUserName } from '../../types/userInfo.type';
-import { UserStatus } from './user.constant';
 import { TUser, UserModel } from './user.interface';
 
 const userNameSchema = new Schema<TUserName>(
@@ -42,14 +41,6 @@ const userSchema = new Schema<TUser, UserModel>(
       required: [true, 'Password is required!'],
       select: 0,
     },
-    street_address: {
-      type: String,
-      trim: true,
-    },
-    apartment_name: {
-      type: String,
-      trim: true,
-    },
     courier_address: {
       type: String,
       trim: true,
@@ -72,7 +63,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     status: {
       type: String,
-      enum: UserStatus,
+      enum: ['in-progress', 'blocked'],
       default: 'in-progress',
     },
     isDeleted: {

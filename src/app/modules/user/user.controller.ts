@@ -5,13 +5,8 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { UserServices } from './user.service';
 
-const createStudent: RequestHandler = catchAsync(async (req, res) => {
-  const { password, studentData } = req.body;
-  const result = await UserServices.createStudentIntoDB(
-    req.file,
-    password,
-    studentData,
-  );
+const createUser: RequestHandler = catchAsync(async (req, res) => {
+  const result = await UserServices.createStudentIntoDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -20,36 +15,8 @@ const createStudent: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-const createAdmin = catchAsync(async (req, res) => {
-  const { password, adminData } = req.body;
-
-  const result = await UserServices.createAdminIntoDB(
-    req.file,
-    password,
-    adminData,
-  );
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Admin is created successfully',
-    data: result,
-  });
-});
-
-const changeUserStatus: RequestHandler = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await UserServices.changeUserStatus(id, req.body);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'User status changed successfully',
-    data: result,
-  });
-});
-
 const getMe = catchAsync(async (req, res) => {
-  const result = await UserServices.getMe(req.user as JwtPayload);
+  const result = await UserServices.getMe(req.userData as JwtPayload);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -58,9 +25,8 @@ const getMe = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 export const UserControllers = {
-  createStudent,
-  createAdmin,
-  changeUserStatus,
+  createUser,
   getMe,
 };

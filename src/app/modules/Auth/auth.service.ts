@@ -43,6 +43,51 @@ const loginAdmin = async (payload: TLogin) => {
   return accessToken;
 };
 
+const changePasswordOfAdmin = async (
+  adminData: JwtPayload,
+  payload: TChangePassword,
+) => {
+  const { oldPassword, newPassword } = payload;
+
+  // check if the user is exist
+  const admin = await Admin.findOne({
+    _id: adminData.id,
+    email: adminData.email,
+  });
+  if (!admin) {
+    throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found!');
+  }
+
+  // check if the password is correct
+  const isPasswordMatch = await User.isPasswordMatched(
+    oldPassword,
+    admin?.password,
+  );
+
+  if (!isPasswordMatch) {
+    throw new AppError(httpStatus.FORBIDDEN, 'Password does not match!');
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    Number(config.bcrypt_salt_round),
+  );
+
+  const result = await Admin.findOneAndUpdate(
+    {
+      id: adminData.id,
+      email: adminData.email,
+    },
+    {
+      password: hashedPassword,
+      needsPasswordChange: false,
+      passwordChangedAt: new Date(),
+    },
+  );
+
+  return result;
+};
+
 // const loginUser = async (payload: TLogin) => {
 //   const { userId, password } = payload;
 
@@ -90,50 +135,6 @@ const loginAdmin = async (payload: TLogin) => {
 //   };
 // };
 
-const changePasswordOfAdmin = async (
-  adminData: JwtPayload,
-  payload: TChangePassword,
-) => {
-  const { oldPassword, newPassword } = payload;
-
-  // check if the user is exist
-  const admin = await Admin.findOne({
-    _id: adminData.id,
-    email: adminData.email,
-  });
-  if (!admin) {
-    throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found!');
-  }
-
-  // check if the password is correct
-  const isPasswordMatch = await User.isPasswordMatched(
-    oldPassword,
-    admin?.password,
-  );
-
-  if (!isPasswordMatch) {
-    throw new AppError(httpStatus.FORBIDDEN, 'Password does not match!');
-  }
-
-  const hashedPassword = await bcrypt.hash(
-    newPassword,
-    Number(config.bcrypt_salt_round),
-  );
-
-  const result = await Admin.findOneAndUpdate(
-    {
-      id: adminData.id,
-      email: adminData.email,
-    },
-    {
-      password: hashedPassword,
-      needsPasswordChange: false,
-      passwordChangedAt: new Date(),
-    },
-  );
-
-  return result;
-};
 
 // const resetPassword = async (payload: TResetPassword, token: string) => {
 //   const { userId, newPassword } = payload;

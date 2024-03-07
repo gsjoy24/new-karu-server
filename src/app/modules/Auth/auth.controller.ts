@@ -17,19 +17,19 @@ const loginAdmin = catchAsync(async (req, res) => {
   });
 });
 
-const loginUser = catchAsync(async (req, res) => {
-  const result = await AuthServices.loginUser(req.body);
-  const { accessToken } = result;
+// const loginUser = catchAsync(async (req, res) => {
+//   const result = await AuthServices.loginUser(req.body);
+//   const { accessToken } = result;
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'User logged in successfully',
-    data: {
-      accessToken,
-    },
-  });
-});
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'User logged in successfully',
+//     data: {
+//       accessToken,
+//     },
+//   });
+// });
 
 const changePasswordOfAdmin = catchAsync(async (req, res) => {
   const result = await AuthServices.changePasswordOfAdmin(
@@ -70,7 +70,7 @@ const changePasswordOfAdmin = catchAsync(async (req, res) => {
 
 export const AuthControllers = {
   loginAdmin,
-  loginUser,
+  // loginUser,
   changePasswordOfAdmin,
   // forgotPassword,
   // resetPassword,
