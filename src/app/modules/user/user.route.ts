@@ -11,6 +11,8 @@ router.post(
   UserControllers.createUser,
 );
 
+router.get('/', UserControllers.getAllUsers);
+
 // router.patch(
 //   '/change-status/:id',
 //   auth(),

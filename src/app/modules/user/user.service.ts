@@ -11,10 +11,15 @@ const CreateUserIntoDB = async (payload: TUser) => {
   if (user) {
     throw new AppError(
       httpStatus.CONFLICT,
-      'User already exists with this email!',
+      'An user already exists with this email!',
     );
   }
   const result = await User.create(payload);
+  return result;
+};
+
+const getAllUsers = async () => {
+  const result = await User.find();
   return result;
 };
 
@@ -55,6 +60,7 @@ const CreateUserIntoDB = async (payload: TUser) => {
 
 export const UserServices = {
   CreateUserIntoDB,
+  getAllUsers,
   // changeUserStatus,
   // getMe,
 };

@@ -15,6 +15,16 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
+  const result = await UserServices.getAllUsers();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Students fetched successfully!',
+    data: result,
+  });
+});
+
 // const getMe = catchAsync(async (req, res) => {
 //   const result = await UserServices.getMe(req.userData as JwtPayload);
 
@@ -28,5 +38,6 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
 
 export const UserControllers = {
   createUser,
+  getAllUsers,
   // getMe,
 };

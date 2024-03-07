@@ -59,16 +59,12 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     mobile_number: {
       type: String,
-      trim: true,
+      trim: true, 
     },
     status: {
       type: String,
       enum: ['in-progress', 'blocked'],
       default: 'in-progress',
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
     },
   },
   {
