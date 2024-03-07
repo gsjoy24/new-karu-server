@@ -12,7 +12,7 @@ export interface TUser {
   district?: string;
   postal_code?: string;
   mobile_number?: string;
-  status: 'in-progress' | 'blocked';
+  status?: 'in-progress' | 'blocked';
   isDeleted: boolean;
 }
 

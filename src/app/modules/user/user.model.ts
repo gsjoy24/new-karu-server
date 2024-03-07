@@ -87,13 +87,6 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-//! post save middleware/hook
-// removing password from response after save
-userSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
-});
-
 userSchema.statics.isUserExists = async function (id: string) {
   return await this.findById(id).select('+password');
 };
