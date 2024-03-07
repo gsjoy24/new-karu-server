@@ -5,7 +5,7 @@ import { AuthValidations } from './auth.validation';
 const router = express.Router();
 
 router.post(
-  '/admin-login',
+  '/login',
   validateRequest(AuthValidations.LoginUserValidationSchema),
   AuthControllers.loginAdmin,
 );
@@ -28,4 +28,4 @@ router.patch(
 //   AuthControllers.resetPassword,
 // );
 
-export const AuthRoutes = router;
+export const AdminAuthRoutes = router;

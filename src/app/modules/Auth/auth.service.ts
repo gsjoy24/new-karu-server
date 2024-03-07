@@ -13,10 +13,11 @@ const loginAdmin = async (payload: TLogin) => {
   const { email, password } = payload;
 
   // check if the user is exist
-  const admin = await Admin.findOne({ email });
+  const admin = await Admin.findOne({ email }).select('+password');
   if (!admin) {
     throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found');
   }
+
   // check if the password is correct
   const isPasswordMatch = await Admin.isPasswordMatched(
     password,
