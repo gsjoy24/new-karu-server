@@ -4,8 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { AdminServices } from './admin.service';
 
 const createAdmin = catchAsync(async (req, res) => {
-  const { adminData } = req.body;
-  const result = await AdminServices.createAdminIntoDB(adminData);
+  const result = await AdminServices.createAdminIntoDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,

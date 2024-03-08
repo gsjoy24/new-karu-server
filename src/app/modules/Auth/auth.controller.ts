@@ -17,19 +17,6 @@ const loginAdmin = catchAsync(async (req, res) => {
   });
 });
 
-const loginUser = catchAsync(async (req, res) => {
-  const result = await AuthServices.loginUser(req.body);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'User logged in successfully',
-    data: {
-      accessToken: result,
-    },
-  });
-});
-
 const changePasswordOfAdmin = catchAsync(async (req, res) => {
   const result = await AuthServices.changePasswordOfAdmin(
     req.adminData as JwtPayload,
@@ -41,6 +28,19 @@ const changePasswordOfAdmin = catchAsync(async (req, res) => {
     success: true,
     message: 'Password changed successfully',
     data: result,
+  });
+});
+
+const loginUser = catchAsync(async (req, res) => {
+  const result = await AuthServices.loginUser(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User logged in successfully',
+    data: {
+      accessToken: result,
+    },
   });
 });
 

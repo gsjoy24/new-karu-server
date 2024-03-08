@@ -9,7 +9,6 @@ import catchAsync from '../utils/catchAsync';
 const adminAuth = () => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
-
     // check if the user send the token
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
@@ -26,7 +25,7 @@ const adminAuth = () => {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
 
-    const { adminId, email, role } = decoded;
+    const { id, email, role } = decoded;
 
     // check if the user is admin
     if (role !== 'admin') {
@@ -34,7 +33,7 @@ const adminAuth = () => {
     }
 
     // check if the user is exist. If not, throw an error
-    const admin = await Admin.findOne({ _id: adminId, email });
+    const admin = await Admin.findOne({ _id: id, email });
     if (!admin) {
       throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found');
     }

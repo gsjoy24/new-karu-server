@@ -103,7 +103,7 @@ const changePasswordOfAdmin = async (
   const admin = await Admin.findOne({
     _id: adminData.id,
     email: adminData.email,
-  });
+  }).select('+password');
   if (!admin) {
     throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found!');
   }
@@ -130,8 +130,6 @@ const changePasswordOfAdmin = async (
     },
     {
       password: hashedPassword,
-      needsPasswordChange: false,
-      passwordChangedAt: new Date(),
     },
   );
 

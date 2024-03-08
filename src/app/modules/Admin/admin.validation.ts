@@ -27,7 +27,7 @@ export const createAdminValidationSchema = z.object({
       required_error: 'Gender is required',
       invalid_type_error: 'Gender must be male, female or other',
     }),
-    dateOfBirth: z.date().optional(),
+    dateOfBirth: z.string().optional(),
     contactNo: z.string({
       required_error: 'Contact number is required',
       invalid_type_error: 'Contact number must be a string',

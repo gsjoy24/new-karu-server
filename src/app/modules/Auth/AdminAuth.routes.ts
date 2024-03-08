@@ -1,4 +1,5 @@
 import express from 'express';
+import adminAuth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { AuthControllers } from './auth.controller';
 import { AuthValidations } from './auth.validation';
@@ -12,6 +13,7 @@ router.post(
 
 router.patch(
   '/change-password',
+  adminAuth(),
   validateRequest(AuthValidations.changePasswordValidationSchema),
   AuthControllers.changePasswordOfAdmin,
 );
