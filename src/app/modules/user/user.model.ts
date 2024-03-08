@@ -59,7 +59,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     mobile_number: {
       type: String,
-      trim: true, 
+      trim: true,
     },
     status: {
       type: String,

@@ -10,8 +10,13 @@ router.post(
   validateRequest(userValidations.userValidationSchema),
   UserControllers.createUser,
 );
-
 router.get('/', UserControllers.getAllUsers);
+router.get('/:id', UserControllers.getSingleUser);
+router.put(
+  '/:id',
+  validateRequest(userValidations.updateUserValidation),
+  UserControllers.updateUser,
+);
 
 // router.patch(
 //   '/change-status/:id',

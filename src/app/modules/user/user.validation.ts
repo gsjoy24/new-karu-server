@@ -43,6 +43,39 @@ const userValidationSchema = z.object({
   }),
 });
 
+const updateUserValidation = z.object({
+  body: z.object({
+    name: z
+      .object({
+        firstName: z
+          .string()
+          .min(3, {
+            message: 'First Name should be at least 3 characters long!',
+          })
+          .max(20, {
+            message: 'First Name should be at most 20 characters long!',
+          })
+          .optional(),
+        lastName: z
+          .string()
+          .min(3, {
+            message: 'Last Name should be at least 3 characters long!',
+          })
+          .max(20, {
+            message: 'Last Name should be at most 20 characters long!',
+          })
+          .optional(),
+      })
+      .optional(),
+  }),
+  courier_address: z.string().optional(),
+  city: z.string().optional(),
+  district: z.string().optional(),
+  postal_code: z.string().optional(),
+  mobile_number: z.string().optional(),
+  status: z.enum([...UserStatus] as [string, ...string[]]).optional(),
+});
+
 const changeUserStatusValidationSchema = z.object({
   body: z.object({
     status: z.enum([...UserStatus] as [string, ...string[]]),
@@ -50,6 +83,7 @@ const changeUserStatusValidationSchema = z.object({
 });
 const userValidations = {
   userValidationSchema,
+  updateUserValidation,
   changeUserStatusValidationSchema,
 };
 
