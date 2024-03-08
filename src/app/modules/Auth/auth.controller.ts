@@ -19,7 +19,7 @@ const loginAdmin = catchAsync(async (req, res) => {
 
 const changePasswordOfAdmin = catchAsync(async (req, res) => {
   const result = await AuthServices.changePasswordOfAdmin(
-    req.adminData as JwtPayload,
+    req?.adminData as JwtPayload,
     req.body,
   );
 
@@ -41,6 +41,20 @@ const loginUser = catchAsync(async (req, res) => {
     data: {
       accessToken: result,
     },
+  });
+});
+
+const changePasswordOfUser = catchAsync(async (req, res) => {
+  const result = await AuthServices.changePasswordOfUser(
+    req?.userData as JwtPayload,
+    req.body,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Password changed successfully',
+    data: result,
   });
 });
 
@@ -71,6 +85,7 @@ export const AuthControllers = {
   loginAdmin,
   loginUser,
   changePasswordOfAdmin,
+  changePasswordOfUser,
   // forgotPassword,
   // resetPassword,
 };

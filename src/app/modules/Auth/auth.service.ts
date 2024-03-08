@@ -136,6 +136,51 @@ const changePasswordOfAdmin = async (
   return result;
 };
 
+const changePasswordOfUser = async (
+  userData: JwtPayload,
+  payload: TChangePassword,
+) => {
+  const { oldPassword, newPassword } = payload;
+
+  // check if the user is exist
+  const user = await User.findOne({
+    _id: userData.id,
+    email: userData.email,
+  }).select('+password');
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'The user is not found!');
+  }
+
+  // check if the user is blocked
+  if (user?.status === 'blocked') {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'You are blocked by the authority! Please contact them to know the issue!',
+    );
+  }
+
+  // check if the password is correct
+  const isPasswordMatch = await User.isPasswordMatched(
+    oldPassword,
+    user?.password,
+  );
+
+  if (!isPasswordMatch) {
+    throw new AppError(httpStatus.FORBIDDEN, 'Password does not match!');
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    Number(config.bcrypt_salt_round),
+  );
+
+  const result = await User.findByIdAndUpdate(userData.id, {
+    password: hashedPassword,
+  });
+
+  return result;
+};
+
 // const resetPassword = async (payload: TResetPassword, token: string) => {
 //   const { userId, newPassword } = payload;
 //   const user = await User.isUserExistsByCustomId(userId);
@@ -186,5 +231,6 @@ export const AuthServices = {
   loginAdmin,
   loginUser,
   changePasswordOfAdmin,
+  changePasswordOfUser,
   // resetPassword,
 };

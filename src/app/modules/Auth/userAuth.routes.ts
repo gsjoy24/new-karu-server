@@ -1,4 +1,5 @@
 import express from 'express';
+import userAuth from '../../middlewares/userAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { AuthControllers } from './auth.controller';
 import { AuthValidations } from './auth.validation';
@@ -11,11 +12,12 @@ router.post(
   AuthControllers.loginUser,
 );
 
-// router.patch(
-//   '/change-password',
-//   validateRequest(AuthValidations.changePasswordValidationSchema),
-//   AuthControllers.changePassword,
-// );
+router.patch(
+  '/change-password',
+  userAuth(),
+  validateRequest(AuthValidations.changePasswordValidationSchema),
+  AuthControllers.changePasswordOfUser,
+);
 
 // router.post(
 //   '/forgot-password',
