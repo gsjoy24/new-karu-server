@@ -16,8 +16,12 @@ const moduleRoutes = [
     route: AdminRoutes,
   },
   {
-    path: '/admin-auth',
+    path: '/admins/auth',
     route: AdminAuthRoutes,
+  },
+  {
+    path: '/users/auth',
+    route: UserRoutes,
   },
 ];
 

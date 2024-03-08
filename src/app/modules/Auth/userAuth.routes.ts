@@ -6,33 +6,27 @@ import { AuthValidations } from './auth.validation';
 const router = express.Router();
 
 router.post(
-  '/admin-login',
-  validateRequest(AuthValidations.LoginUserValidationSchema),
-  AuthControllers.loginAdmin,
-);
-
-router.post(
   '/login',
   validateRequest(AuthValidations.LoginUserValidationSchema),
   AuthControllers.loginUser,
 );
 
-router.patch(
-  '/change-password',
-  validateRequest(AuthValidations.changePasswordValidationSchema),
-  AuthControllers.changePassword,
-);
+// router.patch(
+//   '/change-password',
+//   validateRequest(AuthValidations.changePasswordValidationSchema),
+//   AuthControllers.changePassword,
+// );
 
-router.post(
-  '/forgot-password',
-  validateRequest(AuthValidations.forgotPasswordValidationSchema),
-  AuthControllers.forgotPassword,
-);
+// router.post(
+//   '/forgot-password',
+//   validateRequest(AuthValidations.forgotPasswordValidationSchema),
+//   AuthControllers.forgotPassword,
+// );
 
-router.post(
-  '/reset-password',
-  validateRequest(AuthValidations.resetPasswordValidationSchema),
-  AuthControllers.resetPassword,
-);
+// router.post(
+//   '/reset-password',
+//   validateRequest(AuthValidations.resetPasswordValidationSchema),
+//   AuthControllers.resetPassword,
+// );
 
 export const AuthRoutes = router;

@@ -43,6 +43,56 @@ const loginAdmin = async (payload: TLogin) => {
   return accessToken;
 };
 
+const loginUser = async (payload: TLogin) => {
+  const { email, password } = payload;
+
+  // check if the user is exist
+  const user = await User.findOne({ email }).select('+password');
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'The user is not found!');
+  }
+
+  // check if the user is blocked
+  if (user?.status === 'blocked') {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'You are blocked by the authority! Please contact them to know the issue!',
+    );
+  }
+
+  // check if the user is deleted
+  if (user.isDeleted) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'You are unauthorized to login! Please contact to the authority.',
+    );
+  }
+
+  // check if the password is correct
+  const isPasswordMatch = await User.isPasswordMatched(
+    password,
+    user?.password,
+  );
+
+  if (!isPasswordMatch) {
+    throw new AppError(httpStatus.FORBIDDEN, 'Invalid credentials!');
+  }
+
+  const jwtPayload = {
+    id: user?._id,
+    email: user?.email,
+    role: 'user',
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expiration as string,
+  );
+
+  return accessToken;
+};
+
 const changePasswordOfAdmin = async (
   adminData: JwtPayload,
   payload: TChangePassword,
@@ -87,54 +137,6 @@ const changePasswordOfAdmin = async (
 
   return result;
 };
-
-// const loginUser = async (payload: TLogin) => {
-//   const { userId, password } = payload;
-
-//   // check if the user is exist
-//   const user = await User.isUserExists(userId);
-//   if (!user) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-//   }
-
-//   // check if the user is deleted
-//   if (user.isDeleted) {
-//     throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted');
-//   }
-
-//   // check if the user is blocked
-//   if (user?.status === 'blocked') {
-//     throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked');
-//   }
-
-//   // check if the password is correct
-//   const isPasswordMatch = await User.isPasswordMatched(
-//     password,
-//     user?.password,
-//   );
-
-//   if (!isPasswordMatch) {
-//     throw new AppError(httpStatus.FORBIDDEN, 'Invalid credentials');
-//   }
-
-//   const jwtPayload = {
-//     userId: user?._id,
-//     email: user?.email,
-//     role: user?.role,
-//   };
-
-//   const accessToken = createToken(
-//     jwtPayload,
-//     config.jwt_access_secret as string,
-//     config.jwt_access_expiration as string,
-//   );
-
-//   return {
-//     accessToken,
-//     needsPasswordChange: user?.needsPasswordChange,
-//   };
-// };
-
 
 // const resetPassword = async (payload: TResetPassword, token: string) => {
 //   const { userId, newPassword } = payload;
@@ -184,7 +186,7 @@ const changePasswordOfAdmin = async (
 
 export const AuthServices = {
   loginAdmin,
-  // loginUser,
+  loginUser,
   changePasswordOfAdmin,
   // resetPassword,
 };

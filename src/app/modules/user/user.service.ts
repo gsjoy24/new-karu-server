@@ -22,6 +22,7 @@ const getAllUsersFromDB = async () => {
   const result = await User.find();
   return result;
 };
+
 const getSingleUserFromDB = async (id: string) => {
   const result = await User.findById(id);
   if (!result) {
@@ -42,6 +43,7 @@ const updateUserIntoDB = async (id: string, payload: TUser) => {
 
   const modifiedData = { ...restData };
 
+  // the name object containing first and last name is handled here.
   if (name && Object.keys(name).length) {
     for (const [key, value] of Object.entries(name)) {
       (modifiedData as { [key: string]: any })[`name.${key}`] = value;
@@ -51,6 +53,13 @@ const updateUserIntoDB = async (id: string, payload: TUser) => {
   const result = await User.findByIdAndUpdate(id, restData);
   return result;
 };
+
+// const changePassword = async (id: string, payload: { password: string }) => {
+//   const { password } = payload;
+//   const result = await User.findByIdAndUpdate;
+
+//   return result;
+// };
 
 // const changeUserStatus = async (id: string, payload: { status: string }) => {
 //   const result = await User.findByIdAndUpdate(id, payload, {
@@ -92,6 +101,7 @@ export const UserServices = {
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,
+  // changePassword,
   // changeUserStatus,
   // getMe,
 };
