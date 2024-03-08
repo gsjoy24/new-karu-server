@@ -76,9 +76,7 @@ const deleteAdminFromDB = async (id: string) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Admin not found!');
   }
 
-  // we are not deleting the admin from the database. We are just marking it as deleted. So, we are updating the isDeleted field to true. So, that we can filter out the deleted admins from the database.
-  const deletedAdmin = await Admin.findByIdAndUpdate(id, { isDeleted: true });
-
+  const deletedAdmin = await Admin.findByIdAndDelete(id);
   if (!deletedAdmin) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete the admin!');
   }
