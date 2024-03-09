@@ -13,6 +13,6 @@ export type TProduct = {
   primary_image: string;
   images: string[];
   category: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
