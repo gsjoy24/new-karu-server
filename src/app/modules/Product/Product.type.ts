@@ -1,4 +1,4 @@
-type TInfo = {
+export type TInfo = {
   title: string;
   description: string;
 };

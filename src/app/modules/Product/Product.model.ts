@@ -48,5 +48,5 @@ const ProductSchema = new Schema<TProduct>({
   },
 });
 
-const ProductModel = model<TProduct>('Product', ProductSchema);
-export default ProductModel;
+const Product = model<TProduct>('Product', ProductSchema);
+export default Product;

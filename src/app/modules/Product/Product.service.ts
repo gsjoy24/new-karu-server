@@ -1,0 +1,54 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
+import Product from './Product.model';
+import { TProduct } from './Product.type';
+
+const addProduct = async (product: TProduct) => {
+  const result = await Product.create(product);
+  if (!result) {
+    new AppError(httpStatus.BAD_REQUEST, 'Product not created!');
+  }
+  return result;
+};
+
+const getProducts = async (query: Record<string, unknown>) => {
+  const result = await Product.find(query);
+  return result;
+};
+
+const getProductById = async (id: string) => {
+  const result = await Product.findById(id);
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  return result;
+};
+
+const updateProductById = async (id: string, product: Partial<TProduct>) => {
+  const { additional_info, ...remainingProductData } = product;
+  const modifiedProduct: Record<string, unknown> = { ...remainingProductData };
+
+  if (additional_info && Object.keys(additional_info).length) {
+    for (const [key, value] of Object.entries(additional_info)) {
+      modifiedProduct[`additional_info.${key}`] = value;
+    }
+  }
+  const result = await Product.findByIdAndUpdate(id, modifiedProduct, {
+    new: true,
+  });
+  return result;
+};
+
+const deleteProductById = async (id: string) => {
+  const result = await Product.findByIdAndDelete(id);
+  return result;
+};
+
+export default {
+  addProduct,
+  getProducts,
+  getProductById,
+  updateProductById,
+  deleteProductById,
+};
