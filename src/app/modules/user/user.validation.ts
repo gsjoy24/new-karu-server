@@ -76,15 +76,9 @@ const updateUserValidation = z.object({
   status: z.enum([...UserStatus] as [string, ...string[]]).optional(),
 });
 
-const changeUserStatusValidationSchema = z.object({
-  body: z.object({
-    status: z.enum([...UserStatus] as [string, ...string[]]),
-  }),
-});
 const userValidations = {
   userValidationSchema,
   updateUserValidation,
-  changeUserStatusValidationSchema,
 };
 
 export default userValidations;

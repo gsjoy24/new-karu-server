@@ -48,6 +48,7 @@ const updateUser: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+
 // const getMe = catchAsync(async (req, res) => {
 //   const result = await UserServices.getMe(req.userData as JwtPayload);
 
@@ -64,5 +65,6 @@ export const UserControllers = {
   getAllUsers,
   getSingleUser,
   updateUser,
+
   // getMe,
 };

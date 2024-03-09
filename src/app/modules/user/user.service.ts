@@ -54,19 +54,14 @@ const updateUserIntoDB = async (id: string, payload: TUser) => {
   return result;
 };
 
-// const changePassword = async (id: string, payload: { password: string }) => {
-//   const { password } = payload;
-//   const result = await User.findByIdAndUpdate;
-
-//   return result;
-// };
-
-// const changeUserStatus = async (id: string, payload: { status: string }) => {
-//   const result = await User.findByIdAndUpdate(id, payload, {
-//     new: true,
-//   });
-//   return result;
-// };
+const changeUserStatus = async (id: string, status: string) => {
+  const user = await User.isUserExists(id);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  const result = await User.findByIdAndUpdate(id, { status });
+  return result;
+};
 
 // const getMe = async (user: JwtPayload) => {
 //   const { role, userId } = user;
@@ -101,7 +96,6 @@ export const UserServices = {
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,
-  // changePassword,
-  // changeUserStatus,
+  changeUserStatus,
   // getMe,
 };

@@ -3,7 +3,6 @@ import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 import AppError from '../../errors/AppError';
-// import { sendEmail } from '../../utils/sendEmail';
 import { Admin } from '../Admin/admin.model';
 import { User } from '../user/user.model';
 import { TChangePassword, TLogin } from './auth.types';
@@ -181,56 +180,9 @@ const changePasswordOfUser = async (
   return result;
 };
 
-// const resetPassword = async (payload: TResetPassword, token: string) => {
-//   const { userId, newPassword } = payload;
-//   const user = await User.isUserExistsByCustomId(userId);
-//   if (!user) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-//   }
-
-//   // check if the user is deleted
-//   if (user.isDeleted) {
-//     throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted');
-//   }
-
-//   // check if the user is blocked
-//   if (user?.status === 'blocked') {
-//     throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked');
-//   }
-
-//   // check if the token is valid
-//   const decoded = jwt.verify(
-//     token,
-//     config.jwt_access_secret as string,
-//   ) as JwtPayload;
-
-//   if (decoded.userId !== user?.id) {
-//     throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
-//   }
-
-//   const hashedPassword = await bcrypt.hash(
-//     newPassword,
-//     Number(config.bcrypt_salt_round),
-//   );
-
-//   const result = await User.findOneAndUpdate(
-//     {
-//       id: decoded.userId,
-//       role: decoded.role,
-//     },
-//     {
-//       password: hashedPassword,
-//       needsPasswordChange: false,
-//       passwordChangedAt: new Date(),
-//     },
-//   );
-//   return result;
-// };
-
 export const AuthServices = {
   loginAdmin,
   loginUser,
   changePasswordOfAdmin,
   changePasswordOfUser,
-  // resetPassword,
 };

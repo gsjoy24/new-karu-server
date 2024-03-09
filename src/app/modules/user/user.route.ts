@@ -1,5 +1,4 @@
 import express from 'express';
-// import auth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { UserControllers } from './user.controller';
 import userValidations from './user.validation';
