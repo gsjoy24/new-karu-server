@@ -41,14 +41,24 @@ const updateProductById = async (id: string, product: Partial<TProduct>) => {
 };
 
 const deleteProductById = async (id: string) => {
+  const product = await getProductById(id);
+  if (!product) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+
   const result = await Product.findByIdAndDelete(id);
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product deletion failed!');
+  }
   return result;
 };
 
-export default {
+const ProductServices = {
   addProduct,
   getProducts,
   getProductById,
   updateProductById,
   deleteProductById,
 };
+
+export default ProductServices;
