@@ -71,8 +71,8 @@ class QueryBuilder<T> {
     return {
       page,
       limit,
-      totalPages,
       total,
+      totalPages,
     };
   }
 }

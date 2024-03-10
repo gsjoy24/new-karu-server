@@ -1,6 +1,21 @@
 import { Schema, model } from 'mongoose';
 import { TProduct } from './Product.type';
 
+const AdditionalInfoSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: [true, 'Additional info title is required'],
+    },
+    description: {
+      type: String,
+      required: [true, 'Description is required'],
+    },
+  },
+  {
+    _id: false,
+  },
+);
 const ProductSchema = new Schema<TProduct>(
   {
     name: {
@@ -11,18 +26,7 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       required: [true, 'Product description is required'],
     },
-    additional_info: [
-      {
-        title: {
-          type: String,
-          required: [true, 'Additional info title is required'],
-        },
-        description: {
-          type: String,
-          required: [true, 'Description is required'],
-        },
-      },
-    ],
+    additional_info: [AdditionalInfoSchema],
     old_price: {
       type: Number,
       required: [true, 'Old price is required'],
