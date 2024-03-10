@@ -1,51 +1,68 @@
 import { Schema, model } from 'mongoose';
 import { TProduct } from './Product.type';
 
-const ProductSchema = new Schema<TProduct>({
-  name: {
-    type: String,
-    required: [true, 'Product name is required'],
-  },
-  description: {
-    type: String,
-    required: [true, 'Product description is required'],
-  },
-  additional_info: [
-    {
-      title: {
-        type: String,
-        required: [true, 'Additional info title is required'],
-      },
-      description: {
-        type: String,
-        required: [true, 'Description is required'],
-      },
+const ProductSchema = new Schema<TProduct>(
+  {
+    name: {
+      type: String,
+      required: [true, 'Product name is required'],
     },
-  ],
-  old_price: {
-    type: Number,
-    required: [true, 'Old price is required'],
+    description: {
+      type: String,
+      required: [true, 'Product description is required'],
+    },
+    additional_info: [
+      {
+        title: {
+          type: String,
+          required: [true, 'Additional info title is required'],
+        },
+        description: {
+          type: String,
+          required: [true, 'Description is required'],
+        },
+      },
+    ],
+    old_price: {
+      type: Number,
+      required: [true, 'Old price is required'],
+    },
+    last_price: {
+      type: Number,
+      required: [true, 'Last price is required'],
+    },
+    stock: {
+      type: Number,
+      required: [true, 'Stock is required'],
+    },
+    primary_image: {
+      type: String,
+      required: [true, 'Primary image is required'],
+    },
+    images: {
+      type: [String],
+      required: [true, 'Images are required'],
+    },
+    category: {
+      type: String,
+      required: [true, 'Category is required'],
+    },
   },
-  last_price: {
-    type: Number,
-    required: [true, 'Last price is required'],
+  {
+    toJSON: {
+      virtuals: true,
+    },
   },
-  stock: {
-    type: Number,
-    required: [true, 'Stock is required'],
-  },
-  primary_image: {
-    type: String,
-    required: [true, 'Primary image is required'],
-  },
-  images: {
-    type: [String],
-    required: [true, 'Images are required'],
-  },
-  category: {
-    type: String,
-    required: [true, 'Category is required'],
-  },
+);
+
+// the virtual property discountPercentage is used to calculate the discount percentage of a product. It is not stored in the database but can be accessed as a property of the product object. It is calculated by subtracting the last_price from the old_price, dividing the result by the old_price, and then multiplying by 100.
+ProductSchema.virtual('discountPercentage ').get(function () {
+  return Math.ceil(((this.old_price - this.last_price) / this.old_price) * 100);
+});
+
+// the virtual property isOutOfStock is used to check if the product is out of stock. It is not stored in the database but can be accessed as a property of the product object. It is calculated by checking if the stock is less than or equal to 0.
+ProductSchema.virtual('isOutOfStock').get(function () {
+  return this.stock <= 0;
 });
 
 const Product = model<TProduct>('Product', ProductSchema);
