@@ -2,6 +2,7 @@ export type TInfo = {
   title: string;
   description: string;
 };
+
 export type TProduct = {
   _id?: string;
   name: string;
@@ -16,3 +17,4 @@ export type TProduct = {
   createdAt?: Date;
   updatedAt?: Date;
 };
+

@@ -22,7 +22,7 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       required: [true, 'Product name is required'],
     },
-    description: {
+    description: { 
       type: String,
       required: [true, 'Product description is required'],
     },
