@@ -1,10 +1,13 @@
 import express from 'express';
-const router = express.Router();
 
 import adminAuth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import CategoryControllers from './Category.controllers';
 import CategoryValidations from './Category.validation';
+
+const router = express.Router();
+
+// all routes start with /api/categories. all routes are protected and only an admin can access them.
 
 router.post(
   '/',
