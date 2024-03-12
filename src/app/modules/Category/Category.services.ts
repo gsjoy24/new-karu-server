@@ -15,8 +15,9 @@ const CreateCategory = async (data: TCategory) => {
   return category;
 };
 
-const GetCategories = async () => {
-  const categories = await Category.find();
+const GetCategories = async (params: string) => {
+  const searchName = params ? { name: { $regex: params, $options: 'i' } } : {};
+  const categories = await Category.find(searchName);
   return categories;
 };
 
@@ -28,22 +29,21 @@ const GetCategoryById = async (id: string) => {
   return category;
 };
 
+const UpdateCategoryById = async (id: string, data: Partial<TCategory>) => {
+  const category = await Category.findByIdAndUpdate(id, data, { new: true });
+  if (!category) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Category not found');
+  }
+  return category;
+};
 
-const UpdateCategoryById = async (id : string, data: Partial<TCategory>) => {
-   const category = await Category.findByIdAndUpdate(id, data, { new: true }); 
-   if (!category) {
-      throw new AppError(httpStatus.NOT_FOUND, 'Category not found');
-   }
-   return category; 
-}
-
-const DeleteCategoryById = async (id : string) => { 
-   const category = await Category.findByIdAndDelete(id); 
-   if (!category) {
-      throw new AppError(httpStatus.NOT_FOUND, 'Category not found');
-   }
-   return category; 
-}
+const DeleteCategoryById = async (id: string) => {
+  const category = await Category.findByIdAndDelete(id);
+  if (!category) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Category not found');
+  }
+  return category;
+};
 
 export default {
   CreateCategory,
