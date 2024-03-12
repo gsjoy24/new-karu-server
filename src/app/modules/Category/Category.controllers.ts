@@ -49,10 +49,12 @@ const DeleteCategoryById = catchAsync(async (req, res) => {
   });
 });
 
-export default {
+const CategoryControllers ={
   CreateCategory,
   GetCategories,
   GetCategoryById,
   UpdateCategoryById,
   DeleteCategoryById,
 };
+
+export default CategoryControllers;
