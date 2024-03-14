@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
+import Product from '../Product/Product.model';
 import { User } from './user.model';
 import { TCart, TUser } from './user.types';
 
@@ -66,6 +67,12 @@ const addProductToCart = async (id: string, product: TCart) => {
   const user = await User.isUserExists(id);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // Check if the product exists in the database
+  const productExists = await Product.findById(product.product);
+  if (!productExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
   }
 
   // check if the product already exists in the cart. if it does, then throw an error. otherwise, add the product to the cart.
