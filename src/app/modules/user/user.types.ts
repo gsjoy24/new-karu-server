@@ -4,7 +4,7 @@ import { TUserName } from '../../types/userInfo.types';
 
 export type TCart = {
   _id?: string;
-  productId: Types.ObjectId;
+  product: Types.ObjectId;
   quantity: number;
 };
 export interface TUser {

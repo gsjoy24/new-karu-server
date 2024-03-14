@@ -2,7 +2,7 @@
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { User } from './user.model';
-import { TUser } from './user.types';
+import { TCart, TUser } from './user.types';
 
 const createUserIntoDB = async (payload: TUser) => {
   // check if user already exists
@@ -62,15 +62,44 @@ const changeUserStatus = async (id: string, status: string) => {
   return result;
 };
 
-const addProductToCart = async (id: string, productId: string) => {
+const addProductToCart = async (id: string, product: TCart) => {
   const user = await User.isUserExists(id);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
+
+  // check if the product already exists in the cart
+  const isProductExists = user?.cart?.find(
+    (item) => item.product.toString() === product.product.toString(),
+  );
+  if (isProductExists) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      'This product already exists in the cart!',
+    );
+  }
+
   const result = await User.updateOne(
     { _id: id },
     {
-      $push: { cart: productId },
+      $push: { cart: product },
+    },
+  );
+  return result;
+};
+
+const removeProductFromCart = async (id: string, product: string) => {
+  const user = await User.isUserExists(id);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  const result = await User.updateOne(
+    {
+      _id: id,
+    },
+    {
+      $pull: { cart: { product } },
     },
   );
   return result;
@@ -83,4 +112,5 @@ export const UserServices = {
   updateUserIntoDB,
   changeUserStatus,
   addProductToCart,
+  removeProductFromCart,
 };

@@ -184,7 +184,9 @@ const changePasswordOfUser = async (
 const getMe = async (userData: JwtPayload) => {
   const { id, email } = userData;
 
-  const result = await User.findOne({ _id: id, email });
+  const result = await User.findOne({ _id: id, email }).populate(
+    'cart.product',
+  );
   // if user not found
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');

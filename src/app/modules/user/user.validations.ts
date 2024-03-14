@@ -96,9 +96,24 @@ const updateUserValidation = z.object({
   status: z.enum([...UserStatus] as [string, ...string[]]).optional(),
 });
 
+const addProductToCartValidation = z.object({
+  body: z.object({
+    product: z.string({
+      required_error: 'Product Id is required to add product in cart!',
+    }),
+    quantity: z
+      .number({
+        required_error: 'Product quantity is required to add product in cart!',
+        invalid_type_error: 'Quantity should be a number!',
+      })
+      .nonnegative('Quantity should be a positive number!'),
+  }),
+});
+
 const userValidations = {
   userValidationSchema,
   updateUserValidation,
+  addProductToCartValidation,
 };
 
 export default userValidations;

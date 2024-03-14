@@ -18,9 +18,16 @@ router.put(
   UserControllers.updateUser,
 );
 router.patch(
-  '/add-to-cart/:productId',
+  '/add-to-cart',
+  validateRequest(userValidations.addProductToCartValidation),
   userAuth(),
   UserControllers.addProductToCart,
+);
+
+router.patch(
+  '/remove-from-cart/:productId',
+  userAuth(),
+  UserControllers.removeProductFromCart,
 );
 
 // router.patch(

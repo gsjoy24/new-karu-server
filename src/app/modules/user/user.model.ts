@@ -25,18 +25,23 @@ const userNameSchema = new Schema<TUserName>(
   },
 );
 
-const cartSchema = new Schema<TCart>({
-  productId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Product',
-    required: [true, 'Product Id is required'],
+const cartSchema = new Schema<TCart>(
+  {
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: 'Product',
+      required: [true, 'Product Id is required'],
+    },
+    quantity: {
+      type: Number,
+      required: [true, 'Quantity is required'],
+      default: 1,
+    },
   },
-  quantity: {
-    type: Number,
-    required: [true, 'Quantity is required'],
-    default: 1,
+  {
+    _id: false,
   },
-});
+);
 
 const userSchema = new Schema<TUser, UserModel>(
   {
