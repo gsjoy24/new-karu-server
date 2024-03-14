@@ -180,9 +180,22 @@ const changePasswordOfUser = async (
   return result;
 };
 
+// this function is used to get the user details from the toke. It is used in the /me route.
+const getMe = async (userData: JwtPayload) => {
+  const { id, email } = userData;
+
+  const result = await User.findOne({ _id: id, email });
+  // if user not found
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return result;
+};
+
 export const AuthServices = {
   loginAdmin,
   loginUser,
   changePasswordOfAdmin,
   changePasswordOfUser,
+  getMe,
 };

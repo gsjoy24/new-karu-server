@@ -11,7 +11,7 @@ router.post(
   validateRequest(AuthValidations.LoginUserValidationSchema),
   AuthControllers.loginUser,
 );
-
+router.get('/me', userAuth(), AuthControllers.getMe);
 router.patch(
   '/change-password',
   userAuth(),

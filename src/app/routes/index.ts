@@ -4,7 +4,7 @@ import { AdminAuthRoutes } from '../modules/Auth/AdminAuth.routes';
 import { UserAuthRoutes } from '../modules/Auth/userAuth.routes';
 import CategoryRoutes from '../modules/Category/Category.routes';
 import { ProductRoutes } from '../modules/Product/Products.routes';
-import { UserRoutes } from '../modules/user/user.route';
+import { UserRoutes } from '../modules/user/user.routes';
 const router = Router();
 
 const moduleRoutes = [

@@ -58,6 +58,17 @@ const changePasswordOfUser = catchAsync(async (req, res) => {
   });
 });
 
+const getMe = catchAsync(async (req, res) => {
+  const result = await AuthServices.getMe(req.userData as JwtPayload);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User details fetched successfully',
+    data: result,
+  });
+});
+
 // const forgotPassword = catchAsync(async (req, res) => {
 //   const userId = req.body.id;
 //   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -86,6 +97,7 @@ export const AuthControllers = {
   loginUser,
   changePasswordOfAdmin,
   changePasswordOfUser,
+  getMe,
   // forgotPassword,
   // resetPassword,
 };

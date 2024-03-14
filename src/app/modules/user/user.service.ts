@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
-// import { JwtPayload } from 'jsonwebtoken';
-import { JwtPayload } from 'jsonwebtoken';
 import AppError from '../../errors/AppError';
 import { TUser } from './user.interface';
 import { User } from './user.model';
@@ -64,22 +62,10 @@ const changeUserStatus = async (id: string, status: string) => {
   return result;
 };
 
-const getMe = async (userData: JwtPayload) => {
-  const { id, email } = userData;
-
-  const result = await User.findOne({ _id: id, email });
-  // if user not found
-  if (!result) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-  }
-  return result;
-};
-
 export const UserServices = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,
   changeUserStatus,
-  getMe,
 };
