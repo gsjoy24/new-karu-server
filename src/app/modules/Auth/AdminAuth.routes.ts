@@ -1,8 +1,8 @@
 import express from 'express';
 import adminAuth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
-import { AuthControllers } from './auth.controller';
-import { AuthValidations } from './auth.validation';
+import { AuthControllers } from './auth.controllers';
+import { AuthValidations } from './auth.validations';
 const router = express.Router();
 
 router.post(

@@ -3,8 +3,8 @@ import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import { AdminSearchableFields } from './admin.constant';
-import { TAdmin } from './admin.interface';
 import { Admin } from './admin.model';
+import { TAdmin } from './admin.types';
 
 const createAdminIntoDB = async (payload: TAdmin) => {
   const isAdminExists = await Admin.findOne({ email: payload.email });

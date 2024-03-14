@@ -1,7 +1,7 @@
 import express from 'express';
 import adminAuth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
-import ProductController from './Product.controller';
+import ProductController from './Product.controllers';
 import ProductValidations from './Products.validation';
 const router = express.Router();
 

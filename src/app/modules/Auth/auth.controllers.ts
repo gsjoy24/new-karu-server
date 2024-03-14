@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
-import { AuthServices } from './auth.service';
+import { AuthServices } from './auth.services';
 
 const loginAdmin = catchAsync(async (req, res) => {
   const result = await AuthServices.loginAdmin(req.body);

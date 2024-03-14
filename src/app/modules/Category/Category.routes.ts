@@ -3,7 +3,7 @@ import express from 'express';
 import adminAuth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import CategoryControllers from './Category.controllers';
-import CategoryValidations from './Category.validation';
+import CategoryValidations from './Category.validations';
 
 const router = express.Router();
 

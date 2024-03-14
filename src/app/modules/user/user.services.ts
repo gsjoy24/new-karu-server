@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
-import { TUser } from './user.interface';
 import { User } from './user.model';
+import { TUser } from './user.types';
 
 const createUserIntoDB = async (payload: TUser) => {
   // check if user already exists

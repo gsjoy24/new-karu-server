@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Model } from 'mongoose';
-import { TUserName } from '../../types/userInfo.type';
+import { TUserName } from '../../types/userInfo.types';
 
 export interface TUser {
   _id?: string;

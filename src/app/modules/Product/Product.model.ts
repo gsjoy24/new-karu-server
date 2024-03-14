@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TProduct } from './Product.type';
+import { TProduct } from './Product.types';
 
 const AdditionalInfoSchema = new Schema(
   {
@@ -22,7 +22,7 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       required: [true, 'Product name is required'],
     },
-    description: { 
+    description: {
       type: String,
       required: [true, 'Product description is required'],
     },

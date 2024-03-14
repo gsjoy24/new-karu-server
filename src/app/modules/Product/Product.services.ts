@@ -3,7 +3,7 @@ import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import { ProductsSearchableFields } from './Product.constant';
 import Product from './Product.model';
-import { TProduct } from './Product.type';
+import { TProduct } from './Product.types';
 
 const addProduct = async (product: TProduct) => {
   const result = await Product.create(product);
