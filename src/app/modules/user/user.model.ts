@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../config';
 import { TUserName } from '../../types/userInfo.types';
-import { TUser, UserModel } from './user.types';
+import { TCart, TUser, UserModel } from './user.types';
 
 const userNameSchema = new Schema<TUserName>(
   {
@@ -25,6 +25,19 @@ const userNameSchema = new Schema<TUserName>(
   },
 );
 
+const cartSchema = new Schema<TCart>({
+  productId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+    required: [true, 'Product Id is required'],
+  },
+  quantity: {
+    type: Number,
+    required: [true, 'Quantity is required'],
+    default: 1,
+  },
+});
+
 const userSchema = new Schema<TUser, UserModel>(
   {
     name: {
@@ -39,8 +52,9 @@ const userSchema = new Schema<TUser, UserModel>(
     password: {
       type: String,
       required: [true, 'Password is required!'],
-      select: 0,
+      select: false,
     },
+    cart: [cartSchema],
     courier_address: {
       type: String,
       trim: true,

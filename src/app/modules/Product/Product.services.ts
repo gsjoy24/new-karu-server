@@ -28,6 +28,7 @@ const getProducts = async (query: Record<string, unknown>) => {
     result,
   };
 };
+
 // get last 10 products as new arrivals for home page based on createdAt field
 const getNewArrivals = async () => {
   const result = await Product.find().sort({ createdAt: -1 }).limit(10);

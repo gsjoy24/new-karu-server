@@ -1,4 +1,5 @@
 import express from 'express';
+import userAuth from '../../middlewares/userAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { UserControllers } from './user.controllers';
 import userValidations from './user.validations';
@@ -15,6 +16,11 @@ router.put(
   '/:id',
   validateRequest(userValidations.updateUserValidation),
   UserControllers.updateUser,
+);
+router.patch(
+  '/add-to-cart/:productId',
+  userAuth(),
+  UserControllers.addProductToCart,
 );
 
 // router.patch(

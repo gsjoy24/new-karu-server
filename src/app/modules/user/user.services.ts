@@ -62,10 +62,25 @@ const changeUserStatus = async (id: string, status: string) => {
   return result;
 };
 
+const addProductToCart = async (id: string, productId: string) => {
+  const user = await User.isUserExists(id);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  const result = await User.updateOne(
+    { _id: id },
+    {
+      $push: { cart: productId },
+    },
+  );
+  return result;
+};
+
 export const UserServices = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,
   changeUserStatus,
+  addProductToCart,
 };

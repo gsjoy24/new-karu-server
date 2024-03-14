@@ -17,4 +17,3 @@ export type TProduct = {
   createdAt?: Date;
   updatedAt?: Date;
 };
-

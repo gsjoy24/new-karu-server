@@ -48,9 +48,23 @@ const updateUser: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const addProductToCart: RequestHandler = catchAsync(async (req, res) => {
+  const { productId } = req.params;
+  const id = req?.userData?.id;
+
+  const result = await UserServices.addProductToCart(id, productId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product added to cart successfully!',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createUser,
   getAllUsers,
   getSingleUser,
   updateUser,
+  addProductToCart,
 };
