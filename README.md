@@ -4,5 +4,9 @@ farukVaiRocks
 
 <!-- todo -->
 
-4. product id,
-5. quantity
+1. orders
+
+- add
+- update
+- delete
+- update status
