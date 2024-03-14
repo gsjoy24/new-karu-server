@@ -88,6 +88,7 @@ const userSchema = new Schema<TUser, UserModel>(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
   },
 );
 
@@ -100,6 +101,10 @@ userSchema.pre('save', async function (next) {
     Number(config.bcrypt_salt_round),
   );
   next();
+});
+
+userSchema.virtual('total_cart_items').get(function () {
+  return this?.cart?.length || 0;
 });
 
 userSchema.statics.isUserExists = async function (id: string) {

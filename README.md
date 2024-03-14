@@ -4,9 +4,5 @@ farukVaiRocks
 
 <!-- todo -->
 
-1. handle cart for users
-2. add and remove product from cart.
-3. category all
-
 4. product id,
 5. quantity

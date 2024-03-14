@@ -1,19 +1,23 @@
 import express from 'express';
+import adminAuth from '../../middlewares/adminAuth';
 import userAuth from '../../middlewares/userAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { UserControllers } from './user.controllers';
 import userValidations from './user.validations';
 const router = express.Router();
 
+// all routes start with /api/users.
+
 router.post(
   '/',
   validateRequest(userValidations.userValidationSchema),
   UserControllers.createUser,
 );
-router.get('/', UserControllers.getAllUsers);
-router.get('/:id', UserControllers.getSingleUser);
+router.get('/', adminAuth(), UserControllers.getAllUsers);
+router.get('/:id', adminAuth(), UserControllers.getSingleUser);
 router.put(
   '/:id',
+  userAuth(),
   validateRequest(userValidations.updateUserValidation),
   UserControllers.updateUser,
 );
@@ -23,13 +27,11 @@ router.patch(
   userAuth(),
   UserControllers.addProductToCart,
 );
-
 router.patch(
   '/remove-from-cart/:productId',
   userAuth(),
   UserControllers.removeProductFromCart,
 );
-
 router.patch(
   '/manipulate-quantity/:productId/:quantity',
   userAuth(),

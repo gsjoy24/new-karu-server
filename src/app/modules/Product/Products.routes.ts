@@ -5,7 +5,7 @@ import ProductController from './Product.controllers';
 import ProductValidations from './Products.validation';
 const router = express.Router();
 
-// the routes with adminAuth middleware are protected and only accessible by admins. If any other user tries to access these routes, they will get a 401 unauthorized error. so, only admins can access these routes for adding, updating, and deleting products.
+// the routes with adminAuth middleware are protected and only accessible by admins. If any other user tries to access these routes, they will get a 401 unauthorized error. so, only admins can access these routes for adding, updating, and deleting products. All routes are prefixed with /api/products.
 router.post(
   '/',
   adminAuth(),
