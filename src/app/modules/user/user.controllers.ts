@@ -73,6 +73,26 @@ const removeProductFromCart: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const manipulateQuantityInCart: RequestHandler = catchAsync(
+  async (req, res) => {
+    const userId = req?.userData?.id;
+    const { productId, quantity } = req.params;
+
+    const result = await UserServices.manipulateQuantityInCart(
+      userId,
+      productId,
+      Number(quantity),
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Quantity manipulated successfully!',
+      data: result,
+    });
+  },
+);
+
 export const UserControllers = {
   createUser,
   getAllUsers,
@@ -80,4 +100,5 @@ export const UserControllers = {
   updateUser,
   addProductToCart,
   removeProductFromCart,
+  manipulateQuantityInCart,
 };

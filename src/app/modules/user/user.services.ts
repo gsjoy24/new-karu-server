@@ -68,7 +68,7 @@ const addProductToCart = async (id: string, product: TCart) => {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  // check if the product already exists in the cart
+  // check if the product already exists in the cart. if it does, then throw an error. otherwise, add the product to the cart.
   const isProductExists = user?.cart?.find(
     (item) => item.product.toString() === product.product.toString(),
   );
@@ -88,15 +88,45 @@ const addProductToCart = async (id: string, product: TCart) => {
   return result;
 };
 
-const removeProductFromCart = async (id: string, product: string) => {
-  const user = await User.isUserExists(id);
+const manipulateQuantityInCart = async (
+  userId: string,
+  productId: string,
+  quantity: number,
+) => {
+  const user = await User.isUserExists(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // check if the product already exists in the cart.
+  const isProductExists = user?.cart?.find(
+    (item) => item.product.toString() === productId,
+  );
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found in the cart!');
+  }
+
+  const result = await User.updateOne(
+    {
+      _id: userId,
+      'cart.product': productId,
+    },
+    {
+      $set: { 'cart.$.quantity': quantity },
+    },
+  );
+  return result;
+};
+
+const removeProductFromCart = async (productId: string, product: string) => {
+  const user = await User.isUserExists(productId);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
 
   const result = await User.updateOne(
     {
-      _id: id,
+      _id: productId,
     },
     {
       $pull: { cart: { product } },
@@ -113,4 +143,5 @@ export const UserServices = {
   changeUserStatus,
   addProductToCart,
   removeProductFromCart,
+  manipulateQuantityInCart,
 };

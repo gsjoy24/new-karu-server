@@ -30,6 +30,12 @@ router.patch(
   UserControllers.removeProductFromCart,
 );
 
+router.patch(
+  '/manipulate-quantity/:productId/:quantity',
+  userAuth(),
+  UserControllers.manipulateQuantityInCart,
+);
+
 // router.patch(
 //   '/change-status/:id',
 //   auth(),
