@@ -9,6 +9,7 @@ import catchAsync from '../utils/catchAsync';
 const userAuth = () => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
+    console.log(token);
     // check if the user send the token
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');

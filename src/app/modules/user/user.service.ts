@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 // import { JwtPayload } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import AppError from '../../errors/AppError';
 import { TUser } from './user.interface';
 import { User } from './user.model';
 
-const CreateUserIntoDB = async (payload: TUser) => {
+const createUserIntoDB = async (payload: TUser) => {
   // check if user already exists
   const user = await User.findOne({ email: payload.email });
   if (user) {
@@ -37,9 +38,9 @@ const updateUserIntoDB = async (id: string, payload: TUser) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
-  // the password is not updated here because it is handled in a separate route. and the name is an object so it is handled separately as well.
+  // the password is not updated here because it is handled in a separate route. and the name, cart and orders are objects so these will handled separately as well.
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  const { password, name, ...restData } = payload;
+  const { password, name, cart, orders, ...restData } = payload;
 
   const modifiedData = { ...restData };
 
@@ -63,39 +64,22 @@ const changeUserStatus = async (id: string, status: string) => {
   return result;
 };
 
-// const getMe = async (user: JwtPayload) => {
-//   const { role, userId } = user;
+const getMe = async (userData: JwtPayload) => {
+  const { id, email } = userData;
 
-//   let result: Record<string, unknown> | null = {};
-
-//   if (role === USER_ROLES.student) {
-//     result = await Student.findOne({
-//       id: userId,
-//     }).populate('user');
-//   } else if (role === USER_ROLES.faculty) {
-//     result = await Faculty.findOne({
-//       id: userId,
-//     }).populate('user');
-//   } else if (role === USER_ROLES.admin) {
-//     result = await Admin.findOne({
-//       id: userId,
-//     }).populate('user');
-//   } else if (role === USER_ROLES.superAdmin) {
-//     result = await User.findOne({ id: userId });
-//   }
-
-//   // if user not found
-//   if (!result) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-//   }
-//   return result;
-// };
+  const result = await User.findOne({ _id: id, email });
+  // if user not found
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return result;
+};
 
 export const UserServices = {
-  CreateUserIntoDB,
+  createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,
   changeUserStatus,
-  // getMe,
+  getMe,
 };

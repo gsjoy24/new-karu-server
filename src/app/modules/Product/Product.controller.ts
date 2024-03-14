@@ -26,6 +26,17 @@ const getProducts = catchAsync(async (req, res) => {
   });
 });
 
+const getNewArrivals = catchAsync(async (req, res) => {
+  const result = await ProductServices.getNewArrivals();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'New arrivals are fetched successfully',
+    data: result,
+  });
+});
+
 const getProductById = catchAsync(async (req, res) => {
   const result = await ProductServices.getProductById(req.params.id);
 
@@ -65,6 +76,7 @@ const deleteProductById = catchAsync(async (req, res) => {
 const ProductController = {
   addProduct,
   getProducts,
+  getNewArrivals,
   getProductById,
   updateProductById,
   deleteProductById,

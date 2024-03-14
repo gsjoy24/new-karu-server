@@ -1,4 +1,5 @@
 import express from 'express';
+import userAuth from '../../middlewares/userAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import { UserControllers } from './user.controller';
 import userValidations from './user.validation';
@@ -10,6 +11,7 @@ router.post(
   UserControllers.createUser,
 );
 router.get('/', UserControllers.getAllUsers);
+router.get('/mee', userAuth(), UserControllers.getMe);
 router.get('/:id', UserControllers.getSingleUser);
 router.put(
   '/:id',
@@ -22,11 +24,6 @@ router.put(
 //   auth(),
 //   validateRequest(userValidations.changeUserStatusValidationSchema),
 //   UserControllers.changeUserStatus,
-// );
-
-// router.get(
-//   '/me',
-//   UserControllers.getMe,
 // );
 
 export const UserRoutes = router;

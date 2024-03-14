@@ -13,6 +13,7 @@ router.post(
   ProductController.addProduct,
 );
 router.get('/', ProductController.getProducts);
+router.get('/new-arrivals', ProductController.getNewArrivals);
 router.get('/:id', ProductController.getProductById);
 router.put(
   '/:id',

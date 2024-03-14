@@ -12,6 +12,8 @@ export interface TUser {
   district?: string;
   postal_code?: string;
   mobile_number?: string;
+  cart?: string[];
+  orders?: string[];
   status?: 'in-progress' | 'blocked';
   isDeleted: boolean;
 }
