@@ -3,42 +3,38 @@ import { TOrder } from './Order.types';
 
 const OrderSchema = new Schema<TOrder>(
   {
-    user: {
+    order_id: {
+      type: String,
+      unique: true,
+    },
+    customer: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
     },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-    },
-    mobile_number: {
-      type: String,
-      required: [true, 'Mobile number is required'],
-    },
+    email: { type: String, required: true },
+    mobile_number: { type: String, required: true },
     products: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
+        product: { type: Schema.Types.ObjectId, ref: 'Product' },
+        quantity: { type: Number, required: true },
+        price: { type: Number, required: true },
       },
     ],
-    house_number: {
+    house_number: { type: String },
+    street_address: { type: String },
+    district: { type: String, required: true },
+    city: { type: String, required: true },
+    order_note: { type: String },
+    payment_method: { type: String, required: true },
+    shipping_method: { type: String, required: true },
+    courier_address: { type: String, required: true },
+    status: {
       type: String,
-    },
-    street_address: {
-      type: String,
-      required: [true, 'Street address is required'],
-    },
-    district: {
-      type: String,
-      required: [true, 'District is required'],
-    },
-    city: {
-      type: String,
-      required: [true, 'City is required'],
-    },
-    order_note: {
-      type: String,
-    },
+      enum: ['pending', 'processing', 'shipped', 'delivered'],
+      default: 'pending',
+      },
+    
   },
   {
     timestamps: true,

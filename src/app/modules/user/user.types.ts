@@ -7,6 +7,7 @@ export type TCart = {
   product: Types.ObjectId;
   quantity: number;
 };
+
 export interface TUser {
   _id?: string;
   name?: TUserName;
