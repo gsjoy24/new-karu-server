@@ -3,6 +3,4 @@ export type TCoupon = {
   code: string;
   discount: number;
   expireDate: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
 };
