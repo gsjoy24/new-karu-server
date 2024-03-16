@@ -47,7 +47,7 @@ const getSingleOrderFromDB = async (id: string) => {
 };
 
 const updateOrderIntoDB = async (id: string, order: TOrder) => {
-  const updatedOrder = await Order.findByIdAndUpdate(id, order, { new: true });
+  const updatedOrder = await Order.updateOne({ _id: id }, order, { new: true });
   if (!updatedOrder) {
     throw new Error('Order not found');
   }
