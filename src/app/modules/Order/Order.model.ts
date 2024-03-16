@@ -5,12 +5,11 @@ const OrderSchema = new Schema<TOrder>(
   {
     order_id: {
       type: String,
-      // unique: true,
+      unique: true,
     },
     customer: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      // required: true,
     },
     email: { type: String },
     mobile_number: { type: String },

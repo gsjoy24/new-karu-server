@@ -1,52 +1,41 @@
 import httpStatus from 'http-status';
-import mongoose, { Types } from 'mongoose';
+import { Types } from 'mongoose';
+import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import generateUniqueId from '../../utils/generateUniqueId';
-import { User } from '../user/user.model';
+import { OrderSearchableFields } from './Order.constant';
 import Order from './Order.model';
 import { TOrder } from './Order.types';
 
 const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
-  const session = await mongoose.startSession();
   const modifiedData = { ...order };
 
-  // adding unique order id for each order
+  // Adding order_id and customer to the order
   modifiedData.order_id = generateUniqueId();
   modifiedData.customer = userId;
+  const newOrder = await Order.create(modifiedData);
 
-  try {
-    session.startTransaction();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const newOrder: any = await Order.create(modifiedData, {
-      session,
-    });
-
-    if (!newOrder) {
-      throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Order not created');
-    }
-
-    const addOrderRefToUser = await User.findByIdAndUpdate(
-      userId,
-      { $push: { orders: newOrder?._id } },
-      { session },
-    );
-
-    if (!addOrderRefToUser) {
-      throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Order not created');
-    }
-    await session.commitTransaction();
-    await session.endSession();
-    return newOrder;
-  } catch (err: unknown) {
-    await session.abortTransaction();
-    await session.endSession();
-    throw new Error(err as string);
+  if (!newOrder) {
+    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Order not created');
   }
+
+  return newOrder;
 };
 
-const getAllOrdersFromDB = async () => {
-  const orders = await Order.find();
-  return orders;
+const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
+  const ordersQuery = new QueryBuilder(Order.find(), query)
+    .search(OrderSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const meta = await ordersQuery.countTotal();
+  const result = await ordersQuery.modelQuery;
+  return {
+    meta,
+    result,
+  };
 };
 
 const getSingleOrderFromDB = async (id: string) => {

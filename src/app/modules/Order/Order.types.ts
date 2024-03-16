@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 export type TOrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered';
 
 export type TOrderProduct = {
+  _id?: string;
   product: Types.ObjectId;
   quantity: number;
   total_price: number;

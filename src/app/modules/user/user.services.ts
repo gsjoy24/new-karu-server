@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
+import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import Product from '../Product/Product.model';
+import { UserSearchableFields } from './user.constant';
 import { User } from './user.model';
 import { TCart, TUser } from './user.types';
 
@@ -18,9 +20,20 @@ const createUserIntoDB = async (payload: TUser) => {
   return result;
 };
 
-const getAllUsersFromDB = async () => {
-  const result = await User.find();
-  return result;
+const getAllUsersFromDB = async (query: Record<string, unknown>) => {
+  const userQuery = new QueryBuilder(Product.find(), query)
+    .search(UserSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const meta = await userQuery.countTotal();
+  const result = await userQuery.modelQuery;
+  return {
+    meta,
+    result,
+  };
 };
 
 const getSingleUserFromDB = async (id: string) => {
