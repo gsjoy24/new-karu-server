@@ -1,17 +1,54 @@
+import httpStatus from 'http-status';
+import mongoose from 'mongoose';
+import AppError from '../../errors/AppError';
+import generateUniqueId from '../../utils/generateUniqueId';
+import { User } from '../user/user.model';
 import Order from './Order.model';
 import { TOrder } from './Order.types';
 
-const createOrder = async (order: TOrder) => {
-  const newOrder = await Order.create(order);
-  return newOrder;
+const createOrderIntoDB = async (order: TOrder) => {
+  const session = await mongoose.startSession();
+  const modifiedData = { ...order };
+
+  // adding unique order id for each order
+  modifiedData.order_id = generateUniqueId();
+
+  try {
+    session.startTransaction();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newOrder: any = await Order.create(modifiedData, {
+      session,
+    });
+
+    if (!newOrder) {
+      throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Order not created');
+    }
+
+    const addOrderRefToUser = await User.findByIdAndUpdate(
+      order.customer,
+      { $push: { orders: newOrder?._id } },
+      { session },
+    );
+
+    if (!addOrderRefToUser) {
+      throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Order not created');
+    }
+    await session.commitTransaction();
+    await session.endSession();
+    return newOrder;
+  } catch (err: unknown) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err as string);
+  }
 };
 
-const getAllOrders = async () => {
+const getAllOrdersFromDB = async () => {
   const orders = await Order.find();
   return orders;
 };
 
-const getSingleOrder = async (id: string) => {
+const getSingleOrderFromDB = async (id: string) => {
   const order = await Order.findById(id);
   if (!order) {
     throw new Error('Order not found');
@@ -19,7 +56,7 @@ const getSingleOrder = async (id: string) => {
   return order;
 };
 
-const updateOrder = async (id: string, order: TOrder) => {
+const updateOrderIntoDB = async (id: string, order: TOrder) => {
   const updatedOrder = await Order.findByIdAndUpdate(id, order, { new: true });
   if (!updatedOrder) {
     throw new Error('Order not found');
@@ -27,7 +64,7 @@ const updateOrder = async (id: string, order: TOrder) => {
   return updatedOrder;
 };
 
-const deleteOrder = async (id: string) => {
+const deleteOrderFromDB = async (id: string) => {
   const deletedOrder = await Order.findByIdAndDelete(id);
   if (!deletedOrder) {
     throw new Error('Order not found');
@@ -35,12 +72,12 @@ const deleteOrder = async (id: string) => {
   return deletedOrder;
 };
 
-const OrderService = {
-  createOrder,
-  getAllOrders,
-  getSingleOrder,
-  updateOrder,
-  deleteOrder,
+const OrderServices = {
+  createOrderIntoDB,
+  getAllOrdersFromDB,
+  getSingleOrderFromDB,
+  updateOrderIntoDB,
+  deleteOrderFromDB,
 };
 
-export default OrderService;
+export default OrderServices;

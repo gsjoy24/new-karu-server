@@ -9,6 +9,7 @@ export type TOrderProduct = {
 };
 
 export type TOrder = {
+  _id?: string;
   order_id: string;
   customer: Types.ObjectId;
   email: string;
