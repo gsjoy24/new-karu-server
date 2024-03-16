@@ -6,13 +6,13 @@ import OrderControllers from './Order.controllers';
 import orderValidations from './Order.validation';
 const router = express.Router();
 
+// all routes start with /api/orders
 router.post(
   '/',
   userAuth(),
   validateRequest(orderValidations.OrderValidationSchema),
   OrderControllers.createOrder,
 );
-
 router.get('/', adminAuth(), OrderControllers.getAllOrders);
 router.get('/:id', adminAuth(), OrderControllers.getSingleOrder);
 router.put(
