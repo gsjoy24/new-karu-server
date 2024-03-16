@@ -44,8 +44,32 @@ const OrderValidationSchema = z.object({
   }),
 });
 
+const updateOrderValidation = z.object({
+  body: z.object({
+    email: z
+      .string()
+      .email({
+        message: 'Invalid email address',
+      })
+      .optional(),
+    mobile_number: z.string().optional(),
+    house_number: z.string().optional(),
+    street_address: z.string().optional(),
+    district: z.string().optional(),
+    city: z.string().optional(),
+    order_note: z.string().optional(),
+    payment_method: z.string().optional(),
+    shipping_method: z.string().optional(),
+    courier_address: z.string().optional(),
+    status: z
+      .enum(['pending', 'processing', 'shipped', 'delivered'])
+      .optional(),
+  }),
+});
+
 const orderValidations = {
   OrderValidationSchema,
+  updateOrderValidation,
 };
 
 export default orderValidations;
