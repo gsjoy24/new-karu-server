@@ -3,6 +3,7 @@ import { AdminRoutes } from '../modules/Admin/admin.route';
 import { AdminAuthRoutes } from '../modules/Auth/AdminAuth.routes';
 import { UserAuthRoutes } from '../modules/Auth/userAuth.routes';
 import CategoryRoutes from '../modules/Category/Category.routes';
+import { OrderRoutes } from '../modules/Order/Order.routes';
 import { ProductRoutes } from '../modules/Product/Products.routes';
 import { UserRoutes } from '../modules/user/user.routes';
 const router = Router();
@@ -31,6 +32,10 @@ const moduleRoutes = [
   {
     path: '/products',
     route: ProductRoutes,
+  },
+  {
+    path: '/orders',
+    route: OrderRoutes,
   },
 ];
 

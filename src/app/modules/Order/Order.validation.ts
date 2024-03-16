@@ -2,9 +2,6 @@ import { z } from 'zod';
 
 const OrderValidationSchema = z.object({
   body: z.object({
-    customer: z.string({
-      required_error: 'Customer id is required',
-    }),
     email: z
       .string({
         required_error: 'Email is required',

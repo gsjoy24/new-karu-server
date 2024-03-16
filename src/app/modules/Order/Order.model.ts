@@ -5,15 +5,15 @@ const OrderSchema = new Schema<TOrder>(
   {
     order_id: {
       type: String,
-      unique: true,
+      // unique: true,
     },
     customer: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      // required: true,
     },
-    email: { type: String, required: true },
-    mobile_number: { type: String, required: true },
+    email: { type: String },
+    mobile_number: { type: String },
     products: [
       {
         product: { type: Schema.Types.ObjectId, ref: 'Product' },
@@ -23,11 +23,11 @@ const OrderSchema = new Schema<TOrder>(
     ],
     house_number: { type: String },
     street_address: { type: String },
-    district: { type: String, required: true },
-    city: { type: String, required: true },
+    district: { type: String },
+    city: { type: String },
     order_note: { type: String },
-    payment_method: { type: String, required: true },
-    shipping_method: { type: String, required: true },
+    payment_method: { type: String },
+    shipping_method: { type: String },
     courier_address: { type: String },
     status: {
       type: String,

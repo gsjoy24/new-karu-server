@@ -1,17 +1,18 @@
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import AppError from '../../errors/AppError';
 import generateUniqueId from '../../utils/generateUniqueId';
 import { User } from '../user/user.model';
 import Order from './Order.model';
 import { TOrder } from './Order.types';
 
-const createOrderIntoDB = async (order: TOrder) => {
+const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
   const session = await mongoose.startSession();
   const modifiedData = { ...order };
 
   // adding unique order id for each order
   modifiedData.order_id = generateUniqueId();
+  modifiedData.customer = userId;
 
   try {
     session.startTransaction();
@@ -25,7 +26,7 @@ const createOrderIntoDB = async (order: TOrder) => {
     }
 
     const addOrderRefToUser = await User.findByIdAndUpdate(
-      order.customer,
+      userId,
       { $push: { orders: newOrder?._id } },
       { session },
     );

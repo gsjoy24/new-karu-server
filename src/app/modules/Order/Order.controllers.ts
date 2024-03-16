@@ -1,9 +1,14 @@
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
 import catchAsync from '../../utils/catchAsync';
 import OrderServices from './Order.services';
 
 const createOrder = catchAsync(async (req, res) => {
-  const order = await OrderServices.createOrderIntoDB(req.body);
+  const userId = req.userData?.id as Types.ObjectId;
+  const order = await OrderServices.createOrderIntoDB(
+    userId as Types.ObjectId,
+    req.body,
+  );
   res.status(201).json({
     success: true,
     message: 'Order created successfully!',
