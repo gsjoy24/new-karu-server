@@ -18,7 +18,7 @@ const OrderSchema = new Schema<TOrder>(
       {
         product: { type: Schema.Types.ObjectId, ref: 'Product' },
         quantity: { type: Number, required: true },
-        price: { type: Number, required: true },
+        total_price: { type: Number, required: true },
       },
     ],
     house_number: { type: String },
@@ -33,8 +33,7 @@ const OrderSchema = new Schema<TOrder>(
       type: String,
       enum: ['pending', 'processing', 'shipped', 'delivered'],
       default: 'pending',
-      },
-    
+    },
   },
   {
     timestamps: true,

@@ -5,7 +5,7 @@ export type TOrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered';
 export type TOrderProduct = {
   product: Types.ObjectId;
   quantity: number;
-  price: number;
+  total_price: number;
 };
 
 export type TOrder = {
