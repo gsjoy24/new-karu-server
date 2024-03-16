@@ -21,6 +21,6 @@ export type TOrder = {
   order_note?: string;
   payment_method: string;
   shipping_method: string;
-  courier_address: string;
+  courier_address?: string;
   status: TOrderStatus;
 };

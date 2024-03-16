@@ -28,7 +28,7 @@ const OrderSchema = new Schema<TOrder>(
     order_note: { type: String },
     payment_method: { type: String, required: true },
     shipping_method: { type: String, required: true },
-    courier_address: { type: String, required: true },
+    courier_address: { type: String },
     status: {
       type: String,
       enum: ['pending', 'processing', 'shipped', 'delivered'],
