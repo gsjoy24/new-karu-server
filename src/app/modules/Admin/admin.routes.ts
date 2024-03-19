@@ -15,14 +15,22 @@ router.post(
   validateRequest(createAdminValidationSchema),
   AdminControllers.createAdmin,
 );
-router.get('/', adminAuth(), AdminControllers.getAllAdmins);
-router.get('/:id', adminAuth(), AdminControllers.getSingleAdmin);
+router.get('/', adminAuth('onlySuperAdmin'), AdminControllers.getAllAdmins);
+router.get(
+  '/:id',
+  adminAuth('onlySuperAdmin'),
+  AdminControllers.getSingleAdmin,
+);
 router.patch(
   '/:id',
-  adminAuth(),
+  adminAuth('onlySuperAdmin'),
   validateRequest(updateAdminValidationSchema),
   AdminControllers.updateAdmin,
 );
-router.delete('/:adminId', adminAuth(), AdminControllers.deleteAdmin);
+router.delete(
+  '/:adminId',
+  adminAuth('onlySuperAdmin'),
+  AdminControllers.deleteAdmin,
+);
 
 export const AdminRoutes = router;
