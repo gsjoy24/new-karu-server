@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post(
   '/',
-  adminAuth(),
+  adminAuth('onlySuperAdmin'),
   validateRequest(createAdminValidationSchema),
   AdminControllers.createAdmin,
 );

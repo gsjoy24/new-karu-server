@@ -6,7 +6,7 @@ import AppError from '../errors/AppError';
 import { Admin } from '../modules/Admin/admin.model';
 import catchAsync from '../utils/catchAsync';
 
-const adminAuth = () => {
+const adminAuth = (onlySuperAdmin?: string) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
     // check if the user send the token
@@ -23,6 +23,14 @@ const adminAuth = () => {
       ) as JwtPayload;
     } catch (error) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+    }
+
+    // check if the user is super admin
+    if (
+      onlySuperAdmin === 'onlySuperAdmin' &&
+      decoded.email !== config.super_admin_email
+    ) {
+      throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
     }
 
     const { id, email, role } = decoded;
