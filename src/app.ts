@@ -5,10 +5,22 @@ import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
 const app: Application = express();
-
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3006',
+  'https://karukon.vercel.app',
+  'https://karukon.com',
+  'https://karukon.com.bd',
+  'https://karukon.web.app',
+];
 // parser
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 
 // application routes

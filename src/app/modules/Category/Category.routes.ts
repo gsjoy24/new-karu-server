@@ -16,9 +16,9 @@ router.post(
   CategoryControllers.CreateCategory,
 );
 
-router.get('/', adminAuth(), CategoryControllers.GetCategories);
+router.get('/', CategoryControllers.GetCategories);
 
-router.get('/:id', adminAuth(), CategoryControllers.GetCategoryById);
+router.get('/:id', CategoryControllers.GetCategoryById);
 
 router.put(
   '/:id',
