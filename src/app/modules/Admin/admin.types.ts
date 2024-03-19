@@ -2,7 +2,7 @@
 import { Model } from 'mongoose';
 import { TUserName } from '../../types/userInfo.types';
 
-export type TGender = 'male' | 'female' | 'other';
+export type TGender = 'Male' | 'Female' | 'Other';
 
 export type TAdmin = {
   _id?: string;
