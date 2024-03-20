@@ -10,7 +10,7 @@ export type TCart = {
 
 export interface TUser {
   _id?: string;
-  name?: TUserName;
+  name: TUserName;
   email: string;
   password: string;
   cart?: TCart[];
