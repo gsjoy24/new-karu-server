@@ -49,7 +49,7 @@ const DeleteCategoryById = catchAsync(async (req, res) => {
   });
 });
 
-const CategoryControllers ={
+const CategoryControllers = {
   CreateCategory,
   GetCategories,
   GetCategoryById,
