@@ -1,5 +1,5 @@
 import z from 'zod';
-import { UserStatus } from './user.constant';
+import { UserStatus } from './User.constant';
 
 const userValidationSchema = z.object({
   body: z.object({

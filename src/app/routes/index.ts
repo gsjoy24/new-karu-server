@@ -6,7 +6,7 @@ import CategoryRoutes from '../modules/Category/Category.routes';
 import { CouponRoutes } from '../modules/Coupon/Coupon.routes';
 import { OrderRoutes } from '../modules/Order/Order.routes';
 import { ProductRoutes } from '../modules/Product/Products.routes';
-import { UserRoutes } from '../modules/User/user.routes';
+import { UserRoutes } from '../modules/User/User.routes';
 const router = Router();
 
 const moduleRoutes = [

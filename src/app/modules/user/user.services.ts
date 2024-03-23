@@ -3,9 +3,9 @@ import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import Product from '../Product/Product.model';
-import { UserSearchableFields } from './user.constant';
-import { User } from './user.model';
-import { TCart, TUser } from './user.types';
+import { UserSearchableFields } from './User.constant';
+import { User } from './User.model';
+import { TCart, TUser } from './User.types';
 
 const createUserIntoDB = async (payload: TUser) => {
   // check if user already exists

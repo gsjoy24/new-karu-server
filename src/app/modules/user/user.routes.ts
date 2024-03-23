@@ -2,8 +2,8 @@ import express from 'express';
 import adminAuth from '../../middlewares/adminAuth';
 import userAuth from '../../middlewares/userAuth';
 import validateRequest from '../../middlewares/validateRequest';
-import { UserControllers } from './user.controllers';
-import userValidations from './user.validations';
+import { UserControllers } from './User.controllers';
+import userValidations from './User.validations';
 const router = express.Router();
 
 // all routes start with /api/users.

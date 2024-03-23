@@ -8,19 +8,16 @@ const app: Application = express();
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3006',
-  'https://karukon.vercel.app',
   'https://karukon.com',
-  'https://karukon.com.bd',
-  'https://karukon.web.app',
 ];
-// parser
-app.use(express.json());
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
   }),
 );
+// parser
+app.use(express.json());
 app.use(cookieParser());
 
 // application routes

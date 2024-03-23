@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 // import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
-import { UserServices } from './user.services';
+import { UserServices } from './User.services';
 
 const createUser: RequestHandler = catchAsync(async (req, res) => {
   const result = await UserServices.createUserIntoDB(req.body);

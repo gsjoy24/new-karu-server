@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../config';
 import { TUserName } from '../../types/userInfo.types';
-import { TCart, TUser, UserModel } from './user.types';
+import { TCart, TUser, UserModel } from './User.types';
 
 const userNameSchema = new Schema<TUserName>(
   {
