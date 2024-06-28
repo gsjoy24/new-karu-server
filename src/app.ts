@@ -6,10 +6,9 @@ import notFound from './app/middlewares/notFound';
 import router from './app/routes';
 const app: Application = express();
 const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3006',
   'http://localhost:3000',
   'https://karukon.com',
+  'https://karukon.vercel.app',
 ];
 app.use(
   cors({
