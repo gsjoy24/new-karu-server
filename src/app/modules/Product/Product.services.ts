@@ -7,9 +7,6 @@ import { TProduct } from './Product.types';
 
 const addProduct = async (product: TProduct) => {
   const result = await Product.create(product);
-  if (!result) {
-    new AppError(httpStatus.BAD_REQUEST, 'Product not created!');
-  }
   return result;
 };
 

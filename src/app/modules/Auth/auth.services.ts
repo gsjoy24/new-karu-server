@@ -30,7 +30,7 @@ const loginAdmin = async (payload: TLogin) => {
   const jwtPayload = {
     id: admin?._id,
     email: admin?.email,
-    role: 'admin',
+                      role: 'admin',
   };
 
   const accessToken = createToken(
@@ -39,7 +39,7 @@ const loginAdmin = async (payload: TLogin) => {
     config.jwt_access_expiration as string,
   );
 
-  return accessToken;
+  return accessToken; 
 };
 
 const loginUser = async (payload: TLogin) => {
