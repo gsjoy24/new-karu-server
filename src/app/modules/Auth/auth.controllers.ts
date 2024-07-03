@@ -1,10 +1,11 @@
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.services';
 
-const loginAdmin = catchAsync(async (req, res) => {
+const loginAdmin = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginAdmin(req.body);
 
   sendResponse(res, {
@@ -17,21 +18,23 @@ const loginAdmin = catchAsync(async (req, res) => {
   });
 });
 
-const changePasswordOfAdmin = catchAsync(async (req, res) => {
-  const result = await AuthServices.changePasswordOfAdmin(
-    req?.adminData as JwtPayload,
-    req.body,
-  );
+const changePasswordOfAdmin = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await AuthServices.changePasswordOfAdmin(
+      req?.adminData as JwtPayload,
+      req.body,
+    );
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Password changed successfully',
-    data: result,
-  });
-});
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Password changed successfully',
+      data: result,
+    });
+  },
+);
 
-const loginUser = catchAsync(async (req, res) => {
+const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginUser(req.body);
 
   sendResponse(res, {
@@ -44,7 +47,7 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
-const changePasswordOfUser = catchAsync(async (req, res) => {
+const changePasswordOfUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.changePasswordOfUser(
     req?.userData as JwtPayload,
     req.body,
@@ -58,7 +61,7 @@ const changePasswordOfUser = catchAsync(async (req, res) => {
   });
 });
 
-const getMe = catchAsync(async (req, res) => {
+const getMe = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.getMe(req.userData as JwtPayload);
 
   sendResponse(res, {
@@ -69,7 +72,7 @@ const getMe = catchAsync(async (req, res) => {
   });
 });
 
-// const forgotPassword = catchAsync(async (req, res) => {
+// const forgotPassword = catchAsync(async (req: Request, res: Response) => {
 //   const userId = req.body.id;
 //   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 //   const result = await AuthServices.forgotPassword(userId);
@@ -81,7 +84,7 @@ const getMe = catchAsync(async (req, res) => {
 //   });
 // });
 
-// const resetPassword = catchAsync(async (req, res) => {
+// const resetPassword = catchAsync(async (req: Request, res: Response) => {
 //   const token = req.headers.authorization;
 //   const result = await AuthServices.resetPassword(req.body, token as string);
 //   sendResponse(res, {

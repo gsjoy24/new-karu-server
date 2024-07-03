@@ -1,8 +1,9 @@
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import CouponServices from './Coupon.services';
 
-const createCoupon = catchAsync(async (req, res) => {
+const createCoupon = catchAsync(async (req: Request, res: Response) => {
   const coupon = await CouponServices.createCoupon(req.body);
   res.status(201).json({
     success: true,
@@ -12,7 +13,7 @@ const createCoupon = catchAsync(async (req, res) => {
   });
 });
 
-const getCoupons = catchAsync(async (req, res) => {
+const getCoupons = catchAsync(async (req: Request, res: Response) => {
   const coupons = await CouponServices.getCoupons();
   res.status(200).json({
     success: true,
@@ -22,7 +23,7 @@ const getCoupons = catchAsync(async (req, res) => {
   });
 });
 
-const getCoupon = catchAsync(async (req, res) => {
+const getCoupon = catchAsync(async (req: Request, res: Response) => {
   const coupon = await CouponServices.getCoupon(req.params.id);
   res.status(200).json({
     success: true,
@@ -32,7 +33,7 @@ const getCoupon = catchAsync(async (req, res) => {
   });
 });
 
-const updateCoupon = catchAsync(async (req, res) => {
+const updateCoupon = catchAsync(async (req: Request, res: Response) => {
   const coupon = await CouponServices.updateCoupon(req.params.id, req.body);
   res.status(200).json({
     success: true,
@@ -42,7 +43,7 @@ const updateCoupon = catchAsync(async (req, res) => {
   });
 });
 
-const deleteCoupon = catchAsync(async (req, res) => {
+const deleteCoupon = catchAsync(async (req: Request, res: Response) => {
   const coupon = await CouponServices.deleteCoupon(req.params.id);
   res.status(200).json({
     success: true,

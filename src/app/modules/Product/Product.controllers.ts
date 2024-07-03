@@ -1,9 +1,10 @@
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import ProductServices from './Product.services';
 
-const addProduct = catchAsync(async (req, res) => {
+const addProduct = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductServices.addProduct(req.body);
 
   sendResponse(res, {
@@ -14,7 +15,7 @@ const addProduct = catchAsync(async (req, res) => {
   });
 });
 
-const getProducts = catchAsync(async (req, res) => {
+const getProducts = catchAsync(async (req: Request, res: Response) => {
   const { meta, result } = await ProductServices.getProducts(req.query);
 
   sendResponse(res, {
@@ -26,7 +27,7 @@ const getProducts = catchAsync(async (req, res) => {
   });
 });
 
-const getNewArrivals = catchAsync(async (req, res) => {
+const getNewArrivals = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductServices.getNewArrivals();
 
   sendResponse(res, {
@@ -37,7 +38,7 @@ const getNewArrivals = catchAsync(async (req, res) => {
   });
 });
 
-const getProductById = catchAsync(async (req, res) => {
+const getProductById = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductServices.getProductById(req.params.id);
 
   sendResponse(res, {
@@ -48,7 +49,7 @@ const getProductById = catchAsync(async (req, res) => {
   });
 });
 
-const updateProductById = catchAsync(async (req, res) => {
+const updateProductById = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductServices.updateProductById(
     req.params.id,
     req.body,
@@ -62,7 +63,7 @@ const updateProductById = catchAsync(async (req, res) => {
   });
 });
 
-const deleteProductById = catchAsync(async (req, res) => {
+const deleteProductById = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductServices.deleteProductById(req.params.id);
 
   sendResponse(res, {

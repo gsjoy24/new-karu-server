@@ -1,9 +1,10 @@
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AdminServices } from './admin.service';
 
-const createAdmin = catchAsync(async (req, res) => {
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
   const result = await AdminServices.createAdminIntoDB(req.body);
 
   sendResponse(res, {
@@ -14,7 +15,7 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
-const getSingleAdmin = catchAsync(async (req, res) => {
+const getSingleAdmin = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await AdminServices.getSingleAdminFromDB(id);
 
@@ -26,7 +27,7 @@ const getSingleAdmin = catchAsync(async (req, res) => {
   });
 });
 
-const getAllAdmins = catchAsync(async (req, res) => {
+const getAllAdmins = catchAsync(async (req: Request, res: Response) => {
   const { meta, result } = await AdminServices.getAllAdminsFromDB(req.query);
 
   sendResponse(res, {
@@ -38,7 +39,7 @@ const getAllAdmins = catchAsync(async (req, res) => {
   });
 });
 
-const updateAdmin = catchAsync(async (req, res) => {
+const updateAdmin = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { adminData } = req.body;
   const result = await AdminServices.updateAdminIntoDB(id, adminData);
@@ -51,7 +52,7 @@ const updateAdmin = catchAsync(async (req, res) => {
   });
 });
 
-const deleteAdmin = catchAsync(async (req, res) => {
+const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await AdminServices.deleteAdminFromDB(id);
 

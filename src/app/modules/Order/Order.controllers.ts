@@ -1,9 +1,10 @@
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { Types } from 'mongoose';
 import catchAsync from '../../utils/catchAsync';
 import OrderServices from './Order.services';
 
-const createOrder = catchAsync(async (req, res) => {
+const createOrder = catchAsync(async (req: Request, res: Response) => {
   const userId = req.userData?.id as Types.ObjectId;
   const order = await OrderServices.createOrderIntoDB(
     userId as Types.ObjectId,
@@ -17,7 +18,7 @@ const createOrder = catchAsync(async (req, res) => {
   });
 });
 
-const getAllOrders = catchAsync(async (req, res) => {
+const getAllOrders = catchAsync(async (req: Request, res: Response) => {
   const { meta, result } = await OrderServices.getAllOrdersFromDB(req.query);
   res.status(200).json({
     success: true,
@@ -28,7 +29,7 @@ const getAllOrders = catchAsync(async (req, res) => {
   });
 });
 
-const getSingleOrder = catchAsync(async (req, res) => {
+const getSingleOrder = catchAsync(async (req: Request, res: Response) => {
   const order = await OrderServices.getSingleOrderFromDB(req.params.id);
   res.status(200).json({
     success: true,
@@ -38,7 +39,7 @@ const getSingleOrder = catchAsync(async (req, res) => {
   });
 });
 
-const updateOrder = catchAsync(async (req, res) => {
+const updateOrder = catchAsync(async (req: Request, res: Response) => {
   const order = await OrderServices.updateOrderIntoDB(req.params.id, req.body);
   res.status(200).json({
     success: true,
@@ -48,7 +49,7 @@ const updateOrder = catchAsync(async (req, res) => {
   });
 });
 
-const deleteOrder = catchAsync(async (req, res) => {
+const deleteOrder = catchAsync(async (req: Request, res: Response) => {
   const order = await OrderServices.deleteOrderFromDB(req.params.id);
   res.status(200).json({
     success: true,
