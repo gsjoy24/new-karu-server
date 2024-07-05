@@ -17,10 +17,7 @@ const userAuth = () => {
     // check if the token is valid
     let decoded;
     try {
-      decoded = jwt.verify(
-        token,
-        config.jwt_access_secret as string,
-      ) as JwtPayload;
+      decoded = jwt.verify(token, config.jwt_access_secret) as JwtPayload;
     } catch (error) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
@@ -37,7 +34,7 @@ const userAuth = () => {
       throw new AppError(httpStatus.NOT_FOUND, 'The user is not found');
     }
 
-    req.userData = decoded as JwtPayload;
+    req.userData = decoded;
     next();
   });
 };

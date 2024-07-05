@@ -6,10 +6,7 @@ import OrderServices from './Order.services';
 
 const createOrder = catchAsync(async (req: Request, res: Response) => {
   const userId = req.userData?.id as Types.ObjectId;
-  const order = await OrderServices.createOrderIntoDB(
-    userId as Types.ObjectId,
-    req.body,
-  );
+  const order = await OrderServices.createOrderIntoDB(userId, req.body);
   res.status(201).json({
     success: true,
     message: 'Order created successfully!',

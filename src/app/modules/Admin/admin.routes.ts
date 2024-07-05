@@ -33,4 +33,11 @@ router.delete(
   AdminControllers.deleteAdmin,
 );
 
+// router.patch(
+//   '/change-status/:id',
+//   auth(),
+//   validateRequest(userValidations.changeUserStatusValidationSchema),
+//   UserControllers.changeUserStatus,
+// );
+
 export const AdminRoutes = router;

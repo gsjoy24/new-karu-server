@@ -38,11 +38,4 @@ router.patch(
   UserControllers.manipulateQuantityInCart,
 );
 
-// router.patch(
-//   '/change-status/:id',
-//   auth(),
-//   validateRequest(userValidations.changeUserStatusValidationSchema),
-//   UserControllers.changeUserStatus,
-// );
-
 export const UserRoutes = router;

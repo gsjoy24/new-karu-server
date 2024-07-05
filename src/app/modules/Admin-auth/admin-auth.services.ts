@@ -35,8 +35,8 @@ const loginAdmin = async (payload: TLogin) => {
 
   const accessToken = createToken(
     jwtPayload,
-    config.jwt_access_secret as string,
-    config.jwt_access_expiration as string,
+    config.jwt_access_secret,
+    config.jwt_access_expiration,
   );
 
   return accessToken;

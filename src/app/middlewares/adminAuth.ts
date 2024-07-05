@@ -17,10 +17,7 @@ const adminAuth = (onlySuperAdmin?: string) => {
     // check if the token is valid
     let decoded;
     try {
-      decoded = jwt.verify(
-        token,
-        config.jwt_access_secret as string,
-      ) as JwtPayload;
+      decoded = jwt.verify(token, config.jwt_access_secret) as JwtPayload;
     } catch (error) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
@@ -46,7 +43,7 @@ const adminAuth = (onlySuperAdmin?: string) => {
       throw new AppError(httpStatus.NOT_FOUND, 'The admin is not found');
     }
 
-    req.adminData = decoded as JwtPayload;
+    req.adminData = decoded;
     next();
   });
 };
