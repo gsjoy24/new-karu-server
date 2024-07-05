@@ -1,33 +1,33 @@
 import express from 'express';
 import adminAuth from '../../middlewares/adminAuth';
 import validateRequest from '../../middlewares/validateRequest';
-import { AuthControllers } from './auth.controllers';
-import { AuthValidations } from './auth.validations';
+import { AuthValidations } from '../Auth/auth.validations';
+import AdminAuthControllers from './admin-auth.controller';
 const router = express.Router();
 
 router.post(
   '/login',
   validateRequest(AuthValidations.LoginUserValidationSchema),
-  AuthControllers.loginAdmin,
+  AdminAuthControllers.loginAdmin,
 );
 
 router.patch(
   '/change-password',
   adminAuth(),
   validateRequest(AuthValidations.changePasswordValidationSchema),
-  AuthControllers.changePasswordOfAdmin,
+  AdminAuthControllers.changePasswordOfAdmin,
 );
 
 // router.post(
 //   '/forgot-password',
 //   validateRequest(AuthValidations.forgotPasswordValidationSchema),
-//   AuthControllers.forgotPassword,
+//   AdminAuthControllers.forgotPassword,
 // );
 
 // router.post(
 //   '/reset-password',
 //   validateRequest(AuthValidations.resetPasswordValidationSchema),
-//   AuthControllers.resetPassword,
+//   AdminAuthControllers.resetPassword,
 // );
 
 export const AdminAuthRoutes = router;

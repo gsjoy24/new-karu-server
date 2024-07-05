@@ -1,6 +1,6 @@
 import { Router } from 'express';
+import { AdminAuthRoutes } from '../modules/Admin-auth/admin-auth.routes';
 import { AdminRoutes } from '../modules/Admin/admin.routes';
-import { AdminAuthRoutes } from '../modules/Auth/AdminAuth.routes';
 import { UserAuthRoutes } from '../modules/Auth/userAuth.routes';
 import CategoryRoutes from '../modules/Category/Category.routes';
 import { CouponRoutes } from '../modules/Coupon/Coupon.routes';

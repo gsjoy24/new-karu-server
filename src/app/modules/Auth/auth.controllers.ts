@@ -5,35 +5,6 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.services';
 
-const loginAdmin = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthServices.loginAdmin(req.body);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'The admin logged in successfully',
-    data: {
-      accessToken: result,
-    },
-  });
-});
-
-const changePasswordOfAdmin = catchAsync(
-  async (req: Request, res: Response) => {
-    const result = await AuthServices.changePasswordOfAdmin(
-      req?.adminData as JwtPayload,
-      req.body,
-    );
-
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Password changed successfully',
-      data: result,
-    });
-  },
-);
-
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginUser(req.body);
 
@@ -96,9 +67,7 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 // });
 
 export const AuthControllers = {
-  loginAdmin,
   loginUser,
-  changePasswordOfAdmin,
   changePasswordOfUser,
   getMe,
   // forgotPassword,
