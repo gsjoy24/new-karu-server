@@ -1,9 +1,12 @@
 import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
-import { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
+import ResetPasswordTemplate from '../../EmailTemplates/ResetPasswordTemplate';
 import AppError from '../../errors/AppError';
+import { AccountStatus } from '../constants';
 import { User } from '../User/User.model';
+import { sendEmail } from './../../utils/sendEmail';
 import { TChangePassword, TLogin } from './auth.types';
 import { createToken } from './auth.utils';
 
@@ -54,10 +57,19 @@ const loginUser = async (payload: TLogin) => {
     config.jwt_access_expiration as string,
   );
 
-  return accessToken;
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expiration as string,
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
-const changePasswordOfUser = async (
+const changePassword = async (
   userData: JwtPayload,
   payload: TChangePassword,
 ) => {
@@ -102,7 +114,6 @@ const changePasswordOfUser = async (
   return result;
 };
 
-// this function is used to get the user details from the toke. It is used in the /me route.
 const getMe = async (userData: JwtPayload) => {
   const { id, email } = userData;
 
@@ -116,8 +127,66 @@ const getMe = async (userData: JwtPayload) => {
   return result;
 };
 
+const refreshToken = async (token: string) => {
+  if (!token) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'You are not authorized!');
+  }
+  // check if the token is valid
+  const decoded = jwt.verify(token, config.jwt_refresh_secret) as JwtPayload;
+
+  // check if the user is exist
+  const user = await User.findOne({ _id: decoded.id });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'The user is not found!');
+  }
+
+  const jwtPayload = {
+    id: user?._id,
+    email: user?.email,
+    role: 'user',
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expiration as string,
+  );
+
+  return accessToken;
+};
+
+const forgotPassword = async (email: string) => {
+  // check if the user is exist and have active status
+  const user = await User.findOne({ email, status: AccountStatus.active });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  const jwtPayload = {
+    id: user?._id,
+    email: user?.email,
+  };
+
+  const resetToken = createToken(
+    jwtPayload,
+    config.password_reset_secret,
+    config.password_reset_expiration,
+  );
+
+  const resetUILink = `${config.app_url}?id=${user.id}&token=${resetToken}`;
+  const template = ResetPasswordTemplate(
+    user?.full_name || user?.name?.firstName,
+    user?.email,
+    resetUILink,
+  );
+  sendEmail(user?.email, template);
+  return;
+};
+
 export const AuthServices = {
   loginUser,
-  changePasswordOfUser,
+  changePassword,
+  forgotPassword,
   getMe,
+  refreshToken,
 };

@@ -29,8 +29,8 @@ const changePasswordValidationSchema = z.object({
 
 const forgotPasswordValidationSchema = z.object({
   body: z.object({
-    userId: z.string({
-      required_error: 'User id is required',
+    email: z.string({
+      required_error: 'Email is required',
     }),
   }),
 });

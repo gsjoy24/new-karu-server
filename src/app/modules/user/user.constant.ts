@@ -1,4 +1,4 @@
-export const UserStatus = ['in-progress', 'blocked'];
+export const UserStatus = ['active', 'blocked'];
 export const UserSearchableFields = [
   'name.firstName',
   'name.lastName',

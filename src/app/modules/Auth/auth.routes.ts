@@ -18,12 +18,13 @@ router.patch(
   validateRequest(AuthValidations.changePasswordValidationSchema),
   AuthControllers.changePasswordOfUser,
 );
+router.post('/refresh-user-token', AuthControllers.refreshToken);
 
-// router.post(
-//   '/forgot-password',
-//   validateRequest(AuthValidations.forgotPasswordValidationSchema),
-//   AuthControllers.forgotPassword,
-// );
+router.post(
+  '/forgot-password',
+  validateRequest(AuthValidations.forgotPasswordValidationSchema),
+  AuthControllers.forgotPassword,
+);
 
 // router.post(
 //   '/reset-password',

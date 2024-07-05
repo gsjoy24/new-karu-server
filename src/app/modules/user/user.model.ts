@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../config';
 import { TUserName } from '../../types/userInfo.types';
+import { AccountStatus } from '../constants';
 import { TCart, TUser, UserModel } from './User.types';
 
 const userNameSchema = new Schema<TUserName>(
@@ -82,8 +83,8 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     status: {
       type: String,
-      enum: ['in-progress', 'blocked'],
-      default: 'in-progress',
+      enum: [AccountStatus.active, AccountStatus.blocked],
+      default: 'active',
     },
   },
   {
@@ -105,6 +106,10 @@ userSchema.pre('save', async function (next) {
 
 userSchema.virtual('total_cart_items').get(function () {
   return this?.cart?.length || 0;
+});
+
+userSchema.virtual('full_name').get(function () {
+  return `${this?.name?.firstName} ${this?.name?.lastName}`;
 });
 
 userSchema.statics.isUserExists = async function (id: string) {

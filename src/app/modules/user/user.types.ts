@@ -11,6 +11,7 @@ export type TCart = {
 export interface TUser {
   _id?: string;
   name: TUserName;
+  full_name?: string;
   email: string;
   password: string;
   cart?: TCart[];
@@ -20,7 +21,7 @@ export interface TUser {
   postal_code?: string;
   mobile_number?: string;
   orders?: string[];
-  status?: 'in-progress' | 'blocked';
+  status?: 'active' | 'blocked';
   isDeleted: boolean;
 }
 

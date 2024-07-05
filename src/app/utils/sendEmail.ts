@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import config from '../config';
-export const sendEmail = async (to: string, resetUILink: string) => {
+export const sendEmail = async (to: string, html: string) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
@@ -13,9 +13,9 @@ export const sendEmail = async (to: string, resetUILink: string) => {
 
   await transporter.sendMail({
     from: 'gour.joy24@gmail.com', // sender address
-    to, // list of receivers
-    subject: 'Change Your Password', // Subject line
+    to,
+    subject: 'Reset Your Password', // Subject line
     text: `Reset Your Password in 15 minutes`, // plain text body
-    html: `Change Your Password here, ${resetUILink}`, // html body
+    html,
   });
 };
