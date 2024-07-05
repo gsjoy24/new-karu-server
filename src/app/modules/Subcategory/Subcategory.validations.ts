@@ -24,6 +24,7 @@ const CreateSubcategoryValidation = z.object({
         message: 'Subcategory description must be at most 255 characters long',
       })
       .optional(),
+    category: z.string({ required_error: 'Category id is required' }),
   }),
 });
 

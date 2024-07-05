@@ -19,7 +19,17 @@ const CreateCategory = async (data: TCategory) => {
 
 const GetCategories = async (params: string) => {
   const searchName = params ? { name: { $regex: params, $options: 'i' } } : {};
-  const categories = await Category.find(searchName);
+  const categories = await Category.aggregate([
+    { $match: searchName },
+    {
+      $lookup: {
+        from: 'subcategories',
+        localField: '_id',
+        foreignField: 'category',
+        as: 'subcategories',
+      },
+    },
+  ]);
   return categories;
 };
 

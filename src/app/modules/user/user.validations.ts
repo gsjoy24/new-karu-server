@@ -30,9 +30,8 @@ const userValidationSchema = z.object({
     }),
     password: z.string().refine(
       (data) => {
-        const passwordRegex = new RegExp(
-          '^(?=.*[a-z])(?=.*[A-Z])(?=.*/d)(?=.*[!@#\\$%^&\\*])(?=.{8,})',
-        );
+        const passwordRegex =
+          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return passwordRegex.test(data);
       },
       {
