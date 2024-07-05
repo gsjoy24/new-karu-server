@@ -7,7 +7,7 @@ import AppError from '../../errors/AppError';
 import { AccountStatus } from '../constants';
 import { User } from '../User/User.model';
 import { sendEmail } from './../../utils/sendEmail';
-import { TChangePassword, TLogin } from './auth.types';
+import { TChangePassword, TLogin, TResetPassword } from './auth.types';
 import { createToken } from './auth.utils';
 
 const loginUser = async (payload: TLogin) => {
@@ -173,14 +173,55 @@ const forgotPassword = async (email: string) => {
     config.password_reset_expiration,
   );
 
-  const resetUILink = `${config.app_url}?id=${user.id}&token=${resetToken}`;
+  const resetUILink = `${config.app_url}?id=${user?._id}&token=${resetToken}`;
+
   const template = ResetPasswordTemplate(
     user?.full_name || user?.name?.firstName,
     user?.email,
     resetUILink,
   );
+
   sendEmail(user?.email, template);
   return;
+};
+
+const resetPassword = async (payload: TResetPassword) => {
+  const { id, token, newPassword } = payload;
+  const user = await User.isUserExists(id);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // check if the user is blocked
+  if (user?.status === 'blocked') {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'You are blocked! Contact Support!',
+    );
+  }
+
+  // check if the token is valid
+  const decoded = jwt.verify(token, config.password_reset_secret) as JwtPayload;
+
+  if (decoded.id !== user?._id?.toString()) {
+    throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    Number(config.bcrypt_salt_round),
+  );
+
+  const result = await User.findOneAndUpdate(
+    {
+      _id: id,
+    },
+    {
+      password: hashedPassword,
+    },
+  );
+  return result;
 };
 
 export const AuthServices = {
@@ -189,4 +230,5 @@ export const AuthServices = {
   forgotPassword,
   getMe,
   refreshToken,
+  resetPassword,
 };

@@ -37,13 +37,17 @@ const forgotPasswordValidationSchema = z.object({
 
 const resetPasswordValidationSchema = z.object({
   body: z.object({
-    userId: z.string({
-      required_error: 'User id is required',
-    }),
-    newPassword: z.string({
-      required_error: 'User password is required',
-      invalid_type_error: 'User password must be a string',
-    }),
+    newPassword: z.string().refine(
+      (data) => {
+        const passwordRegex =
+          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return passwordRegex.test(data);
+      },
+      {
+        message:
+          'The password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character.',
+      },
+    ),
   }),
 });
 

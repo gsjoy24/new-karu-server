@@ -9,6 +9,7 @@ export type TChangePassword = {
 };
 
 export type TResetPassword = {
-  email: string;
+  token: string;
+  id: string;
   newPassword: string;
 };
