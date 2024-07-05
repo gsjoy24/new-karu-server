@@ -1,5 +1,7 @@
 import httpStatus from 'http-status';
+import mongoose from 'mongoose';
 import AppError from '../../errors/AppError';
+import Subcategory from '../Subcategory/Subcategory.model';
 import Category from './Category.model';
 import { TCategory } from './Category.types';
 
@@ -38,11 +40,29 @@ const UpdateCategoryById = async (id: string, data: Partial<TCategory>) => {
 };
 
 const DeleteCategoryById = async (id: string) => {
-  const category = await Category.findByIdAndDelete(id);
+  const session = await mongoose.startSession();
+  const category = await Category.findById(id);
   if (!category) {
     throw new AppError(httpStatus.NOT_FOUND, 'Category not found');
   }
-  return category;
+
+  try {
+    session.startTransaction();
+
+    await Subcategory.deleteMany({ category: id }, { session });
+    const category = await Category.findByIdAndDelete(id, {
+      session,
+    });
+
+    await session.commitTransaction();
+    await session.endSession();
+    return category;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(error);
+  }
 };
 
 export default {

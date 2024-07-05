@@ -16,15 +16,8 @@ const CreateSubcategory = async (data: TSubcategory) => {
 };
 
 const GetSubcategories = async (id: string) => {
+  // this function will be used on the category module to get all subcategories of a category
   const result = await Subcategory.find({ category: id });
-  return result;
-};
-
-const GetSubcategoryById = async (id: string) => {
-  const result = await Subcategory.findById(id);
-  if (!result) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Subcategory not found');
-  }
   return result;
 };
 
@@ -50,7 +43,6 @@ const DeleteSubcategoryById = async (id: string) => {
 const SubcategoryServices = {
   CreateSubcategory,
   GetSubcategories,
-  GetSubcategoryById,
   UpdateSubcategoryById,
   DeleteSubcategoryById,
 };
