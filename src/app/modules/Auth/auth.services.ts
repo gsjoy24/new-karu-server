@@ -2,9 +2,9 @@ import bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
+import { AccountStatus } from '../../constants';
 import ResetPasswordTemplate from '../../EmailTemplates/ResetPasswordTemplate';
 import AppError from '../../errors/AppError';
-import { AccountStatus } from '../constants';
 import { User } from '../User/User.model';
 import { sendEmail } from './../../utils/sendEmail';
 import { TChangePassword, TLogin, TResetPassword } from './auth.types';
@@ -181,7 +181,7 @@ const forgotPassword = async (email: string) => {
     resetUILink,
   );
 
-  sendEmail(user?.email, template);
+  sendEmail(user?.email, 'Reset Your Password', template);
   return;
 };
 

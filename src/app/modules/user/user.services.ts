@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { AccountStatus } from '../../constants';
 import AppError from '../../errors/AppError';
-import { AccountStatus } from '../constants';
 import Product from '../Product/Product.model';
 import { UserSearchableFields } from './User.constant';
 import { User } from './User.model';
