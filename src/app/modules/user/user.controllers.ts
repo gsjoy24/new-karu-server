@@ -105,6 +105,20 @@ const manipulateQuantityInCart: RequestHandler = catchAsync(
   },
 );
 
+const changeUserStatus: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await UserServices.changeUserStatus(id);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User status changed successfully!',
+      data: result,
+    });
+  },
+);
+
 export const UserControllers = {
   createUser,
   getAllUsers,
@@ -113,4 +127,5 @@ export const UserControllers = {
   addProductToCart,
   removeProductFromCart,
   manipulateQuantityInCart,
+  changeUserStatus,
 };

@@ -2,6 +2,7 @@
 import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
+import { AccountStatus } from '../constants';
 import Product from '../Product/Product.model';
 import { UserSearchableFields } from './User.constant';
 import { User } from './User.model';
@@ -21,7 +22,7 @@ const createUserIntoDB = async (payload: TUser) => {
 };
 
 const getAllUsersFromDB = async (query: Record<string, unknown>) => {
-  const userQuery = new QueryBuilder(Product.find(), query)
+  const userQuery = new QueryBuilder(User.find(), query)
     .search(UserSearchableFields)
     .filter()
     .sort()
@@ -67,12 +68,16 @@ const updateUserIntoDB = async (id: string, payload: TUser) => {
   return result;
 };
 
-const changeUserStatus = async (id: string, status: string) => {
+const changeUserStatus = async (id: string) => {
   const user = await User.isUserExists(id);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
-  const result = await User.findByIdAndUpdate(id, { status });
+  const status =
+    user.status === AccountStatus.active
+      ? AccountStatus.blocked
+      : AccountStatus.active;
+  const result = await User.findByIdAndUpdate(id, { status }, { new: true });
   return result;
 };
 

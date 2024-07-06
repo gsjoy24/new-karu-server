@@ -38,4 +38,10 @@ router.patch(
   UserControllers.manipulateQuantityInCart,
 );
 
+router.patch(
+  '/change-status/:id',
+  adminAuth(),
+  UserControllers.changeUserStatus,
+);
+
 export const UserRoutes = router;
