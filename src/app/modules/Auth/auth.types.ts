@@ -10,6 +10,5 @@ export type TChangePassword = {
 
 export type TResetPassword = {
   token: string;
-  id: string;
   newPassword: string;
 };

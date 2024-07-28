@@ -173,7 +173,7 @@ const forgotPassword = async (email: string) => {
     config.password_reset_expiration,
   );
 
-  const resetUILink = `${config.app_url}?id=${user?._id}&token=${resetToken}`;
+  const resetUILink = `${config.client_url}/reset-pass?token=${resetToken}`;
 
   const template = ResetPasswordTemplate(
     user?.full_name || user?.name?.firstName,
@@ -186,8 +186,14 @@ const forgotPassword = async (email: string) => {
 };
 
 const resetPassword = async (payload: TResetPassword) => {
-  const { id, token, newPassword } = payload;
-  const user = await User.isUserExists(id);
+  const { token, newPassword } = payload;
+  if (!token) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'You are not authorized!');
+  }
+
+  const decoded = jwt.verify(token, config.password_reset_secret) as JwtPayload;
+
+  const user = await User.isUserExists(decoded?.id);
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
@@ -201,9 +207,6 @@ const resetPassword = async (payload: TResetPassword) => {
     );
   }
 
-  // check if the token is valid
-  const decoded = jwt.verify(token, config.password_reset_secret) as JwtPayload;
-
   if (decoded.id !== user?._id?.toString()) {
     throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
   }
@@ -215,7 +218,7 @@ const resetPassword = async (payload: TResetPassword) => {
 
   const result = await User.findOneAndUpdate(
     {
-      _id: id,
+      _id: decoded.id,
     },
     {
       password: hashedPassword,

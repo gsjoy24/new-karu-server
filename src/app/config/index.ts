@@ -9,7 +9,7 @@ export default {
   super_admin_email: process.env.SUPER_ADMIN_EMAIL,
   super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
 
-  app_url: process.env.APP_URL,
+  client_url: process.env.client_url,
   database_url: process.env.DATABASE_URL,
 
   bcrypt_salt_round: process.env.BCRYPT_SALT_ROUND,
@@ -18,6 +18,10 @@ export default {
 
   jwt_refresh_secret: process.env.JWT_REFRESH_TOKEN as string,
   jwt_refresh_expiration: process.env.JWT_REFRESH_EXPIRES_IN as string,
+
+  email_confirmation_secret: process.env.EMAIL_CONFIRMATION_TOKEN as string,
+  email_confirmation_expiration: process.env
+    .EMAIL_CONFIRMATION_URL_EXPIRES_IN as string,
 
   password_reset_secret: process.env.PASSWORD_RESET_TOKEN as string,
   password_reset_expiration: process.env

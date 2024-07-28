@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
+import config from '../../config';
 import { AccountStatus } from '../../constants';
+import ConfirmEmailTemplate from '../../EmailTemplates/ConfirmEmailTemplate';
 import AppError from '../../errors/AppError';
+import { sendEmail } from '../../utils/sendEmail';
+import { createToken } from '../Auth/auth.utils';
 import Product from '../Product/Product.model';
 import { UserSearchableFields } from './User.constant';
 import { User } from './User.model';
@@ -10,7 +14,7 @@ import { TCart, TUser } from './User.types';
 
 const createUserIntoDB = async (payload: TUser) => {
   // check if user already exists
-  const user = await User.findOne({ email: payload.email });
+  const user = await User.findUserByEmail(payload.email);
   if (user) {
     throw new AppError(
       httpStatus.CONFLICT,
@@ -18,6 +22,28 @@ const createUserIntoDB = async (payload: TUser) => {
     );
   }
   const result = await User.create(payload);
+
+  // send email confirmation email
+  const jwtPayload = {
+    id: result?._id,
+    email: result?.email,
+  };
+
+  const confirmToken = createToken(
+    jwtPayload,
+    config.email_confirmation_secret,
+    config.email_confirmation_expiration,
+  );
+
+  const confirmUrl = `${config.client_url}/confirm-email?token=${confirmToken}`;
+
+  const template = ConfirmEmailTemplate(
+    result?.full_name || result?.name?.firstName,
+    result?.email,
+    confirmUrl,
+  );
+  sendEmail(result?.email, 'Email Confirmation Required', template);
+
   return result;
 };
 
