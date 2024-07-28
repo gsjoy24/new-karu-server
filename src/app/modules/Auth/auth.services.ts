@@ -42,6 +42,9 @@ const confirmEmail = async (token: string) => {
     {
       isEmailConfirmed: true,
     },
+    {
+      new: true,
+    },
   );
   return result;
 };

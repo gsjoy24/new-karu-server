@@ -34,6 +34,10 @@ const userAuth = () => {
       throw new AppError(httpStatus.NOT_FOUND, 'The user is not found');
     }
 
+    if (user?.isEmailConfirmed === false) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'Please confirm your email!');
+    }
+
     req.userData = decoded;
     next();
   });
