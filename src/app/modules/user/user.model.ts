@@ -55,6 +55,10 @@ const userSchema = new Schema<TUser, UserModel>(
       required: [true, 'Email is required!'],
       unique: true,
     },
+    isEmailConfirmed: {
+      type: Boolean,
+      default: false,
+    },
     password: {
       type: String,
       required: [true, 'Password is required!'],
@@ -121,6 +125,15 @@ userSchema.statics.isPasswordMatched = async function (
   hashedPassword: string,
 ) {
   return await bcrypt.compare(plainPassword, hashedPassword);
+};
+
+userSchema.statics.findUserByEmail = async function (email: string) {
+  return await this.findOne({ email });
+};
+
+userSchema.statics.isEmailConfirmed = async function (email: string) {
+  const user = await this.findOne({ email });
+  return user?.isEmailConfirmed;
 };
 
 export const User = model<TUser, UserModel>('User', userSchema);

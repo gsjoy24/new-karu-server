@@ -39,36 +39,6 @@ const userValidationSchema = z.object({
           'The password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character.',
       },
     ),
-    courier_address: z
-      .string({
-        required_error: 'Courier Address is required!',
-        invalid_type_error: 'Courier Address should be a string!',
-      })
-      .optional(),
-    city: z
-      .string({
-        required_error: 'City is required!',
-        invalid_type_error: 'City should be a string!',
-      })
-      .optional(),
-    district: z
-      .string({
-        required_error: 'District is required!',
-        invalid_type_error: 'District should be a string!',
-      })
-      .optional(),
-    postal_code: z
-      .string({
-        required_error: 'Postal Code is required!',
-        invalid_type_error: 'Postal Code should be a string!',
-      })
-      .optional(),
-    mobile_number: z
-      .string({
-        required_error: 'Mobile Number is required!',
-        invalid_type_error: 'Mobile Number should be a string!',
-      })
-      .optional(),
   }),
 });
 
@@ -97,11 +67,31 @@ const updateUserValidation = z.object({
       })
       .optional(),
   }),
-  courier_address: z.string().optional(),
-  city: z.string().optional(),
-  district: z.string().optional(),
+  courier_address: z
+    .string()
+    .min(3, {
+      message: 'Courier Address should be at least 3 characters long!',
+    })
+    .optional(),
+  city: z
+    .string()
+    .min(3, {
+      message: 'City should be at least 3 characters long!',
+    })
+    .optional(),
+  district: z
+    .string()
+    .min(3, {
+      message: 'District should be at least 3 characters long!',
+    })
+    .optional(),
   postal_code: z.string().optional(),
-  mobile_number: z.string().optional(),
+  mobile_number: z
+    .string()
+    .min(11, {
+      message: 'Mobile Number should be at least 11 characters',
+    })
+    .optional(),
   status: z.enum([...UserStatus] as [string, ...string[]]).optional(),
 });
 

@@ -13,6 +13,7 @@ export interface TUser {
   name: TUserName;
   full_name?: string;
   email: string;
+  isEmailConfirmed: boolean;
   password: string;
   cart?: TCart[];
   courier_address?: string;
@@ -31,4 +32,6 @@ export interface UserModel extends Model<TUser> {
     plainPassword: string,
     hashedPassword: string,
   ): Promise<boolean>;
+  findUserByEmail(email: string): Promise<TUser | null>;
+  isEmailConfirmed(email: string): Promise<boolean>;
 }
