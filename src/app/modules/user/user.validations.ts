@@ -9,7 +9,7 @@ const userValidationSchema = z.object({
           required_error: 'First Name is required!',
           invalid_type_error: 'First Name should be a string!',
         })
-        .min(3, { message: 'First Name should be at least 3 characters long!' })
+        .min(2, { message: 'First Name should be at least 2 characters long!' })
         .max(20, {
           message: 'First Name should be at most 20 characters long!',
         }),
@@ -18,8 +18,8 @@ const userValidationSchema = z.object({
           required_error: 'Last Name is required!',
           invalid_type_error: 'Last Name should be a string!',
         })
-        .min(3, {
-          message: 'Last Name should be at least 3 characters long!',
+        .min(2, {
+          message: 'Last Name should be at least 2 characters long!',
         })
         .max(20, {
           message: 'Last Name should be at most 20 characters long!',
@@ -48,8 +48,8 @@ const updateUserValidation = z.object({
       .object({
         firstName: z
           .string()
-          .min(3, {
-            message: 'First Name should be at least 3 characters long!',
+          .min(2, {
+            message: 'First Name should be at least 2 characters long!',
           })
           .max(20, {
             message: 'First Name should be at most 20 characters long!',
@@ -57,8 +57,8 @@ const updateUserValidation = z.object({
           .optional(),
         lastName: z
           .string()
-          .min(3, {
-            message: 'Last Name should be at least 3 characters long!',
+          .min(2, {
+            message: 'Last Name should be at least 2 characters long!',
           })
           .max(20, {
             message: 'Last Name should be at most 20 characters long!',
