@@ -6,6 +6,18 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.services';
 
+const confirmEmail = catchAsync(async (req: Request, res: Response) => {
+  const { token } = req.query as { token: string };
+  const result = await AuthServices.confirmEmail(token);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Email confirmed successfully',
+    data: result,
+  });
+});
+
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginUser(req.body);
 
@@ -95,6 +107,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const AuthControllers = {
+  confirmEmail,
   loginUser,
   changePasswordOfUser,
   getMe,

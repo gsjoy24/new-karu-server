@@ -14,13 +14,14 @@ import { TCart, TUser } from './User.types';
 
 const createUserIntoDB = async (payload: TUser) => {
   // check if user already exists
-  const user = await User.findUserByEmail(payload.email);
+  const user = await User.findUserByEmail(payload?.email);
   if (user) {
     throw new AppError(
       httpStatus.CONFLICT,
       'An user already exists with this email!',
     );
   }
+
   const result = await User.create(payload);
 
   // send email confirmation email
@@ -42,8 +43,7 @@ const createUserIntoDB = async (payload: TUser) => {
     result?.email,
     confirmUrl,
   );
-  sendEmail(result?.email, 'Email Confirmation Required', template);
-
+  sendEmail(result?.email, 'Confirm email for Karukon', template);
   return result;
 };
 

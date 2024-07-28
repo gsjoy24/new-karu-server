@@ -10,6 +10,42 @@ import { sendEmail } from './../../utils/sendEmail';
 import { TChangePassword, TLogin, TResetPassword } from './auth.types';
 import { createToken } from './auth.utils';
 
+const confirmEmail = async (token: string) => {
+  if (!token) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'You are not authorized!');
+  }
+
+  const decoded = jwt.verify(
+    token,
+    config.email_confirmation_secret,
+  ) as JwtPayload;
+
+  const user = await User.isUserExists(decoded?.id);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // check if the user is blocked
+  if (user?.status === 'blocked') {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'You are blocked! Contact Support!',
+    );
+  }
+
+  const result = await User.findOneAndUpdate(
+    {
+      _id: decoded.id,
+      email: decoded.email,
+    },
+    {
+      isEmailConfirmed: true,
+    },
+  );
+  return result;
+};
+
 const loginUser = async (payload: TLogin) => {
   const { email, password } = payload;
 
@@ -228,6 +264,7 @@ const resetPassword = async (payload: TResetPassword) => {
 };
 
 export const AuthServices = {
+  confirmEmail,
   loginUser,
   changePassword,
   forgotPassword,

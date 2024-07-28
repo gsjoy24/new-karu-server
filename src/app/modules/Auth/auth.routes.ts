@@ -6,6 +6,7 @@ import { AuthValidations } from './auth.validations';
 
 const router = express.Router();
 
+router.post('/confirm-email', AuthControllers.confirmEmail);
 router.post(
   '/login',
   validateRequest(AuthValidations.LoginUserValidationSchema),

@@ -10,7 +10,8 @@ const createUser: RequestHandler = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'User created successfully!',
+      message:
+        'User created successfully! Please check your email to verify your account.',
       data: result,
     });
   },
