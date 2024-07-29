@@ -5,6 +5,7 @@ export type TInfo = {
 
 export type TProduct = {
   _id?: string;
+  slug: string;
   name: string;
   description: string;
   additional_info: TInfo[];

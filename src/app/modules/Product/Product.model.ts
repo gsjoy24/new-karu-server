@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import generateSlug from '../../utils/generateSlug';
 import { TProduct } from './Product.types';
 
 const AdditionalInfoSchema = new Schema(
@@ -18,6 +19,10 @@ const AdditionalInfoSchema = new Schema(
 );
 const ProductSchema = new Schema<TProduct>(
   {
+    slug: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
       required: [true, 'Product name is required'],
@@ -58,6 +63,14 @@ const ProductSchema = new Schema<TProduct>(
     },
   },
 );
+
+// the pre-save hook is used to generate the slug for the product before saving it to the database. It checks if the name field has been modified and generates a slug using the generateSlug utility function.
+ProductSchema.pre('save', function (next) {
+  if (this.isModified('name')) {
+    this.slug = generateSlug(this.name);
+  }
+  next();
+});
 
 // the virtual property discountPercentage is used to calculate the discount percentage of a product. It is not stored in the database but can be accessed as a property of the product object. It is calculated by subtracting the last_price from the old_price, dividing the result by the old_price, and then multiplying by 100.
 ProductSchema.virtual('discountPercentage ').get(function () {

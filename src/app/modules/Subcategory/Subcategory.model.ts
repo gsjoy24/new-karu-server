@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import generateSlug from '../../utils/generateSlug';
 import { TSubcategory } from './Subcategory.type';
 
 const SubcategorySchema = new Schema<TSubcategory>({
@@ -16,6 +17,18 @@ const SubcategorySchema = new Schema<TSubcategory>({
     type: String,
     required: true,
   },
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+});
+
+SubcategorySchema.pre('save', function (next) {
+  if (this.isModified('name')) {
+    this.slug = generateSlug(this.name);
+  }
+  next();
 });
 
 const Subcategory = model<TSubcategory>('Subcategory', SubcategorySchema);

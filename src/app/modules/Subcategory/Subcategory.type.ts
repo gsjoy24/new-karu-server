@@ -5,4 +5,5 @@ export type TSubcategory = {
   name: string;
   category: Types.ObjectId;
   description?: string;
+  slug: string;
 };
