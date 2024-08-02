@@ -4,22 +4,6 @@ import Category from '../Category/Category.model';
 import Subcategory from '../Subcategory/Subcategory.model';
 import { TProduct } from './Product.types';
 
-const AdditionalInfoSchema = new Schema(
-  {
-    title: {
-      type: String,
-      required: [true, 'Additional info title is required'],
-    },
-    description: {
-      type: String,
-      required: [true, 'Description is required'],
-    },
-  },
-  {
-    _id: false,
-  },
-);
-
 const ProductSchema = new Schema<TProduct>(
   {
     slug: {
@@ -34,6 +18,10 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       required: [true, 'Product description is required'],
     },
+    tags: {
+      type: [String],
+      required: [true, 'Product tags are required'],
+    },
     old_price: {
       type: Number,
       required: [true, 'Old price is required'],
@@ -45,10 +33,6 @@ const ProductSchema = new Schema<TProduct>(
     stock: {
       type: Number,
       required: [true, 'Stock is required'],
-    },
-    primary_image: {
-      type: String,
-      required: [true, 'Primary image is required'],
     },
     images: {
       type: [String],

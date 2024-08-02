@@ -8,10 +8,10 @@ export type TProduct = {
   old_price: number;
   last_price: number;
   stock: number;
-  primary_image: string;
   images: string[];
   category: Types.ObjectId;
   sub_category?: Types.ObjectId;
+  tags: string[];
   createdAt?: Date;
   updatedAt?: Date;
 };

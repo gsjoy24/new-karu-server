@@ -30,14 +30,16 @@ const CreateProductValidationSchema = z.object({
       .positive({
         message: 'Stock should be a positive number',
       }),
-    primary_image: z.string({
-      required_error: 'Primary image is required',
-      invalid_type_error: 'Primary image should be a string',
-    }),
     images: z.array(
       z.string({
         required_error: 'Images are required',
         invalid_type_error: 'Images should be a string',
+      }),
+    ),
+    tags: z.array(
+      z.string({
+        required_error: 'Tags are required',
+        invalid_type_error: 'Tags should be a string',
       }),
     ),
     category: z.string({
@@ -80,15 +82,17 @@ const UpdateProductsValidationSchema = z.object({
         message: 'Stock should be a positive number',
       })
       .optional(),
-    primary_image: z
-      .string({
-        invalid_type_error: 'Primary image should be a string',
-      })
-      .optional(),
     images: z
       .array(
         z.string({
           invalid_type_error: 'Images should be a string',
+        }),
+      )
+      .optional(),
+    tags: z
+      .array(
+        z.string({
+          invalid_type_error: 'Tags should be a string',
         }),
       )
       .optional(),
