@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import generateSlug from '../../utils/generateSlug';
+import Category from '../Category/Category.model';
+import Subcategory from '../Subcategory/Subcategory.model';
 import { TProduct } from './Product.types';
 
 const AdditionalInfoSchema = new Schema(
@@ -17,11 +19,12 @@ const AdditionalInfoSchema = new Schema(
     _id: false,
   },
 );
+
 const ProductSchema = new Schema<TProduct>(
   {
     slug: {
       type: String,
-      required: true,
+      unique: true,
     },
     name: {
       type: String,
@@ -53,8 +56,12 @@ const ProductSchema = new Schema<TProduct>(
       required: [true, 'Images are required'],
     },
     category: {
-      type: String,
-      required: [true, 'Category is required'],
+      type: Schema.Types.ObjectId,
+      ref: 'Category',
+    },
+    sub_category: {
+      type: Schema.Types.ObjectId,
+      ref: 'SubCategory',
     },
   },
   {
@@ -63,6 +70,25 @@ const ProductSchema = new Schema<TProduct>(
     },
   },
 );
+
+// checking if the category and subcategory of the product exist before saving it to the database. If the category or subcategory does not exist, an error is thrown.
+ProductSchema.pre('save', async function (next) {
+  const category = await Category.findById(this.category);
+  if (!category) {
+    throw new Error('Category not found');
+  }
+
+  const subCategory = await Subcategory.findOne({
+    _id: this.sub_category,
+    category: this.category,
+  });
+
+  if (!subCategory) {
+    throw new Error('Subcategory not found');
+  }
+
+  next();
+});
 
 // the pre-save hook is used to generate the slug for the product before saving it to the database. It checks if the name field has been modified and generates a slug using the generateSlug utility function.
 ProductSchema.pre('save', function (next) {

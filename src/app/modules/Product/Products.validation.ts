@@ -42,7 +42,9 @@ const CreateProductValidationSchema = z.object({
     ),
     category: z.string({
       required_error: 'Category is required',
-      invalid_type_error: 'Category should be a string',
+    }),
+    sub_category: z.string({
+      required_error: 'Sub category is required',
     }),
     additional_info: z
       .array(
