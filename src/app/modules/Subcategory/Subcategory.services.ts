@@ -40,11 +40,34 @@ const DeleteSubcategoryById = async (id: string) => {
   return result;
 };
 
+// search all category from products and make a list of unique subcategories and their products
+const GetSubcategoriesWithProducts = async () => {
+  const result = await Subcategory.aggregate([
+    {
+      $lookup: {
+        from: 'products',
+        localField: '_id',
+        foreignField: 'subcategory',
+        as: 'products',
+      },
+    },
+    {
+      $group: {
+        _id: '$_id',
+        name: { $first: '$name' },
+        products: { $push: '$products' },
+      },
+    },
+  ]);
+  return result;
+};
+
 const SubcategoryServices = {
   CreateSubcategory,
   GetSubcategories,
   UpdateSubcategoryById,
   DeleteSubcategoryById,
+  GetSubcategoriesWithProducts,
 };
 
 export default SubcategoryServices;

@@ -44,18 +44,20 @@ const CreateProductValidationSchema = z.object({
       required_error: 'Category is required',
       invalid_type_error: 'Category should be a string',
     }),
-    additional_info: z.array(
-      z.object({
-        title: z.string({
-          required_error: 'Additional info title is required',
-          invalid_type_error: 'Additional info title should be a string',
+    additional_info: z
+      .array(
+        z.object({
+          title: z.string({
+            required_error: 'Additional info title is required',
+            invalid_type_error: 'Additional info title should be a string',
+          }),
+          description: z.string({
+            required_error: 'Description is required',
+            invalid_type_error: 'Description should be a string',
+          }),
         }),
-        description: z.string({
-          required_error: 'Description is required',
-          invalid_type_error: 'Description should be a string',
-        }),
-      }),
-    ),
+      )
+      .optional(),
   }),
 });
 

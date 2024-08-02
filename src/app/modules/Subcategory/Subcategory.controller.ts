@@ -44,10 +44,22 @@ const DeleteSubcategoryById = async (req: Request, res: Response) => {
   });
 };
 
+const GetSubcategoriesWithProducts = async (req: Request, res: Response) => {
+  const result = await SubcategoryServices.GetSubcategoriesWithProducts();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Subcategories fetched successfully',
+    data: result,
+  });
+};
+
 const SubcategoryControllers = {
   CreateSubcategory,
   UpdateSubcategoryById,
   DeleteSubcategoryById,
+  GetSubcategoriesWithProducts,
 };
 
 export default SubcategoryControllers;
