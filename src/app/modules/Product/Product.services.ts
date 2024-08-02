@@ -42,14 +42,9 @@ const getProductById = async (id: string) => {
 };
 
 const updateProductById = async (id: string, product: Partial<TProduct>) => {
-  const { additional_info, ...remainingProductData } = product;
+  const { ...remainingProductData } = product;
   const modifiedProduct: Record<string, unknown> = { ...remainingProductData };
 
-  if (additional_info && Object.keys(additional_info).length) {
-    for (const [key, value] of Object.entries(additional_info)) {
-      modifiedProduct[`additional_info.${key}`] = value;
-    }
-  }
   const result = await Product.findByIdAndUpdate(id, modifiedProduct, {
     new: true,
   });

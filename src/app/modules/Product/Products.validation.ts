@@ -46,20 +46,6 @@ const CreateProductValidationSchema = z.object({
     sub_category: z.string({
       required_error: 'Sub category is required',
     }),
-    additional_info: z
-      .array(
-        z.object({
-          title: z.string({
-            required_error: 'Additional info title is required',
-            invalid_type_error: 'Additional info title should be a string',
-          }),
-          description: z.string({
-            required_error: 'Description is required',
-            invalid_type_error: 'Description should be a string',
-          }),
-        }),
-      )
-      .optional(),
   }),
 });
 
@@ -109,27 +95,13 @@ const UpdateProductsValidationSchema = z.object({
     category: z
       .string({
         required_error: 'Category is required',
-        invalid_type_error: 'Category should be a string',
       })
       .optional(),
-    additional_info: z.array(
-      z
-        .object({
-          title: z
-            .string({
-              required_error: 'Additional info title is required',
-              invalid_type_error: 'Additional info title should be a string',
-            })
-            .optional(),
-          description: z
-            .string({
-              required_error: 'Description is required',
-              invalid_type_error: 'Description should be a string',
-            })
-            .optional(),
-        })
-        .optional(),
-    ),
+    sub_category: z
+      .string({
+        required_error: 'Sub category is required',
+      })
+      .optional(),
   }),
 });
 

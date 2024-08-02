@@ -34,7 +34,6 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       required: [true, 'Product description is required'],
     },
-    additional_info: [AdditionalInfoSchema],
     old_price: {
       type: Number,
       required: [true, 'Old price is required'],
