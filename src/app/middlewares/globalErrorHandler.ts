@@ -3,6 +3,7 @@ import { ZodError } from 'zod';
 import config from '../config';
 import AppError from '../errors/AppError';
 import { handleCastError } from '../errors/handleCastError';
+import handleDuplicateError from '../errors/handleDuplicateError';
 import handleValidationError from '../errors/handleValidationError';
 import { handleZodError } from '../errors/handleZodError';
 import { TErrorSources } from '../types/error.types';
@@ -41,6 +42,11 @@ const globalErrorHandler: ErrorRequestHandler = (
     statusCode = simplifyError?.statusCode;
     message = simplifyError?.message;
     errorSources = simplifyError?.errorSources;
+  } else if (err?.code === 11000) {
+    const simplifiedError = handleDuplicateError(err);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSources;
   } else if (err instanceof AppError) {
     statusCode = err?.statusCode;
     message = err?.message;
