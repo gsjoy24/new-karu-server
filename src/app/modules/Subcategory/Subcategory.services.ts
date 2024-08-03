@@ -41,8 +41,7 @@ const DeleteSubcategoryById = async (id: string) => {
 };
 
 const GetSubcategoriesWithProducts = async () => {
-  // this function will be used on the product module to get all subcategories with their 4 products image, all product count
-
+  // this function will be used on the home page to get all subcategories with products for each subcategory.
   const result = await Subcategory.aggregate([
     {
       $lookup: {
@@ -53,15 +52,30 @@ const GetSubcategoriesWithProducts = async () => {
       },
     },
     {
-      $project: {
-        name: 1,
-        slug: 1,
-        description: 1,
-        productCount: { $size: '$products' },
-        products: { $slice: ['$products', 4] },
+      $lookup: {
+        from: 'categories',
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category',
       },
     },
+    {
+      $project: {
+        name: 1,
+        category_slug: { $arrayElemAt: ['$category.slug', 0] },
+        products: {
+          $slice: ['$products', 4],
+        },
+        productCount: {
+          $size: '$products',
+        },
+      },
+    },
+    {
+      $limit: 16,
+    },
   ]);
+
   return result;
 };
 
