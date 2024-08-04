@@ -64,6 +64,7 @@ const GetSubcategoriesWithProducts = async () => {
     {
       $project: {
         name: 1,
+        slug: 1,
         category_slug: { $arrayElemAt: ['$category.slug', 0] },
         products: {
           $slice: ['$products.images', 4],

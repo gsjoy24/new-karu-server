@@ -26,7 +26,6 @@ const getProducts = async (query: Record<string, unknown>) => {
   };
 };
 
-// get last 10 products as new arrivals for home page based on createdAt field
 const getNewArrivals = async () => {
   const result = await Product.find().sort({ createdAt: -1 }).limit(10);
   return result;
@@ -39,6 +38,16 @@ const getProductById = async (id: string) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
   }
   return result;
+};
+
+const getProductBySlug = async (slug: string) => {
+  const product = await Product.findOne({
+    slug,
+  });
+  if (!product) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  return product;
 };
 
 const updateProductById = async (id: string, product: Partial<TProduct>) => {
@@ -71,6 +80,8 @@ const ProductServices = {
   getProductById,
   updateProductById,
   deleteProductById,
+
+  getProductBySlug,
 };
 
 export default ProductServices;

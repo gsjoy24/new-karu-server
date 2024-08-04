@@ -13,12 +13,11 @@ router.post(
   ProductController.addProduct,
 );
 router.get('/', ProductController.getProducts);
-
-// this route will fetch the last 10 products as new arrivals for the home page based on the createdAt field.
 router.get('/new-arrivals', ProductController.getNewArrivals);
-router.get('/:id', ProductController.getProductById);
+router.get('/slug/:slug', ProductController.getProductBySlug);
+router.get('/id/:id', ProductController.getProductById);
 router.put(
-  '/:id',
+  '/update/:id',
   validateRequest(ProductValidations.UpdateProductsValidationSchema),
   adminAuth(),
   ProductController.updateProductById,

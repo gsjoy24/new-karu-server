@@ -49,6 +49,16 @@ const getProductById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getProductBySlug = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductServices.getProductBySlug(req.params.slug);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product is fetched successfully',
+    data: result,
+  });
+});
+
 const updateProductById = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductServices.updateProductById(
     req.params.id,
@@ -81,6 +91,8 @@ const ProductController = {
   getProductById,
   updateProductById,
   deleteProductById,
+
+  getProductBySlug,
 };
 
 export default ProductController;

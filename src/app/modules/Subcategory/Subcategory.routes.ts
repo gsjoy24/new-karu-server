@@ -24,10 +24,7 @@ router.put(
 
 router.delete('/:id', adminAuth(), SubcategoryController.DeleteSubcategoryById);
 
-router.get(
-  '/subcategory-with-products',
-  SubcategoryController.GetSubcategoriesWithProducts,
-);
+router.get('/collection', SubcategoryController.GetSubcategoriesWithProducts);
 
 const SubcategoryRoutes = router;
 
