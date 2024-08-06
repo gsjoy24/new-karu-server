@@ -44,7 +44,7 @@ const ProductSchema = new Schema<TProduct>(
     },
     sub_category: {
       type: Schema.Types.ObjectId,
-      ref: 'SubCategory',
+      ref: 'Subcategory',
     },
   },
   {

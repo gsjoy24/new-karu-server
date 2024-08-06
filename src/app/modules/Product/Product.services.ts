@@ -32,7 +32,7 @@ const getNewArrivals = async () => {
 };
 
 const getProductById = async (id: string) => {
-  const result = await Product.findById(id);
+  const result = await Product.findById(id).populate('category sub_category');
 
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
@@ -43,7 +43,7 @@ const getProductById = async (id: string) => {
 const getProductBySlug = async (slug: string) => {
   const product = await Product.findOne({
     slug,
-  });
+  }).populate('category sub_category');
   if (!product) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
   }

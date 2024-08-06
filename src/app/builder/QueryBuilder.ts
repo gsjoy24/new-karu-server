@@ -62,6 +62,7 @@ class QueryBuilder<T> {
 
     return this;
   }
+
   async countTotal() {
     const limit = this?.query?.limit ? Number(this?.query?.limit) : 10;
     const page = this?.query?.page ? Number(this?.query?.page) : 1;
