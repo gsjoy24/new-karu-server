@@ -11,9 +11,11 @@ const addProduct = async (product: TProduct) => {
 };
 
 const getProducts = async (query: Record<string, unknown>) => {
-  const productQuery = new QueryBuilder(Product.find(), query)
-    .search(ProductsSearchableFields)
-    .filter()
+  const productQuery = (
+    await new QueryBuilder(Product.find(), query)
+      .search(ProductsSearchableFields)
+      .filter()
+  )
     .sort()
     .paginate()
     .fields();

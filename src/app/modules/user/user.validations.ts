@@ -87,11 +87,19 @@ const updateUserValidation = z.object({
     .optional(),
   postal_code: z.string().optional(),
   mobile_number: z
-    .string()
-    .min(11, {
-      message: 'Mobile Number should be at least 11 characters',
+    .string({
+      required_error: 'Mobile Number is required!',
     })
-    .optional(),
+    .refine(
+      (value) => {
+        // at least 10 digits and at most 14 digits and only digits are allowed
+        const regex = /^(\+?88)?01[0-9]{9}$/;
+        return regex.test(value);
+      },
+      {
+        message: 'Enter a valid phone number!',
+      },
+    ),
   status: z.enum([...UserStatus] as [string, ...string[]]).optional(),
 });
 
