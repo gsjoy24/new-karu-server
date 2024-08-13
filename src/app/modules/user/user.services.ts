@@ -48,9 +48,11 @@ const createUserIntoDB = async (payload: TUser) => {
 };
 
 const getAllUsersFromDB = async (query: Record<string, unknown>) => {
-  const userQuery = new QueryBuilder(User.find(), query)
-    .search(UserSearchableFields)
-    .filter()
+  const userQuery = (
+    await new QueryBuilder(User.find(), query)
+      .search(UserSearchableFields)
+      .filter()
+  )
     .sort()
     .paginate()
     .fields();

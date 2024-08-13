@@ -8,6 +8,7 @@ interface QueryParams {
   page?: number;
   limit?: number;
   sort?: string;
+  sortOrder?: string;
   fields?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
@@ -55,7 +56,14 @@ class QueryBuilder<T> {
    */
   public async filter() {
     const queryObj = { ...this.query };
-    const excludeFields = ['searchTerm', 'page', 'limit', 'sort', 'fields'];
+    const excludeFields = [
+      'searchTerm',
+      'page',
+      'limit',
+      'sort',
+      'sortOrder',
+      'fields',
+    ];
     excludeFields.forEach((el) => delete queryObj[el]);
 
     // Translate category slug to ID
@@ -95,8 +103,11 @@ class QueryBuilder<T> {
     const sort = this.query.sort
       ? this.query.sort.split(',').join(' ')
       : '-createdAt';
+    const sortOrder = this.query.sortOrder ?? 'asc';
 
-    this.modelQuery = this.modelQuery.sort(sort);
+    this.modelQuery = this.modelQuery.sort({
+      [sort]: sortOrder === 'asc' ? 1 : -1,
+    });
 
     return this;
   }

@@ -19,9 +19,11 @@ const createAdminIntoDB = async (payload: TAdmin) => {
 };
 
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
-  const adminQuery = new QueryBuilder(Admin.find(), query)
-    .search(AdminSearchableFields)
-    .filter()
+  const adminQuery = (
+    await new QueryBuilder(Admin.find(), query)
+      .search(AdminSearchableFields)
+      .filter()
+  )
     .sort()
     .paginate()
     .fields();

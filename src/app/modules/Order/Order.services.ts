@@ -23,9 +23,11 @@ const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
 };
 
 const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
-  const ordersQuery = new QueryBuilder(Order.find(), query)
-    .search(OrderSearchableFields)
-    .filter()
+  const ordersQuery = (
+    await new QueryBuilder(Order.find(), query)
+      .search(OrderSearchableFields)
+      .filter()
+  )
     .sort()
     .paginate()
     .fields();
