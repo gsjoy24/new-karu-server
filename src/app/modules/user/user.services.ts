@@ -43,7 +43,7 @@ const createUserIntoDB = async (payload: TUser) => {
     result?.email,
     confirmUrl,
   );
-  sendEmail(result?.email, 'Confirm email for Karukon', template);
+  await sendEmail(result?.email, 'Confirm email for Karukon', template);
   return result;
 };
 
