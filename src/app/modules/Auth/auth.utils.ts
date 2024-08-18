@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import httpStatus from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import AppError from '../../errors/AppError';
 
 export const createToken = (
   jwtPayload: { id: string | undefined; email: string; role?: string },
@@ -9,5 +12,9 @@ export const createToken = (
 };
 
 export const verifyToken = (token: string, secret: string) => {
-  return jwt.verify(token, secret) as JwtPayload;
+  try {
+    return jwt.verify(token, secret) as JwtPayload;
+  } catch (error: any) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid token');
+  }
 };

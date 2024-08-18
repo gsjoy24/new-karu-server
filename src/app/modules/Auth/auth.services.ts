@@ -8,17 +8,14 @@ import AppError from '../../errors/AppError';
 import { User } from '../User/User.model';
 import { sendEmail } from './../../utils/sendEmail';
 import { TChangePassword, TLogin, TResetPassword } from './auth.types';
-import { createToken } from './auth.utils';
+import { createToken, verifyToken } from './auth.utils';
 
 const confirmEmail = async (token: string) => {
   if (!token) {
     throw new AppError(httpStatus.BAD_REQUEST, 'You are not authorized!');
   }
 
-  const decoded = jwt.verify(
-    token,
-    config.email_confirmation_secret,
-  ) as JwtPayload;
+  const decoded = verifyToken(token, config.email_confirmation_secret);
 
   const user = await User.isUserExists(decoded?.id);
 
@@ -31,6 +28,14 @@ const confirmEmail = async (token: string) => {
     throw new AppError(
       httpStatus.FORBIDDEN,
       'You are blocked! Contact Support!',
+    );
+  }
+
+  // check if the user is already confirmed
+  if (user.isEmailConfirmed) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Your email is already confirmed!',
     );
   }
 
