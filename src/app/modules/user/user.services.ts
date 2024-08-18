@@ -189,6 +189,14 @@ const removeProductFromCart = async (productId: string, product: string) => {
   return result;
 };
 
+const deleteUnconfirmedUsers = async () => {
+  const result = await User.deleteMany({
+    isEmailConfirmed: false,
+    createdAt: { $lt: new Date(Date.now() - 30 * 60000) },
+  });
+  return result;
+};
+
 export const UserServices = {
   createUserIntoDB,
   getAllUsersFromDB,
@@ -198,4 +206,5 @@ export const UserServices = {
   addProductToCart,
   removeProductFromCart,
   manipulateQuantityInCart,
+  deleteUnconfirmedUsers,
 };
