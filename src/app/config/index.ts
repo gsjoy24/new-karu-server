@@ -27,6 +27,6 @@ export default {
   password_reset_expiration: process.env
     .PASSWORD_RESET_URL_EXPIRES_IN as string,
 
-  support_email: process.env.SUPPORT_EMAIL,
+  support_email: process.env.SUPPORT_EMAIL as string,
   support_email_password: process.env.SUPPORT_EMAIL_PASSWORD,
 };

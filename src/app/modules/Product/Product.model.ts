@@ -82,7 +82,7 @@ ProductSchema.pre('save', function (next) {
 });
 
 // the virtual property discountPercentage is used to calculate the discount percentage of a product. It is not stored in the database but can be accessed as a property of the product object. It is calculated by subtracting the last_price from the old_price, dividing the result by the old_price, and then multiplying by 100.
-ProductSchema.virtual('discountPercentage ').get(function () {
+ProductSchema.virtual('discountPercentage').get(function () {
   return Math.ceil(((this.old_price - this.last_price) / this.old_price) * 100);
 });
 

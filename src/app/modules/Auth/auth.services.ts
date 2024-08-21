@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 import { AccountStatus } from '../../constants';
+import PasswordChangeNotificationTemplate from '../../EmailTemplates/PasswordChangeNotificationTemplate';
 import ResetPasswordTemplate from '../../EmailTemplates/ResetPasswordTemplate';
 import AppError from '../../errors/AppError';
 import { User } from '../User/User.model';
@@ -154,6 +155,13 @@ const changePassword = async (
   const result = await User.findByIdAndUpdate(userData.id, {
     password: hashedPassword,
   });
+  const template = PasswordChangeNotificationTemplate(
+    user?.full_name || user?.name?.firstName,
+    user?.email,
+    config.support_email,
+  );
+
+  await sendEmail(user?.email, 'Password Changed', template);
 
   return result;
 };
@@ -225,7 +233,7 @@ const forgotPassword = async (email: string) => {
     resetUILink,
   );
 
-  sendEmail(user?.email, 'Reset Your Password', template);
+  await sendEmail(user?.email, 'Reset Your Password', template);
   return;
 };
 
