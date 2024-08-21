@@ -22,7 +22,7 @@ const ConfirmEmailTemplate = (name: string, email: string, link: string) => {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .header {
-            background-color: #0073e6;
+            background-color: #242D39;
             color: #ffffff;
             padding: 10px 20px;
             text-align: center;
@@ -34,7 +34,7 @@ const ConfirmEmailTemplate = (name: string, email: string, link: string) => {
         }
         .button {
             display: inline-block;
-            background-color: #0073e6;
+            background-color: #242D39;
             color: #ffffff;
             padding: 10px 20px;
             text-decoration: none;

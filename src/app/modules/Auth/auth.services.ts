@@ -80,6 +80,14 @@ const loginUser = async (payload: TLogin) => {
     );
   }
 
+  // check if the user is confirmed the email
+  if (!user.isEmailConfirmed) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'Your email is not confirmed! Please confirm your email first to login!',
+    );
+  }
+
   // check if the password is correct
   const isPasswordMatch = await User.isPasswordMatched(
     password,

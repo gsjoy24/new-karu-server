@@ -26,7 +26,7 @@ const PasswordChangeNotificationTemplate = (
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .header {
-            background-color: #28a745;
+            background-color: #242D39;
             color: #ffffff;
             padding: 10px 20px;
             text-align: center;
