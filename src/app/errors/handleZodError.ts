@@ -10,7 +10,7 @@ export const handleZodError = (err: ZodError): TGenericErrorResponse => {
 
   return {
     statusCode,
-    message: 'validation error on input data',
+    message: 'validation error on input data!',
     errorSources,
   };
 };

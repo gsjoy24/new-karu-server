@@ -13,7 +13,7 @@ const confirmEmail = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Email confirmed successfully',
+    message: 'Email confirmed successfully!',
     data: result,
   });
 });
@@ -31,7 +31,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User logged in successfully',
+    message: 'User logged in successfully!',
     data: {
       accessToken: result?.accessToken,
     },
@@ -58,7 +58,7 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User details fetched successfully',
+    message: 'User details fetched successfully!',
     data: result,
   });
 });
@@ -71,7 +71,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Token refreshed successfully',
+    message: 'Token refreshed successfully!',
     data: {
       accessToken: result,
     },
@@ -85,14 +85,13 @@ const forgotPassword = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Password reset link sent successfully',
+    message: 'Password reset link sent successfully!',
     data: null,
   });
 });
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
-  const { token } = req.query as { token: string };
-  const { newPassword } = req.body;
+  const { newPassword, token } = req.body;
   const result = await AuthServices.resetPassword({
     token,
     newPassword,
@@ -101,7 +100,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Password reset successfully',
+    message: 'Password reset successfully!',
     data: result,
   });
 });
