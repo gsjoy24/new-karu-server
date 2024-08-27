@@ -10,3 +10,5 @@ export const OrderSearchableFields = [
   'shipping_method',
   'courier_address',
 ];
+
+export const OrderStatus = ['pending', 'processing', 'shipped', 'delivered'];

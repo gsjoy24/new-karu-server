@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { OrderStatus } from './Order.constant';
 
 const OrderValidationSchema = z.object({
   body: z.object({
@@ -38,9 +39,7 @@ const updateOrderValidation = z.object({
     payment_method: z.string().optional(),
     shipping_method: z.string().optional(),
     courier_address: z.string().optional(),
-    status: z
-      .enum(['pending', 'processing', 'shipped', 'delivered'])
-      .optional(),
+    status: z.enum([OrderStatus[0], ...OrderStatus.slice(1)]).optional(),
   }),
 });
 
