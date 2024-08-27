@@ -11,8 +11,8 @@ const OrderSchema = new Schema<TOrder>(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    email: { type: String },
-    mobile_number: { type: String },
+    name: { type: String },
+    phone: { type: String },
     products: [
       {
         product: { type: Schema.Types.ObjectId, ref: 'Product' },
@@ -20,8 +20,7 @@ const OrderSchema = new Schema<TOrder>(
         total_price: { type: Number, required: true },
       },
     ],
-    house_number: { type: String },
-    street_address: { type: String },
+    address: { type: String },
     district: { type: String },
     city: { type: String },
     order_note: { type: String },

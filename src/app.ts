@@ -7,17 +7,20 @@ import notFound from './app/middlewares/notFound';
 import { UserServices } from './app/modules/User/User.services';
 import router from './app/routes';
 const app: Application = express();
+
 const allowedOrigins = [
   'http://localhost:3000',
   'https://karukon.com',
   'https://karukon.vercel.app',
 ];
+
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
   }),
 );
+
 // parser
 app.use(express.json());
 app.use(cookieParser());

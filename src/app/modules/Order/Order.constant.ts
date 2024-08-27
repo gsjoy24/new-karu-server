@@ -1,10 +1,8 @@
 export const OrderSearchableFields = [
   'order_id',
   'name',
-  'email',
-  'mobile_number',
-  'house_number',
-  'street_address',
+  'phone',
+  'address',
   'district',
   'city',
   'order_note',

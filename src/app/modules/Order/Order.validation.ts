@@ -2,15 +2,8 @@ import { z } from 'zod';
 
 const OrderValidationSchema = z.object({
   body: z.object({
-    email: z
-      .string({
-        required_error: 'Email is required',
-      })
-      .email({
-        message: 'Invalid email address',
-      }),
-    mobile_number: z.string({
-      required_error: 'Mobile number is required',
+    phone: z.string({
+      required_error: 'Phone number is required',
     }),
     products: z.array(
       z.object({
@@ -25,33 +18,20 @@ const OrderValidationSchema = z.object({
         }),
       }),
     ),
-    house_number: z.string().optional(),
-    street_address: z.string().optional(),
+    address: z.string().optional(),
     district: z.string(),
     city: z.string(),
     order_note: z.string().optional(),
-    payment_method: z.string({
-      required_error: 'Payment method is required',
-    }),
-    shipping_method: z.string({
-      required_error: 'Shipping method is required',
-    }),
+    payment_method: z.string().optional(),
+    shipping_method: z.string().optional(),
     courier_address: z.string().optional(),
-    status: z.enum(['pending', 'processing', 'shipped', 'delivered']),
   }),
 });
 
 const updateOrderValidation = z.object({
   body: z.object({
-    email: z
-      .string()
-      .email({
-        message: 'Invalid email address',
-      })
-      .optional(),
-    mobile_number: z.string().optional(),
-    house_number: z.string().optional(),
-    street_address: z.string().optional(),
+    phone: z.string().optional(),
+    address: z.string().optional(),
     district: z.string().optional(),
     city: z.string().optional(),
     order_note: z.string().optional(),
