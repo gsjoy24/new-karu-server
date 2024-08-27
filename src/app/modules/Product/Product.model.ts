@@ -10,6 +10,10 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       unique: true,
     },
+    sm: {
+      type: String,
+      unique: true,
+    },
     name: {
       type: String,
       required: [true, 'Product name is required'],

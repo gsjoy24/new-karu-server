@@ -1,3 +1,3 @@
-export const ProductsSearchableFields = ['name', 'description'];
-export const ProductsSortableFields = ['name', 'price', 'createdAt'];
-export const ProductsFilterableFields = ['category', 'sub_category'];
+export const ProductsSearchableFields = ['sm', 'name', 'description'];
+export const ProductsSortableFields = ['sm', 'name', 'price', 'createdAt'];
+export const ProductsFilterableFields = ['sm', 'category', 'sub_category'];
