@@ -3,21 +3,31 @@ import { Types } from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import generateUniqueId from '../../utils/generateUniqueId';
+import { User } from '../User/User.model';
 import { OrderSearchableFields } from './Order.constant';
 import Order from './Order.model';
 import { TOrder } from './Order.types';
 
 const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
   const modifiedData = { ...order };
 
   // Adding order_id and customer to the order
   modifiedData.order_id = generateUniqueId();
   modifiedData.customer = userId;
+
   const newOrder = await Order.create(modifiedData);
 
   if (!newOrder) {
     throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Order not created');
   }
+
+  // remove all product from user cart
+  user.cart = [];
+  await user.save();
 
   return newOrder;
 };

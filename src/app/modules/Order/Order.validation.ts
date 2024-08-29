@@ -22,13 +22,16 @@ const OrderValidationSchema = z.object({
         }),
       }),
     ),
-    address: z.string().optional(),
-    district: z.string(),
-    city: z.string(),
+    address: z.string({
+      required_error: 'Address is required',
+    }),
+    district: z.string({
+      required_error: 'District is required',
+    }),
+    city: z.string({
+      required_error: 'City is required',
+    }),
     order_note: z.string().optional(),
-    payment_method: z.string().optional(),
-    shipping_method: z.string().optional(),
-    courier_address: z.string().optional(),
   }),
 });
 
@@ -39,9 +42,6 @@ const updateOrderValidation = z.object({
     district: z.string().optional(),
     city: z.string().optional(),
     order_note: z.string().optional(),
-    payment_method: z.string().optional(),
-    shipping_method: z.string().optional(),
-    courier_address: z.string().optional(),
     status: z.enum([OrderStatus[0], ...OrderStatus.slice(1)]).optional(),
   }),
 });

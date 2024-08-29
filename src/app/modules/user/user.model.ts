@@ -65,15 +65,11 @@ const userSchema = new Schema<TUser, UserModel>(
       select: false,
     },
     cart: [cartSchema],
-    courier_address: {
+    address: {
       type: String,
       trim: true,
     },
     city: {
-      type: String,
-      trim: true,
-    },
-    postal_code: {
       type: String,
       trim: true,
     },
@@ -101,10 +97,9 @@ const userSchema = new Schema<TUser, UserModel>(
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_round),
-  );
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(user.password, config.bcrypt_salt_round);
+  }
   next();
 });
 

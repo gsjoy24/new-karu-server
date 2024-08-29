@@ -67,10 +67,10 @@ const updateUserValidation = z.object({
       })
       .optional(),
   }),
-  courier_address: z
+  address: z
     .string()
     .min(3, {
-      message: 'Courier Address should be at least 3 characters long!',
+      message: 'Address should be at least 3 characters long!',
     })
     .optional(),
   city: z
@@ -85,7 +85,6 @@ const updateUserValidation = z.object({
       message: 'District should be at least 3 characters long!',
     })
     .optional(),
-  postal_code: z.string().optional(),
   mobile_number: z
     .string({
       required_error: 'Mobile Number is required!',

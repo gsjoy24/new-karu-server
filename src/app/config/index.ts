@@ -12,7 +12,7 @@ export default {
   client_url: process.env.CLIENT_URL,
   database_url: process.env.DATABASE_URL,
 
-  bcrypt_salt_round: process.env.BCRYPT_SALT_ROUND,
+  bcrypt_salt_round: process.env.BCRYPT_SALT_ROUND as string,
   jwt_access_secret: process.env.JWT_ACCESS_TOKEN as string,
   jwt_access_expiration: process.env.JWT_ACCESS_EXPIRES_IN as string,
 

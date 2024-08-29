@@ -24,9 +24,6 @@ const OrderSchema = new Schema<TOrder>(
     district: { type: String },
     city: { type: String },
     order_note: { type: String },
-    payment_method: { type: String },
-    shipping_method: { type: String },
-    courier_address: { type: String },
     status: {
       type: String,
       enum: ['pending', 'processing', 'shipped', 'delivered'],

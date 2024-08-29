@@ -16,10 +16,9 @@ export interface TUser {
   isEmailConfirmed: boolean;
   password: string;
   cart?: TCart[];
-  courier_address?: string;
-  city?: string;
+  address?: string;
   district?: string;
-  postal_code?: string;
+  city?: string;
   mobile_number?: string;
   orders?: string[];
   status?: 'active' | 'blocked';
