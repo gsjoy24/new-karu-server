@@ -51,7 +51,7 @@ const updateUser: RequestHandler = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Students Updated successfully!',
+      message: 'Updated successfully!',
       data: result,
     });
   },

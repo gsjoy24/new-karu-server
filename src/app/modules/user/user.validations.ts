@@ -66,40 +66,40 @@ const updateUserValidation = z.object({
           .optional(),
       })
       .optional(),
+    address: z
+      .string()
+      .min(3, {
+        message: 'Address should be at least 3 characters long!',
+      })
+      .optional(),
+    city: z
+      .string()
+      .min(3, {
+        message: 'City should be at least 3 characters long!',
+      })
+      .optional(),
+    district: z
+      .string()
+      .min(3, {
+        message: 'District should be at least 3 characters long!',
+      })
+      .optional(),
+    mobile_number: z
+      .string({
+        required_error: 'Mobile Number is required!',
+      })
+      .refine(
+        (value) => {
+          // at least 11 digits and at most 14 digits and only digits are allowed
+          const regex = /^(\+?88)?01[0-9]{9}$/;
+          return regex.test(value);
+        },
+        {
+          message: 'Enter a valid phone number!',
+        },
+      ),
+    status: z.enum([...UserStatus] as [string, ...string[]]).optional(),
   }),
-  address: z
-    .string()
-    .min(3, {
-      message: 'Address should be at least 3 characters long!',
-    })
-    .optional(),
-  city: z
-    .string()
-    .min(3, {
-      message: 'City should be at least 3 characters long!',
-    })
-    .optional(),
-  district: z
-    .string()
-    .min(3, {
-      message: 'District should be at least 3 characters long!',
-    })
-    .optional(),
-  mobile_number: z
-    .string({
-      required_error: 'Mobile Number is required!',
-    })
-    .refine(
-      (value) => {
-        // at least 10 digits and at most 14 digits and only digits are allowed
-        const regex = /^(\+?88)?01[0-9]{9}$/;
-        return regex.test(value);
-      },
-      {
-        message: 'Enter a valid phone number!',
-      },
-    ),
-  status: z.enum([...UserStatus] as [string, ...string[]]).optional(),
 });
 
 const addProductToCartValidation = z.object({
