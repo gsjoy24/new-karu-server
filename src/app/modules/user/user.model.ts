@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-import config from '../../config';
 import { AccountStatus } from '../../constants';
 import { TUserName } from '../../types/userInfo.types';
 import { TCart, TUser, UserModel } from './User.types';
@@ -102,7 +101,7 @@ userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
   if (user.isModified('password')) {
-    user.password = await bcrypt.hash(user.password, config.bcrypt_salt_round);
+    user.password = await bcrypt.hash(user.password, 10);
   }
   next();
 });

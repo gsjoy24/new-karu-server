@@ -43,7 +43,10 @@ const getAllOrdersFromDB = async (
   }
 
   const ordersQuery = (
-    await new QueryBuilder(Order.find(queryData).populate('customer'), query)
+    await new QueryBuilder(
+      Order.find(queryData).populate('customer products.product'),
+      query,
+    )
       .search(OrderSearchableFields)
       .filter()
   )

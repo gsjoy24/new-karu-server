@@ -1,6 +1,11 @@
 import { Types } from 'mongoose';
 
-export type TOrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered';
+export type TOrderStatus =
+  | 'pending'
+  | 'processing'
+  | 'shipped'
+  | 'cancel'
+  | 'delivered';
 
 export type TOrderProduct = {
   _id?: string;
