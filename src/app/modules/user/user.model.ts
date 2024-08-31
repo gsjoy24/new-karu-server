@@ -55,6 +55,10 @@ const userSchema = new Schema<TUser, UserModel>(
       required: [true, 'Email is required!'],
       unique: true,
     },
+    role: {
+      type: String,
+      default: 'user',
+    },
     isEmailConfirmed: {
       type: Boolean,
       default: false,

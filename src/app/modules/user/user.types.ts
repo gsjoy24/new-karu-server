@@ -13,6 +13,7 @@ export interface TUser {
   name: TUserName;
   full_name?: string;
   email: string;
+  role: 'user';
   isEmailConfirmed: boolean;
   password: string;
   cart?: TCart[];

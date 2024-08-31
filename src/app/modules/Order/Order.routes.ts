@@ -1,5 +1,6 @@
 import express from 'express';
 import adminAuth from '../../middlewares/adminAuth';
+import AuthGuard from '../../middlewares/AuthGuard';
 import userAuth from '../../middlewares/userAuth';
 import validateRequest from '../../middlewares/validateRequest';
 import OrderControllers from './Order.controllers';
@@ -13,7 +14,7 @@ router.post(
   validateRequest(orderValidations.OrderValidationSchema),
   OrderControllers.createOrder,
 );
-router.get('/', adminAuth(), OrderControllers.getAllOrders);
+router.get('/', AuthGuard('user', 'admin'), OrderControllers.getAllOrders);
 router.get('/:id', adminAuth(), OrderControllers.getSingleOrder);
 router.put(
   '/:id',

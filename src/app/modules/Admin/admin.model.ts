@@ -36,6 +36,14 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
       required: [true, 'Email is required'],
       unique: true,
     },
+    isEmailConfirmed: {
+      type: Boolean,
+      default: true,
+    },
+    role: {
+      type: String,
+      default: 'admin',
+    },
     password: {
       type: String,
       required: [true, 'Password is required'],

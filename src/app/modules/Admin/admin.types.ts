@@ -11,6 +11,8 @@ export type TAdmin = {
   gender: TGender;
   dateOfBirth?: Date;
   email: string;
+  role: 'admin';
+  isEmailConfirmed?: boolean;
   contactNo: string;
   presentAddress: string;
   permanentAddress: string;

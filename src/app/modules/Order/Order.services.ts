@@ -4,6 +4,7 @@ import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import generateUniqueId from '../../utils/generateUniqueId';
 import { User } from '../User/User.model';
+import { TUser } from '../User/User.types';
 import { OrderSearchableFields } from './Order.constant';
 import Order from './Order.model';
 import { TOrder } from './Order.types';
@@ -32,9 +33,17 @@ const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
   return newOrder;
 };
 
-const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
+const getAllOrdersFromDB = async (
+  query: Record<string, unknown>,
+  user: TUser,
+) => {
+  const queryData: Record<string, unknown> = {};
+  if (user.role === 'user') {
+    queryData['customer'] = user._id;
+  }
+
   const ordersQuery = (
-    await new QueryBuilder(Order.find(), query)
+    await new QueryBuilder(Order.find(queryData).populate('customer'), query)
       .search(OrderSearchableFields)
       .filter()
   )
