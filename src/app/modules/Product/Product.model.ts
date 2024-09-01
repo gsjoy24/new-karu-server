@@ -10,7 +10,7 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       unique: true,
     },
-    sm: {
+    serial_number: {
       type: String,
       unique: true,
     },
@@ -21,6 +21,10 @@ const ProductSchema = new Schema<TProduct>(
     description: {
       type: String,
       required: [true, 'Product description is required'],
+    },
+    short_description: {
+      type: String,
+      required: [true, 'Product short description is required'],
     },
     tags: {
       type: [String],

@@ -3,9 +3,10 @@ import { Types } from 'mongoose';
 export type TProduct = {
   _id?: string;
   slug: string;
-  sm: string;
+  serial_number: string;
   name: string;
   description: string;
+  short_description: string;
   old_price: number;
   last_price: number;
   stock: number;
