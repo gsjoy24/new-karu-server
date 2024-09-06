@@ -18,15 +18,12 @@ const CategorySchema = new Schema<TCategory>({
   },
   slug: {
     type: String,
-    required: true,
     unique: true,
   },
 });
 
 CategorySchema.pre('save', function (next) {
-  if (this.isModified('name')) {
-    this.slug = generateSlug(this.name);
-  }
+  this.slug = generateSlug(this.name);
   next();
 });
 
