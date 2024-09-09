@@ -19,15 +19,12 @@ const SubcategorySchema = new Schema<TSubcategory>({
   },
   slug: {
     type: String,
-    required: true,
     unique: true,
   },
 });
 
 SubcategorySchema.pre('save', function (next) {
-  if (this.isModified('name')) {
-    this.slug = generateSlug(this.name);
-  }
+  this.slug = generateSlug(this.name);
   next();
 });
 
