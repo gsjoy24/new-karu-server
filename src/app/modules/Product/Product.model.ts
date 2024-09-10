@@ -83,9 +83,7 @@ ProductSchema.pre('save', async function (next) {
 
 // the pre-save hook is used to generate the slug for the product before saving it to the database. It checks if the name field has been modified and generates a slug using the generateSlug utility function.
 ProductSchema.pre('save', function (next) {
-  if (this.isModified('name')) {
-    this.slug = generateSlug(this.name);
-  }
+  this.slug = generateSlug(this.name);
   next();
 });
 
