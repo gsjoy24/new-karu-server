@@ -29,7 +29,7 @@ const getProducts = async (query: Record<string, unknown>) => {
 };
 
 const getNewArrivals = async () => {
-  const result = await Product.find().sort({ createdAt: -1 }).limit(10);
+  const result = await Product.find().sort({ createdAt: -1 }).limit(20);
   return result;
 };
 

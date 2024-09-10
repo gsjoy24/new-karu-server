@@ -17,7 +17,7 @@ interface QueryParams {
 class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
   private query: QueryParams;
-  private defaultLimit = 10;
+  private defaultLimit = 20;
   categoryModel: any;
   subCategoryModel: any;
 
