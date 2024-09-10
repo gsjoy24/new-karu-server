@@ -37,11 +37,6 @@ const OrderValidationSchema = z.object({
 
 const updateOrderValidation = z.object({
   body: z.object({
-    phone: z.string().optional(),
-    address: z.string().optional(),
-    district: z.string().optional(),
-    city: z.string().optional(),
-    order_note: z.string().optional(),
     status: z.enum([OrderStatus[0], ...OrderStatus.slice(1)]).optional(),
   }),
 });

@@ -8,4 +8,10 @@ export const OrderSearchableFields = [
   'order_note',
 ];
 
-export const OrderStatus = ['pending', 'processing', 'shipped', 'delivered'];
+export const OrderStatus = [
+  'pending',
+  'processing',
+  'shipped',
+  'delivered',
+  'cancel',
+];

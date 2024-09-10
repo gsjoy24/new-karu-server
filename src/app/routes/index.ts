@@ -4,10 +4,12 @@ import { AdminRoutes } from '../modules/Admin/admin.routes';
 import { UserAuthRoutes } from '../modules/Auth/auth.routes';
 import CategoryRoutes from '../modules/Category/Category.routes';
 import { CouponRoutes } from '../modules/Coupon/Coupon.routes';
+import DashboardRoutes from '../modules/Dashboard/Dashboard.routes';
 import { OrderRoutes } from '../modules/Order/Order.routes';
 import { ProductRoutes } from '../modules/Product/Products.routes';
 import SubcategoryRoutes from '../modules/Subcategory/Subcategory.routes';
-import { UserRoutes } from '../modules/User/User.routes';
+import { UserRoutes } from '../modules/user/user.routes';
+
 const router = Router();
 
 const moduleRoutes = [
@@ -46,6 +48,10 @@ const moduleRoutes = [
   {
     path: '/coupons',
     route: CouponRoutes,
+  },
+  {
+    path: '/dashboard',
+    route: DashboardRoutes,
   },
 ];
 
