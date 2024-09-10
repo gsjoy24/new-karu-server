@@ -4,11 +4,7 @@ export const ProductsSearchableFields = [
   'description',
   'tags',
   'short_description',
-  'serial_number',
+  'sku',
 ];
 export const ProductsSortableFields = ['name', 'price', 'createdAt'];
-export const ProductsFilterableFields = [
-  'serial_number',
-  'category',
-  'sub_category',
-];
+export const ProductsFilterableFields = ['sku', 'category', 'sub_category'];

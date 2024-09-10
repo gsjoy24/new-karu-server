@@ -2,9 +2,8 @@ import { z } from 'zod';
 
 const CreateProductValidationSchema = z.object({
   body: z.object({
-    serial_number: z.string({
-      required_error: 'Serial number is required',
-      invalid_type_error: 'Serial number should be a string',
+    sku: z.string({
+      required_error: 'SKU is required',
     }),
     name: z.string({
       required_error: 'Product name is required',
@@ -65,7 +64,7 @@ const CreateProductValidationSchema = z.object({
 
 const UpdateProductsValidationSchema = z.object({
   body: z.object({
-    serial_number: z
+    sku: z
       .string({
         invalid_type_error: 'Serial number should be a string',
       })

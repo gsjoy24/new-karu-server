@@ -9,6 +9,7 @@ import router from './app/routes';
 const app: Application = express();
 
 const allowedOrigins = [
+  'http://localhost:3000',
   'http://localhost:5173',
   'https://karukon.com',
   'https://dashboard.karukon.com',

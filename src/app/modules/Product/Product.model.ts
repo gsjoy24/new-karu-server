@@ -10,7 +10,7 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       unique: true,
     },
-    serial_number: {
+    sku: {
       type: String,
       unique: true,
     },
