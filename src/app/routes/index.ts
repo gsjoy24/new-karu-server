@@ -8,7 +8,7 @@ import DashboardRoutes from '../modules/Dashboard/Dashboard.routes';
 import { OrderRoutes } from '../modules/Order/Order.routes';
 import { ProductRoutes } from '../modules/Product/Products.routes';
 import SubcategoryRoutes from '../modules/Subcategory/Subcategory.routes';
-import { UserRoutes } from '../modules/user/user.routes';
+import { UserRoutes } from '../modules/User/User.routes';
 
 const router = Router();
 
