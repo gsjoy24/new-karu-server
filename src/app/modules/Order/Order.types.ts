@@ -21,6 +21,7 @@ export type TOrder = {
   name: string;
   phone: string;
   products: TOrderProduct[];
+  total_price: number;
   address?: string;
   district?: string;
   city?: string;

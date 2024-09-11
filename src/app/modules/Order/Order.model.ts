@@ -20,6 +20,7 @@ const OrderSchema = new Schema<TOrder>(
         total_price: { type: Number, required: true },
       },
     ],
+    total_price: { type: Number },
     address: { type: String },
     district: { type: String },
     city: { type: String },

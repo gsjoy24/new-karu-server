@@ -22,6 +22,10 @@ const OrderValidationSchema = z.object({
         }),
       }),
     ),
+    total_price: z.number({
+      required_error: 'Total price is required',
+      invalid_type_error: 'Total price must be a number',
+    }),
     address: z.string({
       required_error: 'Address is required',
     }),
