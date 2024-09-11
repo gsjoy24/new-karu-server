@@ -6,6 +6,7 @@ export const OrderSearchableFields = [
   'district',
   'city',
   'order_note',
+  'status',
 ];
 
 export const OrderStatus = [
