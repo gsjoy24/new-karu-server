@@ -28,17 +28,14 @@ const userValidationSchema = z.object({
     email: z.string().email({
       message: 'Invalid email format!',
     }),
-    password: z.string().refine(
-      (data) => {
-        const passwordRegex =
-          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return passwordRegex.test(data);
-      },
-      {
-        message:
-          'The password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character.',
-      },
-    ),
+    password: z
+      .string({
+        required_error: 'Password is required!',
+        invalid_type_error: 'Password should be a string!',
+      })
+      .min(8, {
+        message: 'Password should be at least 8 characters long!',
+      }),
   }),
 });
 

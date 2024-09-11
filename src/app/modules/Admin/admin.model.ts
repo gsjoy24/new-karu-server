@@ -47,7 +47,6 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
     password: {
       type: String,
       required: [true, 'Password is required'],
-      minlength: [6, 'Password can not be less than 6 characters'],
       select: false,
     },
     gender: {

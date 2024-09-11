@@ -13,8 +13,7 @@ export const createAdminValidationSchema = z.object({
         required_error: 'Password is required',
         invalid_type_error: 'The value must be a string',
       })
-      .min(6, 'Password can not be less than 6 characters')
-      .max(20, 'Password can not be more than 20 characters'),
+      .min(8, 'Password can not be less than 8 characters'),
     email: z
       .string({
         required_error: 'Email is required',
