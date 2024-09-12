@@ -41,8 +41,6 @@ const DeleteSubcategoryById = async (id: string) => {
 };
 
 const GetSubcategoriesWithProducts = async () => {
-  // this function will be used on the home page to get all subcategories with products for each subcategory.
-
   // i need only the product images form the products array
   const result = await Subcategory.aggregate([
     {

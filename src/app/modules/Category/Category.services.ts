@@ -24,8 +24,11 @@ const GetCategories = async (params: string) => {
     {
       $lookup: {
         from: 'subcategories',
-        localField: '_id',
-        foreignField: 'category',
+        let: { categoryId: '$_id' },
+        pipeline: [
+          { $match: { $expr: { $eq: ['$category', '$$categoryId'] } } },
+          { $sort: { created_at: -1 } },
+        ],
         as: 'subcategories',
       },
     },
