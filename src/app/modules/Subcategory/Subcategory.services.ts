@@ -75,7 +75,9 @@ const GetSubcategoriesWithProducts = async () => {
       },
     },
     {
-      $limit: 16,
+      $sort: {
+        created_at: 1,
+      },
     },
   ]);
 

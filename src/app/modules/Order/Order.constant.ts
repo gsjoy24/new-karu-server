@@ -14,5 +14,5 @@ export const OrderStatus = [
   'processing',
   'shipped',
   'delivered',
-  'cancel',
+  'cancelled',
 ];

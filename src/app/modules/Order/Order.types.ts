@@ -4,7 +4,7 @@ export type TOrderStatus =
   | 'pending'
   | 'processing'
   | 'shipped'
-  | 'cancel'
+  | 'cancelled'
   | 'delivered';
 
 export type TOrderProduct = {

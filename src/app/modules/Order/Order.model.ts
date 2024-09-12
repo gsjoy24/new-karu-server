@@ -27,7 +27,7 @@ const OrderSchema = new Schema<TOrder>(
     order_note: { type: String },
     status: {
       type: String,
-      enum: ['pending', 'processing', 'shipped', 'cancel', 'delivered'],
+      enum: ['pending', 'processing', 'shipped', 'cancelled', 'delivered'],
       default: 'pending',
     },
   },
