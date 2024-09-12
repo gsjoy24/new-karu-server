@@ -14,15 +14,28 @@ const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
   const modifiedData = { ...order };
 
   // Adding order_id and customer to the order
-  modifiedData.order_id = generateUniqueId();
+  // Generate a unique order_id and check its uniqueness in DB
+  let isUnique = false;
+  while (!isUnique) {
+    const generatedId = generateUniqueId(); // Ensure this function generates truly unique IDs (consider using UUID)
+    const existingOrder = await Order.findOne({
+      order_id: generatedId,
+    }).session(session);
+    if (!existingOrder) {
+      modifiedData.order_id = generatedId;
+      isUnique = true;
+    }
+  }
   modifiedData.customer = userId;
 
   try {
     session.startTransaction();
 
-    // decrease product quantity in stock
+    // Decrease product quantity in stock
     for (const product of modifiedData.products) {
-      const productInDB = await Product.findById(product.product);
+      const productInDB = await Product.findById(product.product).session(
+        session,
+      );
       if (!productInDB) {
         throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
       }
@@ -33,7 +46,7 @@ const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
       await productInDB.save({ session });
     }
 
-    const newOrder = await Order.create(modifiedData, { session });
+    const newOrder = await Order.create([modifiedData], { session });
 
     await session.commitTransaction();
     await session.endSession();
