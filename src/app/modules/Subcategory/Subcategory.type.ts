@@ -6,4 +6,6 @@ export type TSubcategory = {
   category: Types.ObjectId;
   description?: string;
   slug: string;
+  created_at?: Date;
+  updated_at?: Date;
 };

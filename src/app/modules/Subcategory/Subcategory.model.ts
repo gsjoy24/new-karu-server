@@ -21,6 +21,14 @@ const SubcategorySchema = new Schema<TSubcategory>({
     type: String,
     unique: true,
   },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+  updated_at: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 SubcategorySchema.pre('save', function (next) {
