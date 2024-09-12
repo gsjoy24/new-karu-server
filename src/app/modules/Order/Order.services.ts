@@ -4,6 +4,7 @@ import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import generateUniqueId from '../../utils/generateUniqueId';
 import Product from '../Product/Product.model';
+import { User } from '../User/User.model';
 import { TUser } from '../User/User.types';
 import { OrderSearchableFields } from './Order.constant';
 import Order from './Order.model';
@@ -46,11 +47,17 @@ const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
       await productInDB.save({ session });
     }
 
+    await User.findByIdAndUpdate(
+      userId,
+      { $set: { cart: [] } },
+      { new: true, session },
+    );
+
     const newOrder = await Order.create([modifiedData], { session });
 
     await session.commitTransaction();
     await session.endSession();
-    return newOrder;
+    return newOrder[0] ?? {};
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     await session.abortTransaction();
