@@ -72,6 +72,7 @@ const GetSubcategoriesWithProducts = async () => {
         productCount: {
           $size: '$products',
         },
+        created_at: 1,
       },
     },
     {
