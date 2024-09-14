@@ -28,45 +28,12 @@ const userValidationSchema = z.object({
 const updateUserValidation = z.object({
   body: z.object({
     name: z
-      .object({
-        firstName: z
-          .string()
-          .min(2, {
-            message: 'First Name should be at least 2 characters long!',
-          })
-          .max(20, {
-            message: 'First Name should be at most 20 characters long!',
-          })
-          .optional(),
-        lastName: z
-          .string()
-          .min(2, {
-            message: 'Last Name should be at least 2 characters long!',
-          })
-          .max(20, {
-            message: 'Last Name should be at most 20 characters long!',
-          })
-          .optional(),
+      .string({})
+      .min(2, {
+        message: 'First Name should be at least 2 characters long!',
       })
       .optional(),
-    address: z
-      .string()
-      .min(3, {
-        message: 'Address should be at least 3 characters long!',
-      })
-      .optional(),
-    city: z
-      .string()
-      .min(3, {
-        message: 'City should be at least 3 characters long!',
-      })
-      .optional(),
-    district: z
-      .string()
-      .min(3, {
-        message: 'District should be at least 3 characters long!',
-      })
-      .optional(),
+
     mobile_number: z
       .string({
         required_error: 'Mobile Number is required!',
@@ -85,24 +52,9 @@ const updateUserValidation = z.object({
   }),
 });
 
-const addProductToCartValidation = z.object({
-  body: z.object({
-    product: z.string({
-      required_error: 'Product Id is required to add product in cart!',
-    }),
-    quantity: z
-      .number({
-        required_error: 'Product quantity is required to add product in cart!',
-        invalid_type_error: 'Quantity should be a number!',
-      })
-      .nonnegative('Quantity should be a positive number!'),
-  }),
-});
-
 const userValidations = {
   userValidationSchema,
   updateUserValidation,
-  addProductToCartValidation,
 };
 
 export default userValidations;
