@@ -21,22 +21,6 @@ router.put(
   validateRequest(userValidations.updateUserValidation),
   UserControllers.updateUser,
 );
-router.patch(
-  '/add-to-cart',
-  validateRequest(userValidations.addProductToCartValidation),
-  userAuth(),
-  UserControllers.addProductToCart,
-);
-router.patch(
-  '/remove-from-cart/:productId',
-  userAuth(),
-  UserControllers.removeProductFromCart,
-);
-router.patch(
-  '/manipulate-quantity/:productId/:quantity',
-  userAuth(),
-  UserControllers.manipulateQuantityInCart,
-);
 
 router.patch(
   '/change-status/:id',

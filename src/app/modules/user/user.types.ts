@@ -1,26 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { Model, Types } from 'mongoose';
-import { TUserName } from '../../types/userInfo.types';
-
-export type TCart = {
-  _id?: string;
-  product: Types.ObjectId;
-  quantity: number;
-};
+import { Model } from 'mongoose';
 
 export interface TUser {
   _id?: string;
-  name: TUserName;
-  full_name?: string;
+  name: string;
   email: string;
-  role: 'user';
-  isEmailConfirmed: boolean;
   password: string;
-  cart?: TCart[];
-  address?: string;
-  district?: string;
-  city?: string;
-  mobile_number?: string;
   orders?: string[];
   status?: 'active' | 'blocked';
   isDeleted: boolean;

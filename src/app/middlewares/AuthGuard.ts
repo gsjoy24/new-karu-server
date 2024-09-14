@@ -39,14 +39,6 @@ const AuthGuard = (...requiredRoles: string[]) => {
       throw new AppError(httpStatus.NOT_FOUND, 'The user is not found');
     }
 
-    if (role === 'user' && user?.isEmailConfirmed === false) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'Please confirm your email!');
-    }
-
-    if (requiredRoles.length && !requiredRoles.includes(user.role)) {
-      throw new Error('You are not authorized!');
-    }
-
     req.userData = user;
     next();
   });

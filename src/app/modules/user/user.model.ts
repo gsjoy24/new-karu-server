@@ -1,88 +1,24 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import { AccountStatus } from '../../constants';
-import { TUserName } from '../../types/userInfo.types';
-import { TCart, TUser, UserModel } from './User.types';
-
-const userNameSchema = new Schema<TUserName>(
-  {
-    firstName: {
-      type: String,
-      required: [true, 'First Name is required'],
-      trim: true,
-      maxlength: [20, 'Name can not be more than 20 characters'],
-    },
-
-    lastName: {
-      type: String,
-      trim: true,
-      required: [true, 'Last Name is required'],
-      maxlength: [20, 'Name can not be more than 20 characters'],
-    },
-  },
-  {
-    _id: false,
-  },
-);
-
-const cartSchema = new Schema<TCart>(
-  {
-    product: {
-      type: Schema.Types.ObjectId,
-      ref: 'Product',
-      required: [true, 'Product Id is required'],
-    },
-    quantity: {
-      type: Number,
-      required: [true, 'Quantity is required'],
-      default: 1,
-    },
-  },
-  {
-    _id: false,
-  },
-);
+import { TUser, UserModel } from './User.types';
 
 const userSchema = new Schema<TUser, UserModel>(
   {
     name: {
-      type: userNameSchema,
-      required: [true, 'Name is required'],
+      type: String,
+      required: [true, 'Name is required!'],
+      trim: true,
     },
     email: {
       type: String,
       required: [true, 'Email is required!'],
       unique: true,
     },
-    role: {
-      type: String,
-      default: 'user',
-    },
-    isEmailConfirmed: {
-      type: Boolean,
-      default: false,
-    },
     password: {
       type: String,
       required: [true, 'Password is required!'],
       select: false,
-    },
-    cart: [cartSchema],
-    address: {
-      type: String,
-      trim: true,
-    },
-    city: {
-      type: String,
-      trim: true,
-    },
-    district: {
-      type: String,
-      trim: true,
-    },
-    mobile_number: {
-      type: String,
-      trim: true,
     },
     status: {
       type: String,
@@ -92,7 +28,6 @@ const userSchema = new Schema<TUser, UserModel>(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
   },
 );
 
@@ -104,14 +39,6 @@ userSchema.pre('save', async function (next) {
     user.password = await bcrypt.hash(user.password, 10);
   }
   next();
-});
-
-userSchema.virtual('total_cart_items').get(function () {
-  return this?.cart?.length || 0;
-});
-
-userSchema.virtual('full_name').get(function () {
-  return `${this?.name?.firstName} ${this?.name?.lastName}`;
 });
 
 userSchema.statics.isUserExists = async function (id: string) {
@@ -127,11 +54,6 @@ userSchema.statics.isPasswordMatched = async function (
 
 userSchema.statics.findUserByEmail = async function (email: string) {
   return await this.findOne({ email });
-};
-
-userSchema.statics.isEmailConfirmed = async function (email: string) {
-  const user = await this.findOne({ email });
-  return user?.isEmailConfirmed;
 };
 
 export const User = model<TUser, UserModel>('User', userSchema);

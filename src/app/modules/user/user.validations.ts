@@ -3,28 +3,14 @@ import { UserStatus } from './User.constant';
 
 const userValidationSchema = z.object({
   body: z.object({
-    name: z.object({
-      firstName: z
-        .string({
-          required_error: 'First Name is required!',
-          invalid_type_error: 'First Name should be a string!',
-        })
-        .min(2, { message: 'First Name should be at least 2 characters long!' })
-        .max(20, {
-          message: 'First Name should be at most 20 characters long!',
-        }),
-      lastName: z
-        .string({
-          required_error: 'Last Name is required!',
-          invalid_type_error: 'Last Name should be a string!',
-        })
-        .min(2, {
-          message: 'Last Name should be at least 2 characters long!',
-        })
-        .max(20, {
-          message: 'Last Name should be at most 20 characters long!',
-        }),
-    }),
+    name: z
+      .string({
+        required_error: 'Name is required!',
+        invalid_type_error: 'Name should be a string!',
+      })
+      .min(2, {
+        message: 'Name should be at least 2 characters long!',
+      }),
     email: z.string().email({
       message: 'Invalid email format!',
     }),

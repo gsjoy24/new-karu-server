@@ -9,51 +9,7 @@ import AppError from '../../errors/AppError';
 import { User } from '../User/User.model';
 import { sendEmail } from './../../utils/sendEmail';
 import { TChangePassword, TLogin, TResetPassword } from './auth.types';
-import { createToken, verifyToken } from './auth.utils';
-
-const confirmEmail = async (token: string) => {
-  if (!token) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'You are not authorized!');
-  }
-
-  const decoded = verifyToken(token, config.email_confirmation_secret);
-
-  const user = await User.isUserExists(decoded?.id);
-
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-  }
-
-  // check if the user is blocked
-  if (user?.status === 'blocked') {
-    throw new AppError(
-      httpStatus.FORBIDDEN,
-      'You are blocked! Contact Support!',
-    );
-  }
-
-  // check if the user is already confirmed
-  if (user.isEmailConfirmed) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      'Your email is already confirmed!',
-    );
-  }
-
-  const result = await User.findOneAndUpdate(
-    {
-      _id: decoded.id,
-      email: decoded.email,
-    },
-    {
-      isEmailConfirmed: true,
-    },
-    {
-      new: true,
-    },
-  );
-  return result;
-};
+import { createToken } from './auth.utils';
 
 const loginUser = async (payload: TLogin) => {
   const { email, password } = payload;
@@ -80,14 +36,6 @@ const loginUser = async (payload: TLogin) => {
     );
   }
 
-  // check if the user is confirmed the email
-  if (!user.isEmailConfirmed) {
-    throw new AppError(
-      httpStatus.FORBIDDEN,
-      'Your email is not confirmed! Please confirm your email first to login!',
-    );
-  }
-
   // check if the password is correct
   const isPasswordMatch = await User.isPasswordMatched(
     password,
@@ -101,7 +49,6 @@ const loginUser = async (payload: TLogin) => {
   const jwtPayload = {
     id: user?._id,
     email: user?.email,
-    role: 'user',
   };
 
   const accessToken = createToken(
@@ -110,16 +57,7 @@ const loginUser = async (payload: TLogin) => {
     config.jwt_access_expiration,
   );
 
-  const refreshToken = createToken(
-    jwtPayload,
-    config.jwt_refresh_secret,
-    config.jwt_refresh_expiration,
-  );
-
-  return {
-    accessToken,
-    refreshToken,
-  };
+  return accessToken;
 };
 
 const changePassword = async (
@@ -133,6 +71,7 @@ const changePassword = async (
     _id: userData.id,
     email: userData.email,
   }).select('+password');
+
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'The user is not found!');
   }
@@ -177,42 +116,13 @@ const changePassword = async (
 const getMe = async (userData: JwtPayload) => {
   const { id, email } = userData;
 
-  const result = await User.findOne({ _id: id, email }).populate(
-    'cart.product',
-  );
+  const result = await User.findOne({ _id: id, email });
+
   // if user not found
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
   return result;
-};
-
-const refreshToken = async (token: string) => {
-  if (!token) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'You are not authorized!');
-  }
-  // check if the token is valid
-  const decoded = jwt.verify(token, config.jwt_refresh_secret) as JwtPayload;
-
-  // check if the user is exist
-  const user = await User.findOne({ _id: decoded.id });
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'The user is not found!');
-  }
-
-  const jwtPayload = {
-    id: user?._id,
-    email: user?.email,
-    role: 'user',
-  };
-
-  const accessToken = createToken(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    config.jwt_access_expiration as string,
-  );
-
-  return accessToken;
 };
 
 const forgotPassword = async (email: string) => {
@@ -288,11 +198,9 @@ const resetPassword = async (payload: TResetPassword) => {
 };
 
 export const AuthServices = {
-  confirmEmail,
   loginUser,
   changePassword,
   forgotPassword,
   getMe,
-  refreshToken,
   resetPassword,
 };

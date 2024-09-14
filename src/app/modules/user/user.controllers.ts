@@ -10,8 +10,7 @@ const createUser: RequestHandler = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message:
-        'Registered successfully! Please check your email to verify your account.',
+      message: 'Account created successfully!',
       data: result,
     });
   },
@@ -57,55 +56,6 @@ const updateUser: RequestHandler = catchAsync(
   },
 );
 
-const addProductToCart: RequestHandler = catchAsync(
-  async (req: Request, res: Response) => {
-    const id = req?.userData?.id;
-
-    const result = await UserServices.addProductToCart(id, req.body);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Product added to cart successfully!',
-      data: result,
-    });
-  },
-);
-
-const removeProductFromCart: RequestHandler = catchAsync(
-  async (req: Request, res: Response) => {
-    const id = req?.userData?.id;
-    const { productId } = req.params;
-
-    const result = await UserServices.removeProductFromCart(id, productId);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Product removed from cart successfully!',
-      data: result,
-    });
-  },
-);
-
-const manipulateQuantityInCart: RequestHandler = catchAsync(
-  async (req: Request, res: Response) => {
-    const userId = req?.userData?.id;
-    const { productId, quantity } = req.params;
-
-    const result = await UserServices.manipulateQuantityInCart(
-      userId,
-      productId,
-      Number(quantity),
-    );
-
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Quantity manipulated successfully!',
-      data: result,
-    });
-  },
-);
-
 const changeUserStatus: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -125,8 +75,5 @@ export const UserControllers = {
   getAllUsers,
   getSingleUser,
   updateUser,
-  addProductToCart,
-  removeProductFromCart,
-  manipulateQuantityInCart,
   changeUserStatus,
 };
