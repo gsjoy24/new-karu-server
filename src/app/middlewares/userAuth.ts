@@ -22,6 +22,8 @@ const userAuth = () => {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
 
+    console.log({ decoded });
+
     const { id, email, role } = decoded;
 
     if (role !== 'user') {
@@ -32,10 +34,6 @@ const userAuth = () => {
     const user = await User.findOne({ _id: id, email });
     if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, 'The user is not found');
-    }
-
-    if (user?.isEmailConfirmed === false) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'Please confirm your email!');
     }
 
     req.userData = decoded;

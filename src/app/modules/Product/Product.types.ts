@@ -14,6 +14,7 @@ export type TProduct = {
   category: Types.ObjectId;
   sub_category?: Types.ObjectId;
   tags: string[];
+  isDeleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 };

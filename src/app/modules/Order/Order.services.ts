@@ -4,7 +4,6 @@ import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import generateUniqueId from '../../utils/generateUniqueId';
 import Product from '../Product/Product.model';
-import { User } from '../User/User.model';
 import { TUser } from '../User/User.types';
 import { OrderSearchableFields } from './Order.constant';
 import Order from './Order.model';
@@ -27,7 +26,6 @@ const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
       isUnique = true;
     }
   }
-  modifiedData.customer = userId;
 
   try {
     session.startTransaction();
@@ -46,12 +44,6 @@ const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
       productInDB.stock -= product.quantity;
       await productInDB.save({ session });
     }
-
-    await User.findByIdAndUpdate(
-      userId,
-      { $set: { cart: [] } },
-      { new: true, session },
-    );
 
     const newOrder = await Order.create([modifiedData], { session });
 
@@ -72,12 +64,12 @@ const getAllOrdersFromDB = async (
 ) => {
   const queryData: Record<string, unknown> = {};
   if (user.role === 'user') {
-    queryData['customer'] = user._id;
+    queryData['email'] = user.email;
   }
 
   const ordersQuery = (
     await new QueryBuilder(
-      Order.find(queryData).populate('customer products.product'),
+      Order.find(queryData).populate('products.product'),
       query,
     )
       .search(OrderSearchableFields)
@@ -112,7 +104,7 @@ const updateOrderIntoDB = async (id: string, order: TOrder) => {
 };
 
 const deleteOrderFromDB = async (id: string) => {
-  const deletedOrder = await Order.findByIdAndDelete(id);
+  const deletedOrder = await Order.findByIdAndUpdate(id, { isDeleted: true });
   if (!deletedOrder) {
     throw new Error('Order not found');
   }

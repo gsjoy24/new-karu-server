@@ -54,6 +54,10 @@ const ProductSchema = new Schema<TProduct>(
       type: Schema.Types.ObjectId,
       ref: 'Subcategory',
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: {

@@ -20,6 +20,10 @@ const userSchema = new Schema<TUser, UserModel>(
       required: [true, 'Password is required!'],
       select: false,
     },
+    role: {
+      type: String,
+      default: 'user',
+    },
     status: {
       type: String,
       enum: [AccountStatus.active, AccountStatus.blocked],

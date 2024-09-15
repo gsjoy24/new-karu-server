@@ -49,6 +49,7 @@ const loginUser = async (payload: TLogin) => {
   const jwtPayload = {
     id: user?._id,
     email: user?.email,
+    role: user?.role,
   };
 
   const accessToken = createToken(
@@ -57,7 +58,7 @@ const loginUser = async (payload: TLogin) => {
     config.jwt_access_expiration,
   );
 
-  return accessToken;
+  return { accessToken };
 };
 
 const changePassword = async (
@@ -103,7 +104,7 @@ const changePassword = async (
     password: hashedPassword,
   });
   const template = PasswordChangeNotificationTemplate(
-    user?.full_name || user?.name?.firstName,
+    user?.name,
     user?.email,
     config.support_email,
   );
@@ -145,11 +146,7 @@ const forgotPassword = async (email: string) => {
 
   const resetUILink = `${config.client_url}/reset-pass?token=${resetToken}`;
 
-  const template = ResetPasswordTemplate(
-    user?.full_name || user?.name?.firstName,
-    user?.email,
-    resetUILink,
-  );
+  const template = ResetPasswordTemplate(user?.name, user?.email, resetUILink);
 
   await sendEmail(user?.email, 'Reset Your Password', template);
   return;

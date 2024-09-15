@@ -8,6 +8,7 @@ export interface TUser {
   password: string;
   orders?: string[];
   status?: 'active' | 'blocked';
+  role: 'user';
   isDeleted: boolean;
 }
 

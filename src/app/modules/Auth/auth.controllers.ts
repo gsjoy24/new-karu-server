@@ -1,40 +1,18 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
-import config from '../../config';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.services';
 
-const confirmEmail = catchAsync(async (req: Request, res: Response) => {
-  const { token } = req.query as { token: string };
-  const result = await AuthServices.confirmEmail(token);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Email confirmed successfully!',
-    data: result,
-  });
-});
-
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginUser(req.body);
-
-  res.cookie('refreshToken', result?.refreshToken, {
-    httpOnly: true,
-    secure: config.NODE_ENV === 'production',
-    sameSite: 'none',
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-  });
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User logged in successfully!',
-    data: {
-      accessToken: result?.accessToken,
-    },
+    data: result,
   });
 });
 
@@ -60,21 +38,6 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
     success: true,
     message: 'User details fetched successfully!',
     data: result,
-  });
-});
-
-const refreshToken = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthServices.refreshToken(
-    req.cookies?.refreshToken as string,
-  );
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Token refreshed successfully!',
-    data: {
-      accessToken: result,
-    },
   });
 });
 
@@ -106,11 +69,9 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const AuthControllers = {
-  confirmEmail,
   loginUser,
   changePasswordOfUser,
   getMe,
-  refreshToken,
   forgotPassword,
   resetPassword,
 };

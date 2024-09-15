@@ -6,7 +6,6 @@ import { AuthValidations } from './auth.validations';
 
 const router = express.Router();
 
-router.post('/confirm-email', AuthControllers.confirmEmail);
 router.post(
   '/login',
   validateRequest(AuthValidations.LoginUserValidationSchema),
@@ -19,7 +18,6 @@ router.patch(
   validateRequest(AuthValidations.changePasswordValidationSchema),
   AuthControllers.changePasswordOfUser,
 );
-router.post('/refresh-user-token', AuthControllers.refreshToken);
 
 router.post(
   '/forgot-password',

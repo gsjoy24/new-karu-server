@@ -17,7 +17,6 @@ export type TOrderProduct = {
 export type TOrder = {
   _id?: string;
   order_id: string;
-  customer: Types.ObjectId;
   name: string;
   phone: string;
   products: TOrderProduct[];
@@ -27,4 +26,6 @@ export type TOrder = {
   city?: string;
   order_note?: string;
   status: TOrderStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
