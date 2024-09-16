@@ -13,7 +13,6 @@ const userAuth = () => {
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
-
     // check if the token is valid
     let decoded;
     try {
@@ -21,8 +20,6 @@ const userAuth = () => {
     } catch (error) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
-
-    console.log({ decoded });
 
     const { id, email, role } = decoded;
 

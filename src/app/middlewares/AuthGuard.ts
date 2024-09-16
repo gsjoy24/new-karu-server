@@ -39,6 +39,11 @@ const AuthGuard = (...requiredRoles: string[]) => {
       throw new AppError(httpStatus.NOT_FOUND, 'The user is not found');
     }
 
+    // check if the user has the required roles
+    if (requiredRoles.length && !requiredRoles.includes(user.role)) {
+      throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
+    }
+
     req.userData = user;
     next();
   });

@@ -7,10 +7,7 @@ const OrderSchema = new Schema<TOrder>(
       type: String,
       unique: true,
     },
-    customer: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-    },
+    email: { type: String },
     name: { type: String },
     phone: { type: String },
     products: [

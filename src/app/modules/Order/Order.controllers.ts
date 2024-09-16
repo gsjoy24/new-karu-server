@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { Types } from 'mongoose';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { TUser } from '../User/User.types';
 import OrderServices from './Order.services';
 
 const createOrder = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.userData?.id as Types.ObjectId;
-  const order = await OrderServices.createOrderIntoDB(userId, req.body);
+  const order = await OrderServices.createOrderIntoDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,

@@ -18,6 +18,7 @@ export type TOrder = {
   _id?: string;
   order_id: string;
   name: string;
+  email?: string;
   phone: string;
   products: TOrderProduct[];
   total_price: number;

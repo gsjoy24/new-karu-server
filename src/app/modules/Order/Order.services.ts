@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import mongoose, { Types } from 'mongoose';
+import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import generateUniqueId from '../../utils/generateUniqueId';
@@ -9,7 +9,7 @@ import { OrderSearchableFields } from './Order.constant';
 import Order from './Order.model';
 import { TOrder } from './Order.types';
 
-const createOrderIntoDB = async (userId: Types.ObjectId, order: TOrder) => {
+const createOrderIntoDB = async (order: TOrder) => {
   const session = await mongoose.startSession();
   const modifiedData = { ...order };
 
