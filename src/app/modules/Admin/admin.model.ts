@@ -1,34 +1,13 @@
 import bcrypt from 'bcrypt';
-
 import { Schema, model } from 'mongoose';
 import config from '../../config';
-import { TUserName } from '../../types/userInfo.types';
-import { AdminModel, TAdmin } from './admin.types';
 
-const userNameSchema = new Schema<TUserName>(
-  {
-    firstName: {
-      type: String,
-      required: [true, 'First Name is required'],
-      trim: true,
-      maxlength: [20, 'Name can not be more than 20 characters'],
-    },
-    lastName: {
-      type: String,
-      trim: true,
-      required: [true, 'Last Name is required'],
-      maxlength: [20, 'Name can not be more than 20 characters'],
-    },
-  },
-  {
-    _id: false,
-  },
-);
+import { AdminModel, TAdmin } from './admin.types';
 
 const adminSchema = new Schema<TAdmin, AdminModel>(
   {
     name: {
-      type: userNameSchema,
+      type: String,
       required: [true, 'Name is required'],
     },
     email: {
@@ -90,11 +69,6 @@ adminSchema.pre('save', async function (next) {
     Number(config.bcrypt_salt_round),
   );
   next();
-});
-
-// generating full name
-adminSchema.virtual('fullName').get(function () {
-  return this?.name?.firstName + this?.name?.lastName;
 });
 
 //checking if user is already exist!

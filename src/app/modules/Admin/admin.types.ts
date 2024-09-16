@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { Model } from 'mongoose';
-import { TUserName } from '../../types/userInfo.types';
 
 export type TGender = 'Male' | 'Female' | 'Other';
 
 export type TAdmin = {
   _id?: string;
-  name: TUserName;
+  name: string;
   password: string;
   gender: TGender;
   dateOfBirth?: Date;

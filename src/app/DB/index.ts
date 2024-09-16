@@ -2,10 +2,7 @@ import config from '../config';
 import { Admin } from '../modules/Admin/admin.model';
 
 const superAdmin = {
-  name: {
-    firstName: 'Faruk',
-    lastName: 'Rahman',
-  },
+  name: 'Super Admin',
   email: config.super_admin_email,
   password: config.super_admin_password,
   gender: 'Male',
