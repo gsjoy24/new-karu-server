@@ -27,7 +27,7 @@ const GetCategories = async (params: string) => {
         let: { categoryId: '$_id' },
         pipeline: [
           { $match: { $expr: { $eq: ['$category', '$$categoryId'] } } },
-          { $sort: { created_at: -1 } },
+          { $sort: { createdAt: -1 } },
         ],
         as: 'subcategories',
       },

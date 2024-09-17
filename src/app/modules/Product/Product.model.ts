@@ -60,6 +60,7 @@ const ProductSchema = new Schema<TProduct>(
     },
   },
   {
+    timestamps: true,
     toJSON: {
       virtuals: true,
     },
