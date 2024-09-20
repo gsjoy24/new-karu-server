@@ -1,8 +1,10 @@
+import dotenv from 'dotenv';
 import { Server } from 'http';
 import mongoose from 'mongoose';
 import app from './app';
 import seedSuperAdmin from './app/DB';
 import config from './app/config';
+dotenv.config();
 
 let server: Server;
 async function main() {
