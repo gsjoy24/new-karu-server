@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { Schema, model } from 'mongoose';
 import { AccountStatus } from '../../constants';
 import { TUser, UserModel } from './User.types';

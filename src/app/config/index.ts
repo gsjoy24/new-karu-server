@@ -14,18 +14,19 @@ export default {
 
   bcrypt_salt_round: process.env.BCRYPT_SALT_ROUND as string,
   jwt_access_secret: process.env.JWT_ACCESS_TOKEN as string,
-  jwt_access_expiration: process.env.JWT_ACCESS_EXPIRES_IN as string,
+  jwt_access_expiration: Number(process.env.JWT_ACCESS_EXPIRES_IN) as number,
 
   jwt_refresh_secret: process.env.JWT_REFRESH_TOKEN as string,
-  jwt_refresh_expiration: process.env.JWT_REFRESH_EXPIRES_IN as string,
+  jwt_refresh_expiration: Number(process.env.JWT_REFRESH_EXPIRES_IN) as number,
 
   email_confirmation_secret: process.env.EMAIL_CONFIRMATION_TOKEN as string,
   email_confirmation_expiration: process.env
     .EMAIL_CONFIRMATION_URL_EXPIRES_IN as string,
 
   password_reset_secret: process.env.PASSWORD_RESET_TOKEN as string,
-  password_reset_expiration: process.env
-    .PASSWORD_RESET_URL_EXPIRES_IN as string,
+  password_reset_expiration: Number(
+    process.env.PASSWORD_RESET_URL_EXPIRES_IN,
+  ) as number,
 
   support_email: process.env.SUPPORT_EMAIL as string,
   support_email_password: process.env.SUPPORT_EMAIL_PASSWORD,

@@ -6,7 +6,7 @@ import AppError from '../../errors/AppError';
 export const createToken = (
   jwtPayload: { id: string | undefined; email: string; role?: string },
   secret: string,
-  expiresIn: string,
+  expiresIn: number,
 ) => {
   return jwt.sign(jwtPayload, secret, { expiresIn });
 };
