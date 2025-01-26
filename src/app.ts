@@ -11,8 +11,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://karukon.com',
   'https://dashboard.karukon.com',
-  'https://new-karukon.vercel.app',
-  'https://new-karukon-dashboard.vercel.app',
+  'https://karukonbd.vercel.app',
+  'https://karukon-dashboard.vercel.app',
 ];
 
 app.use(
